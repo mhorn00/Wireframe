@@ -1,0 +1,27 @@
+    type Query {
+        files(path:String! token:String!): [File]
+        file(path:String! token:String!): File,
+        folders(path: String! token: String!): [File]
+    }
+
+    type File {
+        # _id: ID!,
+        userRelativePath: String!,
+        rawName: String,
+        name: String,
+        type: String,
+        # creationDate: Int,
+        fileSize: Int
+    }
+
+    input NewFile {
+        type: String,
+        size: Int!,
+        creationDate: Int
+    }
+
+    type Mutation {
+        addFile(new: NewFile!, token: String!): Boolean!
+        addFolder(path: String!, name: String!, token: String!): Boolean!
+        remove(path: String!, name: String!, token: String!): Boolean!
+    }

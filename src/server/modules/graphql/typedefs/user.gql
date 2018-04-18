@@ -1,0 +1,23 @@
+    type Query {
+        users: [User]!
+        user(UserID:String!): User
+    }
+
+    type User {
+        _id: ID!
+        username: String,
+        email: String,
+        creationDate: Int,
+        approved: Boolean!
+    }
+
+    input UserInput {
+        username: String!,
+        email: String!,
+        password: String!
+    }
+
+    type Mutation {
+        register(email: String! password: String! username: String!): Boolean!
+        changeInfo(email:String! pass: String! newEmail: String newPass: String): Boolean!
+    }

@@ -1,0 +1,12 @@
+type Query {
+    authenticate(token:String!) : Boolean!
+}
+
+type Session{
+    Username: String!,
+    Token: String!
+}
+
+type Mutation {
+    createSession(username: String!, pass: String!): Session
+}
