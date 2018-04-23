@@ -3,7 +3,7 @@ var Promise = require('bluebird');
 var secret = require('../../secret')
 
 var exports = {
-    generate: function (pass) {
+    generate: function (pass, length) {
         return password.generate(pass, {
             algorithm: "sha256",
             saltLength: 32,

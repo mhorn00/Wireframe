@@ -31,7 +31,7 @@ var resolvers = {
                     .then(user => {
                         var verifyRes = verify(args.pass, user.hashedPass);
                         if (user == null || user == undefined) {
-                            console.log('resolving null!');
+                            //('resolving null!');
                             resolve(null);
                             return;
                         }
@@ -40,13 +40,13 @@ var resolvers = {
                                 Username: args.username,
                                 Token: 'not approved'
                             })
-                            console.log('resolving unapproved!');
-                            console.log(user);
+                            //('resolving unapproved!');
+                            //(user);
                             resolve(UnapprovedSession);
                             return;
                         }
                         else{
-                            console.log(user);
+                            //(user);
                         }
                         if(verifyRes===true){
                             var token = jwt.sign({

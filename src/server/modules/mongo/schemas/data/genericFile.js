@@ -9,7 +9,8 @@ let File = new Schema({
     name: !String,
     type: String,
     uploadDate:!Date,
-    fileSize: Number
+    fileSize: Number,
+    sharing_links: [String]
 })
 
 module.exports = mongo.model('File',File);
