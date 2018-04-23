@@ -5,7 +5,3 @@ const reducers = combineReducers({
 })
 
 const store = createStore(reducers, {});
-
-store.subscribe(()=>{
-    console.log("STORE CHANGE",store.getState());
-})
