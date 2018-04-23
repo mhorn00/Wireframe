@@ -14,9 +14,19 @@ global.mongo = mongoose.createConnection('mongodb://localhost:27017');
 
 var express = require('express');
 
-var PORT = 3000;
+var PORT = 80;
 
 var app = express();
+const corsOptions = {
+    origin(origin, callback) {
+        callback(null, true);
+    },
+    credentials: true
+};
+
+var cors = require('cors');
+
+app.use(cors(corsOptions));
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -61,12 +71,12 @@ app.post('/upload', upload.single('file'), function (req, res) {
             if (info = jwt.verify(token, secret)) {
                 var file = req.file;
                 var uPath = req.body.path;
-                var tpath = path.resolve('./users/' + info.Username + '/' + uPath + '/' + file.originalname);
+                var tpath = path.resolve('./users/' + info.Username + '/'+ file.originalname);
                 GenericFile.remove({name: file.originalname, userRelativePath: uPath}).then(()=>{
                     var writeFile = fs.writeFile(tpath, file.buffer, (err, result) => {
                         if (err) throw err;
                         var mongoFile = new GenericFile({
-                            absolutePath:tpath.substring(0,tpath.length-file.originalname.length),
+                            absolutePath:'',
                             userRelativePath: uPath,
                             fileSize: file.size,
                             name: file.originalname,
@@ -93,17 +103,17 @@ app.post('/upload', upload.single('file'), function (req, res) {
 app.get('/filedl', function (req, res) {
     try{
         var info = jwt.verify(req.query.token, secret);
-        console.log(req.query);
-        var _path = path.resolve(__dirname+`../../../users/${info.Username}/${req.query.path!=undefined?req.query.path:''}/${req.query.rawName}`);
+        //(req.query);
+        var _path = path.resolve(__dirname+`../../../users/${info.Username}/${req.query.rawName}`);
         res.download(_path, function (err) {
             if (err) {
-                console.log(err);
+                //(err);
             }
         });
     }
     catch(e){
         res.send('Sorry, invalid something.')
-        console.log(e);
+        //(e);
     }
 })
 
@@ -115,11 +125,22 @@ app.get('/registerUser/:hash', function(req,res){
     })
 })
 
+app.get('/f/:hash', function(req,res){
+    
+    GenericFile.findOne({sharing_links:{$in: [req.params.hash]}}).then((result)=>{
+        if(result.type=='dir'){
+            res.send("<p> sorry, can't share folders yet </p>")
+        }
+        var _path = path.resolve(__dirname + `../../../users/${result.uploader}/${result.name}`);
+        res.sendFile(_path);
+    })
+})
+
 app.get('/*', function (req, res) {
     res.sendFile(path.resolve(__dirname, '../../dist/index.html'));
 });
 
 app.listen(PORT, function () {
-    console.log('HEWWO????? 0w0')
+    //('HEWWO????? 0w0')
 })
 

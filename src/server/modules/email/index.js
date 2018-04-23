@@ -3,8 +3,8 @@ var creds = require('./credentials');
 var smtpTransport = require('nodemailer-smtp-transport');
 var realEmails ='adairf625@gmail.com, myleshorn@gmail.com';
 var devEmails = 'fulwejam000@mysbisd.org, hornfre000@mysbisd.org';
-var urlPrefix = 'http://localhost:3000/registerUser/';
 var uuid = require('uuid');
+var {IP} = require('../../../app/const');
 
 var transporter = nodemailer.createTransport(smtpTransport({
   service: 'gmail',
@@ -28,7 +28,7 @@ module.exports = {
       from: creds.email,
       to: devEmails,
       subject: `Registration Request`,
-      text: `There has been a registration request from user ${user.username}, to accept it click this link: ${urlPrefix+user.registrationHash}`
+      text: `There has been a registration request from user ${user.username}, to accept it click this link: ${IP}/registerUser/${user.registrationHash}`
     }
     transporter.sendMail(mailOptions);
   }
