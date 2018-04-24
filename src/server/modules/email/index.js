@@ -4,7 +4,7 @@ var smtpTransport = require('nodemailer-smtp-transport');
 var realEmails ='adairf625@gmail.com, myleshorn@gmail.com';
 var devEmails = 'fulwejam000@mysbisd.org, hornfre000@mysbisd.org';
 var uuid = require('uuid');
-var {IP} = require('../../../app/const');
+var {IP} = require('../../const');
 
 var transporter = nodemailer.createTransport(smtpTransport({
   service: 'gmail',
