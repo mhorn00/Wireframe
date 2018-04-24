@@ -1,0 +1,21 @@
+@import "../../palette.scss";
+
+body{
+    margin: 0;
+    background-color: $white;
+}
+
+.header{
+    position: relative;
+    height: 10%;
+    width: 100%;
+    background-color: $black4;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-color: $lightRed;
+    z-index: 10;
+}
+.content{
+    height: 90%;
+    width: 100%;
+}

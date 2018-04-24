@@ -1,0 +1,20 @@
+//Reds
+$black1: rgba(47, 47, 47, 1);
+$black2: rgba(65, 65, 65, 1);
+$black3: rgba(103, 103, 103, 1);
+$black4: rgba(84, 84, 84, 1);
+$grey: rgba(173, 173, 173, 1);
+$white: rgba(230, 230, 230, 1);
+$lightRed: rgba(188, 39, 39, 1);
+$darkRed: rgba(144, 39, 39, 1);
+
+:export{
+    black1: $black1;
+    black2: $black2;
+    black3: $black3;
+    black4: $black4;
+    grey: $grey;
+    white: $white;
+    lightRed: $lightRed;
+    darkRed: $darkRed;
+}
