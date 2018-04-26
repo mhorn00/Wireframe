@@ -1,5 +1,18 @@
 @import "../../palette.scss";
 
-.top{
-    
+.content{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    z-index: 20;
+}
+.container{
+    margin: auto;
+    width: min-content;
+    width: -moz-min-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-size: 150px;
+    color: $darkRed;
 }
