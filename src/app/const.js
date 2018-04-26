@@ -1,1 +1,3 @@
-export default {URL: 'http://localhost:3000'};
+var URL = 'http://localhost:3000';
+
+export {URL};
