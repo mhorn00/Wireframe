@@ -5,11 +5,15 @@
   z-index: 20; }
 
 .Home__container___1yW6O {
+  margin: auto;
+  width: min-content;
+  width: -moz-min-content;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  font-size: 60px;
-  color: #902727; }
+  font-size: 150px;
+  color: #902727;
+  overflow: hidden; }
 body {
   margin: 0;
   background-color: #e6e6e6; }
