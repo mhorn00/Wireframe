@@ -12,7 +12,9 @@ export default class Home extends React.Component {
                     <Particle />
                     <div className={styles.content}>
                         <div className={styles.container}>
-                            <i className="fas fa-bug"></i>
+                            <div className={styles.logo}>
+                                <img src='logo/Wireframe-Full.png'/>
+                            </div>
                             <div className={styles.login}>
                                 <LoginContaier />
                             </div>
