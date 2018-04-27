@@ -1,3 +1,3 @@
-var URL = 'http://localhost:3000';
+var serverURL = 'http://localhost';
 
-export {URL};
+export {serverURL as URL};

@@ -17,12 +17,10 @@ var express = require('express');
 var PORT = 80;
 
 var app = express();
-const corsOptions = {
-    origin(origin, callback) {
-        callback(null, true);
-    },
-    credentials: true
-};
+var cors = require('cors');
+
+app.use(cors()); 
+
 
 /* var cors = require('cors');
 

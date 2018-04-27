@@ -29,6 +29,10 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 User.findOne({ username: args.username})
                     .then(user => {
+                        if(user==null){
+                            resolve(null);
+                            return;
+                        }
                         var verifyRes = verify(args.pass, user.hashedPass);
                         if (user == null || user == undefined) {
                             //('resolving null!');

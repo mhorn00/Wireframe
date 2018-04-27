@@ -8,7 +8,8 @@ export default { SET_LOGIN_REQUEST, SET_LOGIN_SUCCESS, SET_LOGIN_PENDING, SET_LO
 
 import { createApolloFetch } from 'apollo-fetch';
 import { URL } from '../const';
-var fetch = createApolloFetch(URL + '/graphql');
+console.log(URL + '/graphql');
+var _fetch = createApolloFetch({uri:`${URL}/graphql`});
 
 export function setLoginPending(isLoginPending) {
     return {
@@ -19,10 +20,13 @@ export function setLoginPending(isLoginPending) {
 
 export function login(username, password) {
     return dispatch => {
-        dispatch(setLoginError('woa'));
-        fetch({ query: `mutation{createSession(user:"${username}" pass:"${password}")}` }).then(res => {
-            dispatch(setLoginSuccess(res))
-        }).catch(e => dispatch(setLoginError(e)));
+        //dispatch(setLoginError('woa'));
+        _fetch({ query: `mutation{createSession(username:"${username}" pass:"${password}"){ Token, Username }}` }).then(res => {
+            dispatch(setLoginSuccess(res)) // make it so if res == null, error instead.
+        }).catch(e => {
+            console.log(e);
+            dispatch(setLoginError(e))
+        });
     }
 }
 
