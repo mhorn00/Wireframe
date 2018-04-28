@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 const Login = ({dispatch}) => {
     let pass;
     let user;
+    console.log(this.props);
     return (
         <div>
             <form onSubmit={e=>{
@@ -18,8 +19,11 @@ const Login = ({dispatch}) => {
     )
 }
 
-export default connect()(Login);
+function mapStateToprops(state) {
+    return state;
+}
 
+export default connect(mapStateToprops)(Login);
 /* export default class Login extends React.Component{
     
 } */

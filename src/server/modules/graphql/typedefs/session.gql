@@ -3,8 +3,9 @@ type Query {
 }
 
 type Session{
-    Username: String!,
-    Token: String!
+    username: String,
+    token: String,
+    error: String
 }
 
 type Mutation {

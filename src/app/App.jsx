@@ -10,7 +10,7 @@ export default class App extends React.Component {
             <Provider store={store}>
                 <BrowserRouter>
                     <Switch>
-                        <Route exact path='/' component={Home} />
+                        {/*<Route exact path='/' component={Home} />*/}
                         <Route path ='/*' component={Login}/>
                     </Switch>
                 </BrowserRouter>

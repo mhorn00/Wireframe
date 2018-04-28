@@ -8,9 +8,11 @@ class LoginTest extends React.Component {
     }
 
     render() {
-        console.log(this.props);
         let username;
         let password;
+        if(this.props.loginReducer.pending){
+            return(<p> i am pending </p>)
+        }
         return (
             <div>
                 <form onSubmit={(e) => {

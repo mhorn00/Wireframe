@@ -14,33 +14,40 @@ var _fetch = createApolloFetch({uri:`${URL}/graphql`});
 export function setLoginPending(isLoginPending) {
     return {
         type: SET_LOGIN_PENDING,
-        isLoginPending
+        payload: isLoginPending
     };
 }
 
 export function login(username, password) {
     return dispatch => {
-        //dispatch(setLoginError('woa'));
-        _fetch({ query: `mutation{createSession(username:"${username}" pass:"${password}"){ Token, Username }}` }).then(res => {
-            dispatch(setLoginSuccess(res)) // make it so if res == null, error instead.
-        }).catch(e => {
-            console.log(e);
-            dispatch(setLoginError(e))
+        var query = `mutation{createSession(username:"${username}", pass:"${password}"){token, username, error}}`
+        _fetch({ query }).then(res => {
+            if(res.data.createSession.error===''){
+                dispatch(setLoginSuccess(res.data.createSession))
+            }
+            else{
+                dispatch(setLoginError(res.data.createSession.error));
+            }
+        }).catch((e) => {
+            dispatch(setLoginError(e));
         });
+        dispatch(setLoginPending(true));
     }
 }
 
 export function setLoginSuccess(isLoginSuccess) {
     return {
         type: SET_LOGIN_SUCCESS,
-        isLoginSuccess
+        payload: isLoginSuccess,
+        pending: false
     };
 }
 
 export function setLoginError(loginError) {
     return {
         type: SET_LOGIN_ERROR,
-        loginError
+        payload: loginError,
+        pending: false
     }
 }
 

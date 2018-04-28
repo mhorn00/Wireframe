@@ -4,26 +4,21 @@ import {URL} from '../const';
 
 var fetch = createApolloFetch({uri: URL+'/graphql'});
 
-const login = (state = { loggedIn: false, pending: false, jwt: '' }, action) => {
+const login = (state = { loggedIn: false, username: null, pending: false, error: null, jwt: '' }, action) => {
     switch(action.type){
         case actions.SET_LOGIN_PENDING: {
-            return Object.assign({},state,{pending: action.pending})
+            return Object.assign({},state,{pending: action.payload})
         }
         case actions.SET_LOGIN_REQUEST: {
-            console.log('hey');
-            var query = `query{createSession(username:"${action.username}", pass:"${action.password}")}`
-            fetch({query}).then(res=>{
-                if(res.data.createSession!==null && res.data.createSession.Token!=='not approved'){
-                    dispatch(setLoginpending(false));
-                }
-                else{
-                    console.log('yeah it failed');
-                    dispatch(setLoginError(res.data))
-                }
-            }).catch((e)=>{
-                dispatch(setLoginError(e));
-            });
             return Object.assign({},state,{pending: true});
+        }
+        case actions.SET_LOGIN_ERROR: {
+            console.log(action);
+            return Object.assign({}, state,{error:action.payload, pending:false})
+        }
+        case actions.SET_LOGIN_SUCCESS: {
+            console.log(action);
+            return Object.assign({}, state,{jwt: action.payload.token, username: action.payload.username, pending: false})
         }
         default: return state;
     }
