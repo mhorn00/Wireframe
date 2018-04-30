@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Home.scss';
 import MasterLayout from '../../layouts/MasterLayout/MasterLayout.jsx';
 import Particle from '../../components/Particle/Particle.jsx';
-import LoginContaier from '../../components/LoginContainer/LoginContainer.jsx';
+import LoginTest from '../../components/_LoginTest/LoginTest.jsx';
 
 export default class Home extends React.Component {
     render() {
@@ -16,7 +16,7 @@ export default class Home extends React.Component {
                                 <img src='logo/Wireframe-Full.png'/>
                             </div>
                             <div className={styles.login}>
-                                <LoginContaier />
+                                <LoginTest />
                             </div>
                         </div>
                     </div>
