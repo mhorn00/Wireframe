@@ -1,8 +1,4 @@
-import actions, {setLoginPending, setLoginError} from '../actions/login.actions';
-import {createApolloFetch} from 'apollo-fetch';
-import {URL} from '../const';
-
-var fetch = createApolloFetch({uri: URL+'/graphql'});
+import actions from '../actions/login.actions';
 
 const login = (state = { loggedIn: false, username: null, pending: false, error: null, jwt: '' }, action) => {
     switch(action.type){

@@ -1,6 +1,6 @@
     type Query {
         users: [User]!
-        user(UserID:String!): User
+        userExists(username:String email:String): Boolean!
     }
 
     type User {

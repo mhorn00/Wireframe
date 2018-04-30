@@ -11,14 +11,15 @@ var resolvers = {
                 })
             })
         },
-        user: async function (parent, args, {
+        userExists: async function (parent, args, {
             User
         }) {
             return await new Promise((resolve, reject) => {
-                User.findOne({ username: args.UserID }).then(result => {
-                    resolve(result);
+                User.findOne({ $or:[{username: args.username}, {email: args.email}]}).then(result => {
+                    if(result) resolve(true);
+                    else resolve(false);
                 }).catch((err)=>{
-                    reject(err);
+                    reject(false);
                 });
             }) 
         }
