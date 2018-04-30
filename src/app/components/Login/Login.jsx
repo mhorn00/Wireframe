@@ -20,9 +20,9 @@ class LoginTest extends React.Component {
                     e.preventDefault();
                     this.props.dispatch(login(username.value, password.value))
                 }}>
-                    <div className={styles.inputContainer}>
-                        <input type="text" placeholder="Username" ref={node => username = node} className={styles.usernameIn}/>
-                        <input type="password" placeholder="Password" ref={node => password = node} className={styles.passwordIn} />
+                    <div className={styles.cont}>
+                        <input type="text" placeholder="Username" ref={node => username = node} className={styles.user}/>
+                        <input type="password" placeholder="Password" ref={node => password = node} className={styles.pass} />
                     </div>
                     <input type="submit" className={styles.submit}/>
                 </form>

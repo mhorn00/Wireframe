@@ -1,12 +1,20 @@
 @import "../../palette.scss";
 
+
+.cont{
+    position: relative;
+    margin: auto;
+    display: flex;
+    
+}
+
 .loginContainer{
     position: relative;
     margin: auto;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex-wrap: wrap;
-    flex-direction: column;
+    flex-direction: row;
     max-width: min-content;
     max-width: -moz-min-content;
     .inputContainer{
