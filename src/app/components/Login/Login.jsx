@@ -27,9 +27,9 @@ class LoginTest extends React.Component {
                     </div>
                     <input type="submit" className={styles.submit}/>
                 </form>
-                <button value="Register" onClick={e=>{
+                <button onClick={e=>{
                     this.props.dispatch(switchScreen("register"));
-                }}/>
+                }}> Register </button>
             </div>
         )
     }
