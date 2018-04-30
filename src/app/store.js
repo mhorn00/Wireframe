@@ -3,10 +3,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import loginReducer from './reducers/login.reducer';
 import registerReducer from './reducers/register.reducer';
+import homecontainerReducer from './reducers/homecontainer.reducer';
 
 const reducers = combineReducers({
     //Add reducers here
-    loginReducer, registerReducer
+    loginReducer, registerReducer, homecontainerReducer
 })
 
 const store = createStore(reducers, composeWithDevTools(), applyMiddleware(thunk));

@@ -1,13 +1,21 @@
 import React from 'react';
 import Login from '../Login/Login.jsx';
 import Register from '../Register/Register.jsx';
+import {connect} from 'react-redux';
 
-export default class LoginContainer extends React.Component {
+
+class LoginContainer extends React.Component {
     render() {
         return (
             <div> 
-                <Login/>
+                {this.props.screen=="login"?<Login/>:<Register/>}
             </div>
         )
     }
 }
+
+function mapStateToProps(state){
+    return state.homecontainerReducer;
+}
+
+export default connect(mapStateToProps)(LoginContainer);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {checkEmail, checkUsername, submit} from '../../actions/register.actions';
+import {switchScreen} from '../../actions/homecontainer.actions';
 
 class Register extends React.Component {
     constructor(props) {
@@ -35,6 +36,9 @@ class Register extends React.Component {
                     }}/>
                     <input type="submit" value="Register!"/>
                 </form>
+                <button  onClick={e=>{
+                    this.props.dispatch(switchScreen("login"));
+                }}> Login </button>
             </div>
         )
     }
