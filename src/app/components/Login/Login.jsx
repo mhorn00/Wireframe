@@ -1,29 +1,38 @@
-import React from'react';
-import {login} from '../../actions/login.actions';
-import {connect} from 'react-redux';
-const Login = ({dispatch}) => {
-    let pass;
-    let user;
-    console.log(this.props);
-    return (
-        <div>
-            <form onSubmit={e=>{
-                e.preventDefault();
-                dispatch(login(user.value, pass.value));
-            }}>
-                <input type="text" placeholder="Username" ref={node=>user=node}/>
-                <input type="password" ref={node=>pass=node}/>
-                <input type="submit"/>
-            </form>
-        </div>
-    )
+import React from 'react';
+import styles from './Login.scss';
+import { login } from '../../actions/login.actions';
+import { connect } from 'react-redux';
+
+class LoginTest extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let username;
+        let password;
+        if (this.props.loginReducer.pending) {
+            return (<p> Pending </p>)
+        }
+        return (
+            <div className={styles.loginContainer}>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    this.props.dispatch(login(username.value, password.value))
+                }}>
+                    <div className={styles.inputContainer}>
+                        <input type="text" placeholder="Username" ref={node => username = node} className={styles.usernameIn}/>
+                        <input type="password" placeholder="Password" ref={node => password = node} className={styles.passwordIn} />
+                    </div>
+                    <input type="submit" className={styles.submit}/>
+                </form>
+            </div>
+        )
+    }
 }
 
 function mapStateToprops(state) {
     return state;
 }
 
-export default connect(mapStateToprops)(Login);
-/* export default class Login extends React.Component{
-    
-} */
+export default connect(mapStateToprops)(LoginTest);

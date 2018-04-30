@@ -7,7 +7,11 @@
     z-index: 20;
 }
 .container{
-    margin: auto;
+    margin: 0;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-55%, -50%);
     width: min-content;
     width: -moz-min-content;
     display: flex;
@@ -16,6 +20,12 @@
     font-size: 150px;
     color: $darkRed;
     overflow: hidden;
+    
 }
 .logo{
+    .svg{
+        fill: $lightRed;
+        width: 20%;
+        height: 20%;
+    }
 }

@@ -1,0 +1,75 @@
+@import "../../palette.scss";
+
+.loginContainer{
+    position: relative;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    max-width: min-content;
+    max-width: -moz-min-content;
+    .inputContainer{
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        .usernameIn{
+            margin: 0;
+            border: 3px solid $lightRed;
+            background: transparent;
+            padding: 10px 6px;
+            font-size: 20px;
+            font-family: 'Ropa Sans';
+            color: $grey;
+            line-height: 12px;
+            vertical-align: middle;
+            border-radius: 0;
+            pointer-events: auto;
+            flex-grow: 1;
+        }
+        .passwordIn{
+            margin: 0;
+            border: 3px solid $lightRed;
+            background: transparent;
+            padding: 10px 6px;
+            font-size: 20px;
+            font-family: 'Ropa Sans';
+            color: $grey;
+            line-height: 12px;
+            vertical-align: middle;
+            border-radius: 0;
+            pointer-events: auto;
+            flex-grow: 1;
+        }
+    }
+    input:focus {
+        outline:none;
+    }
+    .submit{
+        width: 100%;
+        display: inline-block;
+        background-color: $lightRed;
+        border-radius: 0;
+        border: 3px solid $lightRed;
+        font-size: 20px;
+        font-family: 'Ropa Sans';
+        color: $grey;
+        padding: 10px;
+        box-sizing: border-box;
+        vertical-align: middle;
+        cursor: pointer;
+        flex-grow: 2;
+        -webkit-transition: background-color .5s;
+        transition: background-color .5s;
+        -moz-transition: background-color .5s;
+    }
+    .submit:hover{
+        background-color: transparent;
+    }
+    .link{
+        font-family: 'Ropa Sans';
+        font-size: 23px;
+        text-decoration: none;
+        color: $lightRed;
+    }
+}
