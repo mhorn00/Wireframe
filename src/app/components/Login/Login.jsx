@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Login.scss';
 import { login } from '../../actions/login.actions';
 import { connect } from 'react-redux';
+import {switchScreen} from '../../actions/homecontainer.actions';
 
 class LoginTest extends React.Component {
     constructor(props) {
@@ -26,6 +27,9 @@ class LoginTest extends React.Component {
                     </div>
                     <input type="submit" className={styles.submit}/>
                 </form>
+                <button value="Register" onClick={e=>{
+                    this.props.dispatch(switchScreen("register"));
+                }}/>
             </div>
         )
     }

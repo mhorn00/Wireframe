@@ -23,9 +23,7 @@
     
 }
 .logo{
-    .svg{
-        fill: $lightRed;
-        width: 20%;
-        height: 20%;
+    svg{
+        position: relative;
     }
 }
