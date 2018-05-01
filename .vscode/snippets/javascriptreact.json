@@ -1,0 +1,16 @@
+{
+    "Generate React-Redux Class":{
+        "prefix":"rredux",
+        "body":[
+            "import React from 'react';",
+            "import {connect} from 'react-redux';\n",
+            "class ${TM_FILENAME_BASE} extends React.Component{",
+                "\tconstructor(props){",
+                    "\t\tsuper(props);\n\t}",
+                "\trender(){\t\n\n\t}\n}\n",
+            "function mapStateToProps(state){\n\treturn state;\n}\n",
+            "export default connect(mapStateToProps)(${TM_FILENAME_BASE});"
+                
+        ]
+    }
+}

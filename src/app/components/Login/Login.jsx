@@ -4,7 +4,7 @@ import { login } from '../../actions/login.actions';
 import { connect } from 'react-redux';
 import {switchScreen} from '../../actions/homecontainer.actions';
 
-class LoginTest extends React.Component {
+class Login extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -39,4 +39,4 @@ function mapStateToprops(state) {
     return state;
 }
 
-export default connect(mapStateToprops)(LoginTest);
+export default connect(mapStateToprops)(Login);

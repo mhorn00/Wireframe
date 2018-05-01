@@ -56,7 +56,7 @@ app.post('/upload', upload.single('file'), function (req, res) {
             if (info = jwt.verify(token, secret)) {
                 var file = req.file;
                 var uPath = req.body.path;
-                var tpath = path.resolve('./users/' + info.Username + '/'+ file.originalname);
+                var tpath = path.resolve('./users/' + info.username + '/'+ file.originalname);
                 GenericFile.remove({name: file.originalname, userRelativePath: uPath}).then(()=>{
                     var writeFile = fs.writeFile(tpath, file.buffer, (err, result) => {
                         if (err) throw err;
@@ -65,7 +65,7 @@ app.post('/upload', upload.single('file'), function (req, res) {
                             userRelativePath: uPath,
                             fileSize: file.size,
                             name: file.originalname,
-                            uploader: info.Username,
+                            uploader: info.username,
                             type: file.mimetype
                         });
                         mongoFile.save().then((e)=>res.send('Recived and saved'));
@@ -89,7 +89,7 @@ app.get('/filedl', function (req, res) {
     try{
         var info = jwt.verify(req.query.token, secret);
         //(req.query);
-        var _path = path.resolve(__dirname+`../../../users/${info.Username}/${req.query.rawName}`);
+        var _path = path.resolve(__dirname+`../../../users/${info.username}/${req.query.rawName}`);
         res.download(_path, function (err) {
             if (err) {
                 //(err);
