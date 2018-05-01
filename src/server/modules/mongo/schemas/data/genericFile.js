@@ -8,7 +8,11 @@ let File = new Schema({
     uploader: !String,
     name: !String,
     type: String,
-    uploadDate:!Date,
+    uploadDate:{
+        type: Date,
+        required: true,
+        default: Date.now()
+    },
     fileSize: Number,
     sharing_links: [String]
 })

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import FileElement from './FileElement.jsx';
 
 class FileList extends React.Component {
     constructor(props) {
@@ -11,7 +12,7 @@ class FileList extends React.Component {
             <div>
                 {this.props.files.map((f,key)=>{
                     // replace me with file/folder element
-                    return <p key={key}> {f.name}, {f.type}, {f.fileSize} </p>
+                    return <FileElement key={key} file={f}/>
                 })}
             </div>
         )

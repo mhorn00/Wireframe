@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux'
 
 class FileElement extends React.Component{
     constructor(props){
@@ -7,17 +6,16 @@ class FileElement extends React.Component{
     }
 
     render(){
-
+        var {file} = this.props;
         return(
             <div>
-                
+                <p>{file.name}</p>
+                <p>{file.uploadDate}</p>
+                <p>{file.type}</p>
+                <p>{file.fileSize}</p>
             </div>
         )
     }
 }
 
-function mapStateToProps(state){
-    return state;
-}
-
-export default connect(mapStateToProps)(FileElement)
+export default FileElement

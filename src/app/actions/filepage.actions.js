@@ -9,8 +9,7 @@ export default ACTIONS
 
 import {
     createApolloFetch
-} from 'apollo-fetch'
-;
+} from 'apollo-fetch';
 import {
     URL as IP
 } from '../const';
@@ -45,8 +44,10 @@ export function refreshItems(path, source) {
             rawName,
             name,
             type,
+            uploadDate
             fileSize
         }}`
+
         _fetch({
             query
         }).then(res => {
