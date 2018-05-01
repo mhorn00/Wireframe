@@ -10,7 +10,7 @@
         rawName: String,
         name: String,
         type: String,
-        # creationDate: Int,
+        uploadDate: String,
         fileSize: Int
     }
 

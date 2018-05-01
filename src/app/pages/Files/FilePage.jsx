@@ -6,8 +6,9 @@ import { refreshRequest, refreshItems } from '../../actions/filepage.actions';
 class FilePage extends React.Component {
     constructor(props) {
         super(props);
-        if (!this.props.files)
+        if (!this.props.files) {
             this.props.dispatch(refreshItems(this.props.dir));
+        }
     }
 
     render() {
