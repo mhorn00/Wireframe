@@ -35,10 +35,10 @@ export function login(username, password) {
     }
 }
 
-export function setLoginSuccess(isLoginSuccess) {
+export function setLoginSuccess(session) {
     return {
         type: SET_LOGIN_SUCCESS,
-        payload: isLoginSuccess,
+        payload: session,
         pending: false
     };
 }
