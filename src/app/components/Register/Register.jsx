@@ -20,17 +20,21 @@ class Register extends React.Component {
                     e.preventDefault();
                     this.props.dispatch(submit(username.value, email.value, password.value))
                 }} className={styles.from}>
-                    <input type="text" placeholder="Username" required="true" ref={node => username = node} onBlur={(e) => {
-                        this.props.dispatch(checkUsername(username.value))
-                    }} className={styles.username} />
-                    <input type="email" placeholder="Email" required="true" ref={node => email = node} onBlur={(e) => {
-                        this.props.dispatch(checkEmail(email.value))
-                    }} className={styles.email} />
-                    <input type="password" placeholder="Password" required="true" ref={node => password = node} className={styles.pass} />
-                    <input type="password" placeholder="Confirm Password" required="true" ref={node => confirm_password = node} onBlur={(e) => {
-                        if (confirm_password.value != password.value) alert('passwords must match')
-                    }} className={styles.passConf} />
-                    <input type="submit" value="Register!" className={styles.submit} />
+                    <div className={styles.sec}>
+                        <input type="email" placeholder="Email" required="true" ref={node => email = node} onBlur={(e) => {
+                            this.props.dispatch(checkEmail(email.value))
+                        }} className={styles.textbox} />
+                        <input type="password" placeholder="Password" required="true" ref={node => password = node} className={styles.textbox} />
+                    </div>
+                    <div className={styles.sec}>
+                        <input type="text" placeholder="Username" required="true" ref={node => username = node} onBlur={(e) => {
+                            this.props.dispatch(checkUsername(username.value))
+                        }} className={styles.textbox} />
+                        <input type="password" placeholder="Confirm Password" required="true" ref={node => confirm_password = node} onBlur={(e) => {
+                            if (confirm_password.value != password.value) alert('passwords must match')
+                        }} className={styles.textbox} />
+                    </div>
+                    <input type="submit" value="Register" className={styles.submit} />
                 </form>
                 <a onClick={e => {
                     this.props.dispatch(switchScreen("login"));
