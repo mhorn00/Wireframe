@@ -2,7 +2,7 @@ import actions from '../actions/filepage.actions';
 
 const defaults = {
     file_error: null,
-    files: [],
+    files: null,
     pending: false,
     dir: '/'
     //sort_param: null
