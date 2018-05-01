@@ -14,7 +14,7 @@ export default class Home extends React.Component {
                     <div className={styles.content}>
                         <div className={styles.container}>
                             <div className={styles.logo}>
-                                <svg path="logo/Wireframe-Full.svg" height="300" width="200" viewBox="0 0 300 200" preserveAspectRatio="none"/>
+                                <img src="Logo/Wireframe-Full.svg" height="300" width="400" viewBox="0 0 600 400" preserveAspectRatio="none"/>
                             </div>
                             <div className={styles.login}>
                                 <LoginContainer/>
