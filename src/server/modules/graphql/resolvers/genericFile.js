@@ -40,9 +40,7 @@ var resolvers = {
                 var info;
                 try {
                     info = jwt.verify(args.token, secret);
-                    // goes from this files directory to the root of the workspace directory
-                    //var gpath = _path.resolve(usersPath + info.Username + '/' + args.path);
-                    GenericFile.find({ uploader: info.Username, userRelativePath: args.path == '' ? '/' : args.path }).then((files) => {
+                    GenericFile.find({ uploader: info.username, userRelativePath: args.path == '' ? '/' : args.path }).then((files) => {
                         resolve(files);
                     })
                 }
@@ -76,10 +74,10 @@ var resolvers = {
                         absolutePath: null,
                         userRelativePath: args.path == 'undefined' ? '/' : args.path,
                         name: args.name,
-                        uploader: info.Username,
+                        uploader: info.username,
                         type: "dir"
                     })
-                    GenericFile.find({ userRelativePath: args.path, name: args.name, uploader: info.Username }).then((res) => {
+                    GenericFile.find({ userRelativePath: args.path, name: args.name, uploader: info.username }).then((res) => {
                         if (res != null) {
                             folder.name = folder.name + "_";
                         }
@@ -133,7 +131,7 @@ var resolvers = {
                 try{
                     var info = jwt.verify(args.token, secret);
                     console.log(args);
-                    GenericFile.findOne({uploader:info.Username, userRelativePath: args.path==''?'/':args.path, name: args.name}).then((file)=>{
+                    GenericFile.findOne({uploader:info.username, userRelativePath: args.path==''?'/':args.path, name: args.name}).then((file)=>{
                         console.log(file);
                         var url = uuid.v4(3);
                         file.sharing_links.push(url);
