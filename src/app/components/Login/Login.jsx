@@ -16,23 +16,24 @@ class Login extends React.Component {
             return (<p> Pending </p>)
         }
         return (
-            <div className={styles.loginContainer}>
+            <div className={styles.cont}>
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     this.props.dispatch(login(username.value, password.value))
-                }}>
-                    <div className={styles.cont}>
-                        <input type="text" placeholder="Username" ref={node => username = node} className={styles.user}/>
-                        <input type="password" placeholder="Password" ref={node => password = node} className={styles.pass} />
+                }} className={styles.form}>
+                    <div className={styles.input}>
+                        <input type="text" placeholder="Username" ref={node => username = node} className={styles.textbox}/>
+                        <input type="password" placeholder="Password" ref={node => password = node} className={styles.textbox} />
                     </div>
                     <input type="submit" className={styles.submit}/>
+                    
                 </form>
-                <button onClick={e=>{
-                    this.props.dispatch(switchScreen("register"));
-                }}> Register </button>
             </div>
         )
     }
+    /* <button onClick={e=>{
+                    this.props.dispatch(switchScreen("register"));
+                }}> Register </button> */
 }
 
 function mapStateToprops(state) {
