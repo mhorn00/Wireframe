@@ -28,12 +28,12 @@ class Login extends React.Component {
                     <input type="submit" className={styles.submit}/>
                     
                 </form>
+                <a onClick={e=>{
+                    this.props.dispatch(switchScreen("register"));
+                }} className={styles.register}> Register </a>
             </div>
         )
     }
-    /* <button onClick={e=>{
-                    this.props.dispatch(switchScreen("register"));
-                }}> Register </button> */
 }
 
 function mapStateToprops(state) {

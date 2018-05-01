@@ -3,18 +3,24 @@
 
 .cont{
     position: relative;
-    margin: auto;
-    display: flex;
-    flex-direction: row;
-    width: min-content;
     height:100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     .form{
         margin: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-between;
     }
     .input{
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        flex-direction: row;
+        justify-content: space-around;
         .textbox{
             margin: 0;
             border: 3px solid $lightRed;
@@ -30,4 +36,39 @@
             flex-grow: 1;
         }
     }   
+    input:focus {
+        outline:none;
+    }
+    .submit{
+        background-color: $lightRed;
+        border-radius: 0;
+        border: 3px solid $lightRed;
+        font-size: 20px;
+        font-family: 'Ropa Sans';
+        color: $grey;
+        padding: 10px;
+        box-sizing: border-box;
+        vertical-align: middle;
+        -webkit-transition: background-color .5s;
+        transition: background-color .5s;
+        -moz-transition: background-color .5s;
+    }
+    .submit:hover{
+        background-color: transparent;
+    }
+    .register{
+        margin: auto;
+        color: $lightRed;
+        font-size: 26px;
+        font-family: 'Ropa Sans';
+        padding: 5px;
+        box-sizing: border-box;
+        vertical-align: middle;
+        -webkit-transition: color 1s;
+        transition: color 1s;
+        -moz-transition: color 1s;
+    }
+    .register:hover{
+        color: $grey;
+    }
 }
