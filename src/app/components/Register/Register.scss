@@ -39,6 +39,9 @@
     pointer-events: auto;
     flex-grow: 1;
 }
+input:focus {
+    outline:none;
+}
 .submit{
     background-color: $lightRed;
     border-radius: 0;
@@ -72,4 +75,10 @@
 }
 .login:hover{
     color: $grey;
+}
+.error{
+    font-size: 20px;
+    font-family: 'Ropa Sans';
+    text-align: center;
+    color: $lightRed;
 }

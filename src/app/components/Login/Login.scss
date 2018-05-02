@@ -70,4 +70,10 @@
     .register:hover{
         color: $grey;
     }
+    .error{
+        font-size: 20px;
+        font-family: 'Ropa Sans';
+        text-align: center;
+        color: $lightRed;
+    }
 }

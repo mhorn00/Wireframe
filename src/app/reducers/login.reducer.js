@@ -9,7 +9,6 @@ const login = (state = { loggedIn: false, username: null, pending: false, error:
             return Object.assign({},state,{pending: true});
         }
         case actions.SET_LOGIN_ERROR: {
-            console.log(action);
             return Object.assign({}, state,{error:action.payload, pending:false})
         }
         case actions.SET_LOGIN_SUCCESS: {

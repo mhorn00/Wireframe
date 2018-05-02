@@ -11,6 +11,7 @@ const defaultState = {
     usernameValid: null,
     email: null,
     emailValid: null,
+    passwordsMatch: undefined,
     registerPending: false,
     registerResult: null
 }
@@ -19,8 +20,6 @@ const register = (state = defaultState, action) => {
     switch (action.type) {
         case actions.CHECK_ERROR:
             {
-                console.log(`this is action.error`)
-                console.log(action.error);
                 return Object.assign({}, state, {
                     checkError: {
                         source: action.source,
@@ -50,20 +49,25 @@ const register = (state = defaultState, action) => {
                     emailCheckPending: action.payload
                 })
             }
-        case actions.USERNAME_CHECK_PENDING:{
-            return Object.assign({},state,{
+        case actions.USERNAME_CHECK_PENDING: {
+            return Object.assign({}, state, {
                 usernameCheckPending: action.payload
             })
         }
-        case actions.REGISTER_REQUESET:{
-            return Object.assign({},state,{
+        case actions.REGISTER_REQUESET: {
+            return Object.assign({}, state, {
                 registerPending: true
             })
         }
-        case actions.REGISTER_RESULT:{
-            return Object.assign({},state,{
+        case actions.REGISTER_RESULT: {
+            return Object.assign({}, state, {
                 registerPending: false,
                 registerResult: action.payload
+            })
+        }
+        case actions.PASSWORDS_MATCH: {
+            return Object.assign({}, state, {
+                passwordsMatch: action.payload
             })
         }
         default:

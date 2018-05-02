@@ -3,7 +3,6 @@ import styles from './Home.scss';
 import MasterLayout from '../../layouts/MasterLayout/MasterLayout.jsx';
 import Particle from '../../components/Particle/Particle.jsx';
 import LoginContainer from '../../components/LoginContainer/LoginContainer.jsx';
-import ReactSVG from 'react-svg';
 
 export default class Home extends React.Component {
     render() {
