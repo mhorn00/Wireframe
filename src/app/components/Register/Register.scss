@@ -11,12 +11,19 @@
 .form{
     margin: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: nowrap;
 }
 .sec{
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+}
+.input{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-grow: 1;
 }
 .textbox{
     margin: 0;
@@ -45,6 +52,7 @@
     -webkit-transition: background-color .5s;
     transition: background-color .5s;
     -moz-transition: background-color .5s;
+    flex-grow: 1;
 
 }
 .submit:hover{
