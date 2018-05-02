@@ -1,12 +1,19 @@
 import actions from '../actions/filepage.actions';
+import {createApolloFetch} from 'apollo-fetch';
+import {URL} from '../const';
+
+var _fetch = createApolloFetch({uri:URL+'/graphql'});
+
 
 const defaults = {
     file_error: null,
     files: null,
     pending: false,
-    dir: '/'
+    dir: ['/']
     //sort_param: null
 }
+
+
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
@@ -31,8 +38,10 @@ const filepage = (state = defaults, action) => {
                 })
             }
         case actions.SET_DIR:{
+            console.log([...state.dir,action.path]);
             return Object.assign({},state,{
-                dir: actions.path
+                dir: [...state.dir,action.path],
+                files: null
             })
         }
         default:

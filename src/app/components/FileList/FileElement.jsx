@@ -1,4 +1,6 @@
 import React from 'react';
+import {addToDir} from '../../actions/filepage.actions';
+import {connect} from 'react-redux';
 
 class FileElement extends React.Component{
     constructor(props){
@@ -8,7 +10,9 @@ class FileElement extends React.Component{
     render(){
         var {file} = this.props;
         return(
-            <div>
+            <div onClick={e=>{
+                this.props.dispatch(addToDir(file.name+'/', file.userRelativePath))
+            }}>
                 <p>{file.name}</p>
                 <p>{file.uploadDate}</p>
                 <p>{file.type}</p>
@@ -18,4 +22,8 @@ class FileElement extends React.Component{
     }
 }
 
-export default FileElement
+function mapStateToProps(state){
+    return state.fileListReducer
+}
+
+export default connect(mapStateToProps)(FileElement);

@@ -34,24 +34,26 @@ export function refreshComplete(data) {
 
 export function setError(error) {
     type: ACTIONS.FILEPAGE_ERROR,
-    error
+        error
 }
 
 
 export function refreshItems(path, source) {
     return dispatch => {
-        var query = `query{files(path:"${path}" token:"${localStorage.getItem("token")}"){
+        var modPath = '';
+        path.forEach(t => modPath += t);
+        console.log(modPath);
+        var query = `query{files(path:"${modPath}" token:"${localStorage.getItem("token")}"){
             rawName,
             name,
             type,
             uploadDate
             fileSize
         }}`
-
         _fetch({
             query
         }).then(res => {
-            dispatch(refreshComplete(res.data.files))
+            dispatch(refreshComplete(path,res.data.files))
         }).catch(e => {
             dispatch(setError(e.toString()));
         })
@@ -59,9 +61,13 @@ export function refreshItems(path, source) {
     }
 }
 
-export function setDir(path) {
+export function addToDir(addToPath, path) {
+    return dispatch => {
+        var path = [...path,addToPath];
+        dispatch(refreshItems(path));
+    }
     return {
         type: ACTIONS.SET_DIR,
-        path
+        path: addToPath
     }
 }
