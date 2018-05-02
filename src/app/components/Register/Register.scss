@@ -71,7 +71,7 @@ input:focus {
     vertical-align: middle;
     -webkit-transition: color 1s;
     transition: color 1s;
-    -moz-transition: color 1s;
+    -moz-transition: color .25s;
 }
 .login:hover{
     color: $grey;

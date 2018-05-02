@@ -6,7 +6,7 @@ var _fetch = createApolloFetch({uri:URL+'/graphql'});
 
 
 const defaults = {
-    file_error: null,
+    error: null,
     files: null,
     pending: false,
     dir: ['/']
@@ -20,7 +20,7 @@ const filepage = (state = defaults, action) => {
         case actions.FILEPAGE_ERROR:
             {
                 return Object.assign({}, state, {
-                    file_error: action.error,
+                    error: action.error,
                     pending: false
                 });
             }
@@ -38,9 +38,9 @@ const filepage = (state = defaults, action) => {
                 })
             }
         case actions.SET_DIR:{
-            console.log([...state.dir,action.path]);
             return Object.assign({},state,{
-                dir: [...state.dir,action.path],
+                dir: action.payload,
+                error: null,
                 files: null
             })
         }

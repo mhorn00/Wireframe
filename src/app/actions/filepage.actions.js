@@ -33,41 +33,40 @@ export function refreshComplete(data) {
 }
 
 export function setError(error) {
-    type: ACTIONS.FILEPAGE_ERROR,
+    return {
+        type: ACTIONS.FILEPAGE_ERROR,
         error
+    }
 }
 
-
-export function refreshItems(path, source) {
-    return dispatch => {
-        var modPath = '';
-        path.forEach(t => modPath += t);
-        console.log(modPath);
-        var query = `query{files(path:"${modPath}" token:"${localStorage.getItem("token")}"){
+export function resetList(path) {
+    var pathString = '';
+    path.forEach(part => pathString += part);
+    var query = `query{files(path:"${pathString}" token:"${localStorage.getItem("token")}"){
             rawName,
             name,
             type,
-            uploadDate
+            uploadDate,
             fileSize
-        }}`
-        _fetch({
-            query
-        }).then(res => {
-            dispatch(refreshComplete(path,res.data.files))
-        }).catch(e => {
-            dispatch(setError(e.toString()));
+        }
+    }`
+    return dispatch => {
+        dispatch(refreshRequest('resetList'));
+        _fetch({ query }).then(res => {
+            console.log(res);
+            if (res.data && res.data.files) {
+                dispatch(refreshComplete(res.data.files));
+            }
+            else {
+                dispatch(setError(res.errors));
+            }
         })
-        dispatch(refreshRequest(source));
     }
 }
 
-export function addToDir(addToPath, path) {
-    return dispatch => {
-        var path = [...path,addToPath];
-        dispatch(refreshItems(path));
-    }
+export function setDir(path) {
     return {
         type: ACTIONS.SET_DIR,
-        path: addToPath
+        payload: path
     }
 }

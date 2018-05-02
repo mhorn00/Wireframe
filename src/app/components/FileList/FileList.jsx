@@ -10,6 +10,7 @@ class FileList extends React.Component {
     render() {
         return (
             <div>
+                {this.props.dir.length<=1?null:<FileElement file={{type:'\'', name:'..'}}/>}
                 {this.props.files.map((f,key)=>{
                     // replace me with file/folder element
                     return <FileElement key={key} file={f}/>

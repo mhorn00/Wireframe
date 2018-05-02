@@ -90,7 +90,7 @@ export function submit(username, email, password) {
         var query = `mutation{register(email:"${email}" username:"${username}" password:"${password}")}`
         _fetch({ query }).then(res => {
             dispatch(registerResult(res.data.register))
-        }).catch(dispatch(registerResult(false)));
+        }).catch(e=>{if(e)dispatch(registerResult(false))});
     }
 }
 
