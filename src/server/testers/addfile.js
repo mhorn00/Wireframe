@@ -5,7 +5,7 @@ var GenericFile = require('../modules/mongo/schemas/data/genericFile');
 var file = new GenericFile({
     userRelativePath: '/',
     rawName: 'test.jsx',
-    uploader: 'a',
+    uploader: 'h',
     name: 'test'
 })
 

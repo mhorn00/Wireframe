@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import FileList from '../../components/FileList/FileList.jsx';
+import FileList from '../../components/FileList/FileList/FileList.jsx';
 import { resetList } from '../../actions/filepage.actions';
 
 class FilePage extends React.Component {
