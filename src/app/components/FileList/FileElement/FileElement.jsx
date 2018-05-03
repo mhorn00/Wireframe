@@ -10,7 +10,7 @@ class FileElement extends React.Component {
     render() {
         var { file, dispatch } = this.props;
         return (
-            <div onClick={e => {
+            <tr onClick={e => {
                 switch (file.type) {
                     case 'dir': {
                         var newPath = [...this.props.dir, file.name + '/'];
@@ -30,11 +30,11 @@ class FileElement extends React.Component {
                 }
 
             }}>
-                <p>{file.name}</p>
-                <p>{file.uploadDate}</p>
-                <p>{file.type}</p>
-                <p>{file.fileSize}</p>
-            </div>
+                <th>{file.name}</th>
+                <th>{file.uploadDate}</th>
+                <th>{file.type}</th>
+                <th>{file.fileSize}</th>
+            </tr>
         )
     }
 }
