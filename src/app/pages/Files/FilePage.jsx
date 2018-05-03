@@ -13,7 +13,6 @@ class FilePage extends React.Component {
             this.props.dispatch(resetList(this.props.dir));
         }
         if(this.props.error){
-            console.log(this.props.error);
             return(<p> I HAVE ERROR</p>)
         }
         return !this.props.pending && this.props.files ? <FileList /> : <p> i am loading ... </p>;

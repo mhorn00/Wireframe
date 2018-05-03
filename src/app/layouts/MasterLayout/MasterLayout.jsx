@@ -17,10 +17,14 @@ class MasterLayout extends React.Component {
     }
 
     render() {
-        if(this.props.authenticated===false){
+        if(this.props.authenticated===false && this.props.authenticated === null){
+            console.log('im true baby!');
             localStorage.setItem('token','');
             localStorage.setItem('username','');
             return <Redirect to='/'/>
+        }
+        else{
+            console.log(this.props)
         }
         return (
             <div>
