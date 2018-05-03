@@ -5,10 +5,10 @@ import loginReducer from './reducers/login.reducer';
 import registerReducer from './reducers/register.reducer';
 import homecontainerReducer from './reducers/homecontainer.reducer';
 import fileListReducer from './reducers/filelist.reducer';
-
+import userReducer from './reducers/user.reducer';
 const reducers = combineReducers({
     //Add reducers here
-    loginReducer, registerReducer, homecontainerReducer, fileListReducer
+    loginReducer, registerReducer, homecontainerReducer, fileListReducer, userReducer
 })
 
 const store = createStore(reducers, composeWithDevTools(), applyMiddleware(thunk));

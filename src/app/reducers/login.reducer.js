@@ -1,6 +1,6 @@
 import actions from '../actions/login.actions';
 
-const login = (state = { loggedIn: false, username: null, pending: false, error: null, jwt: '' }, action) => {
+const login = (state = { username: localStorage.getItem('username')?localStorage.getItem('username'):null, pending: false, error: null, jwt: localStorage.getItem('token')?localStorage.getItem('token'):'' }, action) => {
     switch(action.type){
         case actions.SET_LOGIN_PENDING: {
             return Object.assign({},state,{pending: action.payload})

@@ -1,8 +1,27 @@
 import React from 'react';
 import styles from './MasterLayout.scss';
+import {connect} from 'react-redux';
+import {authenticate} from '../../actions/user.actions';
+import {Redirect} from 'react-router-dom';
 
-export default class MasterLayout extends React.Component {
+class MasterLayout extends React.Component {
+
+    constructor(props){
+        super(props);
+    }
+
+    componentWillMount(){  
+        if(this.props.jwt && this.props.authenticated===null){
+            this.props.dispatch(authenticate(this.props.jwt));
+        }
+    }
+
     render() {
+        if(this.props.authenticated===false){
+            localStorage.setItem('token','');
+            localStorage.setItem('username','');
+            return <Redirect to='/'/>
+        }
         return (
             <div>
                 <header>
@@ -25,3 +44,9 @@ export default class MasterLayout extends React.Component {
         )
     }
 }
+
+function mapStateToProps(state){
+    return state.userReducer;
+}
+
+export default connect(mapStateToProps)(MasterLayout);

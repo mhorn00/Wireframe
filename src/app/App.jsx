@@ -12,7 +12,7 @@ export default class App extends React.Component {
             <Provider store={store}>
                 <BrowserRouter>
                     <Switch>
-                        <Route path='/user/:user/' component={User}/>
+                        <Route path='/profile' component={User}/>
                         <Route path='/files' component={FilePage}/>
                         <Route path ='/*' component={Home}/>
                     </Switch>

@@ -3,6 +3,7 @@ import styles from './Login.scss';
 import { login } from '../../actions/login.actions';
 import { connect } from 'react-redux';
 import { switchScreen } from '../../actions/homecontainer.actions';
+import { Redirect } from 'react-router-dom'
 
 class Login extends React.Component {
     constructor(props) {
@@ -12,17 +13,25 @@ class Login extends React.Component {
         let username;
         let password;
         let err;
-        if (this.props.error) {
+        if(this.props.userReducer.jwt){
+            return <Redirect to='/profile'/>
+        }
+        if (this.props.loginReducer.error) {
             if (this.props.error == "ERR_INVALIDUSER") {
-                err = <p style={{margin:0}}>Invalid Username</p>;
+                err = <p style={{ margin: 0 }}>Invalid Username</p>;
             } else if (this.props.error == "ERR_UNAPPROVED") {
-                err = <p style={{margin:0}}>Account not approved</p>;
+                err = <p style={{ margin: 0 }}>Account not approved</p>;
             } else if (this.props.error == "ERR_WRONGPASS") {
-                err = <p style={{margin:0}}>Invalid Password</p>;
+                err = <p style={{ margin: 0 }}>Invalid Password</p>;
             }
         }
+        else if (this.props.loginReducer.jwt) {
+            localStorage.setItem('token', this.props.loginReducer.jwt);
+            localStorage.setItem('username', this.props.loginReducer.username);
+            return (<Redirect to='/profile' />)
+        }
         if (this.props.pending) {
-            return (<img src='Loading/test.png'/>)
+            return (<img src='Loading/test.png' />)
         }
         return (
             <div className={styles.cont}>
@@ -49,7 +58,7 @@ class Login extends React.Component {
 }
 
 function mapStateToprops(state) {
-    return state.loginReducer;
+    return { userReducer: state.userReducer, loginReducer: state.loginReducer }
 }
 
 export default connect(mapStateToprops)(Login);
