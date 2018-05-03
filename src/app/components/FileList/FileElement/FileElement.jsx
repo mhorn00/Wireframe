@@ -1,5 +1,5 @@
 import React from 'react';
-import { setDir, refreshRequest } from '../../actions/filepage.actions';
+import { setDir, refreshRequest } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 
 class FileElement extends React.Component {

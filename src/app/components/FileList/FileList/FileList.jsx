@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import FileElement from './FileElement.jsx';
+import FileElement from '../FileElement/FileElement.jsx';
 
 class FileList extends React.Component {
     constructor(props) {

@@ -8,7 +8,7 @@ export default class MasterLayout extends React.Component {
                 <header>
                     <nav className={styles.header}>
                         <div className={styles.logo}>
-                            <img src='Logo\Wireframe-Letter.svg' width='100' height='60'/>
+                            <img src='/Logo\Wireframe-Letter.svg' width='100' height='60'/>
                         </div>
                         <div className={styles.links}>
                             
