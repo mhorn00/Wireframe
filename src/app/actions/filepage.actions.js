@@ -53,7 +53,6 @@ export function resetList(path) {
     return dispatch => {
         dispatch(refreshRequest('resetList'));
         _fetch({ query }).then(res => {
-            console.log(res);
             if (res.data && res.data.files) {
                 dispatch(refreshComplete(res.data.files));
             }

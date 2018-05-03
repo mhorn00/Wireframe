@@ -8,7 +8,7 @@ export default { SET_LOGIN_REQUEST, SET_LOGIN_SUCCESS, SET_LOGIN_PENDING, SET_LO
 
 import { createApolloFetch } from 'apollo-fetch';
 import { URL } from '../const';
-console.log(URL + '/graphql');
+
 var _fetch = createApolloFetch({uri:`${URL}/graphql`});
 
 export function setLoginPending(isLoginPending) {
