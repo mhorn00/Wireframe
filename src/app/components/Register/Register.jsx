@@ -29,8 +29,8 @@ class Register extends React.Component {
                 </div>
                 <form onSubmit={(e) => {
                     e.preventDefault();
-                    console.log('submitted');
-                    this.props.dispatch(submit(username.value, email.value, password.value))
+                    this.props.dispatch(submit(username.value, email.value, password.value));
+                    this.props.dispatch(switchScreen("login"));
                 }} className={styles.form}>
                     <div className={styles.input}>
                         <div className={styles.sec}>

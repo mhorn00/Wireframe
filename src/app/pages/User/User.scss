@@ -1,0 +1,17 @@
+@import "../../palette.scss";
+
+.cont{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.sidebar{
+    flex-grow: 1;
+    background-color: $black1;
+}
+.content{
+    flex-grow: 5;
+    background-color: $black2;
+}

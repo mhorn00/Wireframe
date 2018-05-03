@@ -22,7 +22,7 @@ class Login extends React.Component {
             }
         }
         if (this.props.pending) {
-            return (<p> Pending </p>)//ADD LOADING ANIMATION
+            return (<img src='Loading/test.png'/>)
         }
         return (
             <div className={styles.cont}>
