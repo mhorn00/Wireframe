@@ -13,7 +13,7 @@ class FileElement extends React.Component {
 
     handleClick(e, data) {
         //Dispatch to make new folder
-        console.log(data.element)
+        console.log(data.type,data.element)
     }
 
     getSize(size) {
@@ -35,41 +35,34 @@ class FileElement extends React.Component {
         let icon = "far fa-file";
         let size = this.getSize(file.fileSize);
         return (
-            <tr onClick={e => {
-                switch (file.type) {
-                    case 'dir': {
-                        var newPath = [...this.props.dir, file.name + '/'];
-                        dispatch(setDir(newPath));
-                        dispatch(refreshRequest(newPath, 'setDir'));
-                        break;
+            <ContextMenuTrigger id="element" attributes={{ className: styles.trigger }} collect={()=>{
+                return this.props;
+            }}>
+                <div onClick={e => {
+                    switch (file.type) {
+                        case 'dir': {
+                            var newPath = [...this.props.dir, file.name + '/'];
+                            dispatch(setDir(newPath));
+                            dispatch(refreshRequest(newPath, 'setDir'));
+                            break;
+                        }
+                        case '\'': {
+                            var newPath = this.props.dir.splice(0, this.props.dir.length - 1);
+                            dispatch(setDir(newPath));
+                            dispatch(refreshRequest(newPath, 'setDir'));
+                            break;
+                        }
+                        default: {
+                            return;
+                        }
                     }
-                    case '\'': {
-                        var newPath = this.props.dir.splice(0, this.props.dir.length - 1);
-                        dispatch(setDir(newPath));
-                        dispatch(refreshRequest(newPath, 'setDir'));
-                        break;
-                    }
-                    default: {
-                        return;
-                    }
-                }
-            }} className={styles.file}>
-                <td className={styles.icon}><ContextMenuTrigger id='element'><i className={icon} /></ContextMenuTrigger></td>
-                <td className={styles.text}><ContextMenuTrigger id='element'>{file.name}</ContextMenuTrigger></td>
-                <td className={styles.text}><ContextMenuTrigger id='element'>{size}</ContextMenuTrigger></td>
-                <td className={styles.text}><ContextMenuTrigger id='element'>{file.type}</ContextMenuTrigger></td>
-                <ContextMenu id="element" className={styles.menu}>
-                <MenuItem data={{ type: 'rename', element: this.props.key }} onClick={this.handleClick} className={styles.item}>
-                    <p className={styles.text}>Rename</p>
-                </MenuItem>
-                <MenuItem data={{ type: 'share' }} onClick={this.handleClick}>
-                    <p className={styles.text}>Share</p>
-                </MenuItem>
-                <MenuItem data={{ type: 'share' }} onClick={this.handleClick}>
-                    <p className={styles.text}>Delete</p>
-                </MenuItem>
-            </ContextMenu>
-            </tr>
+                }} className={styles.file}>
+                    <div className={styles.icon}><i className={icon} /></div>
+                    <div className={styles.text}>{file.name}</div>
+                    <div className={styles.text}>{size}</div>
+                    <div className={styles.text}>{file.type}</div>
+                </div>
+            </ContextMenuTrigger>
         )
     }
 }

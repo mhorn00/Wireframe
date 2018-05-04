@@ -13,6 +13,7 @@ class FileList extends React.Component {
 
     handleClick(e, data) {
         //Dispatch to make new folder
+        console.log(data.type,data.file._id)
     }
 
     componentWillMount() {
@@ -25,25 +26,21 @@ class FileList extends React.Component {
         }
         return (
             <div className={styles.cont}>
-                <ContextMenuTrigger id="filelist">
+                <ContextMenuTrigger id="filelist" >
                     <div className={styles.content}>
                         <div className={styles.bread}>
                         </div>
-
-                        <table className={styles.files}>
-                            <tbody>
-                                <tr className={styles.header}>
-                                    <th className={styles.icon}></th>
-                                    <th className={styles.info}>Name</th>
-                                    <th className={styles.info}>Size</th>
-                                    <th className={styles.info}>Type</th>
-                                </tr>
-                                {this.props.files != null ? this.props.files.map((f, key) => {
-                                    return (<FileElement key={key} file={f} />)
-                                }) : <tr></tr>}
-
-                            </tbody>
-                        </table>
+                        <div className={styles.files}>
+                            <div className={styles.header}>
+                                <div className={styles.icon}></div>
+                                <div className={styles.info}>Name</div>
+                                <div className={styles.info}>Size</div>
+                                <div className={styles.info}>Type</div>
+                            </div>
+                            {this.props.files != null ? this.props.files.map((f, key) => {
+                                return (<FileElement key={key} file={f} />)
+                            }) : <div></div>}
+                        </div>
                     </div>
                 </ContextMenuTrigger>
 
@@ -52,12 +49,20 @@ class FileList extends React.Component {
                         <p className={styles.text}>New Folder</p>
                     </MenuItem>
                 </ContextMenu>
+                <ContextMenu id="element" className={styles.menu}>
+                        <MenuItem data={{ type: 'rename', element: this.props.key }} onClick={this.handleClick} className={styles.item}>
+                            <p className={styles.text}>Rename</p>
+                        </MenuItem>
+                        <MenuItem data={{ type: 'delete', element: this.props.key }} onClick={this.handleClick} className={styles.item}>
+                            <p className={styles.text}>Delete</p>
+                        </MenuItem>
+                        <MenuItem data={{ type: 'share', element: this.props.key }} onClick={this.handleClick} className={styles.item}>
+                            <p className={styles.text}>Share</p>
+                        </MenuItem>
+                    </ContextMenu>
             </div>
         )
     }
-    /*  {this.props.dir.length<=1?null:<FileElement file={{type:'\'', name:'..'}}/>}
-
-                 */
 }
 
 function mapStateToProps(state) {

@@ -9,12 +9,14 @@
     height: 100%;
 }
 .files{
+    display: table;
     width: 100%;
     padding-left: 10px;
     border-collapse: collapse;
     table-layout: auto;
 }
 .header{
+    display: table-row;
     background-color: $black2;
     font-family: 'Ropa Sans';
     font-size: 35px;
@@ -22,14 +24,13 @@
     text-align: left;
 }
 .icon{
+    display: table-cell;
     padding-left: 5px;
     white-space: pre;
     text-align: center;
 }
-.trigger{
-    display: table-row
-}
 .info{
+    display: table-cell;
     width: 33%;
 }
 .bread{

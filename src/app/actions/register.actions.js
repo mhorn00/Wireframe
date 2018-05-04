@@ -32,8 +32,7 @@ export function checkEmail(email) {
 export function checkUsername(username) {
     return dispatch => {
         var query = `query{userExists(username:"${username}")}`
-        _fetch({ query }).then(res => { dispatch(userChecked(username, !res.data.userExists)); console.log(res) }).catch(e => {
-            console.log(e);
+        _fetch({ query }).then(res => { dispatch(userChecked(username, !res.data.userExists));}).catch(e => {
             dispatch(checkError(`USERNAME`, e.message))
         })
         dispatch(usernameCheckPending(true));

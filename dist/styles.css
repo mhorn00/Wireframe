@@ -5,18 +5,36 @@
   z-index: 20; }
 
 .Home__container___1yW6O {
+  height: 100%;
   margin: auto;
+  position: relative;
   width: min-content;
   width: -moz-min-content;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  min-width: 90%;
   font-size: 150px;
   color: #902727;
   overflow: hidden; }
+
+.Home__login___3d5GV {
+  position: relative;
+  width: 35%;
+  height: min-content;
+  height: -moz-min-content;
+  margin: 0;
+  float: right;
+  top: 40%; }
+
+.Home__logo___LZVlg {
+  position: relative;
+  float: left;
+  top: 15%; }
 body {
   margin: 0;
-  background-color: #e6e6e6; }
+  background-color: #e6e6e6;
+  overflow: hidden; }
+
+.MasterLayout__logo___2Yfto {
+  padding: 7px 10px 0px 10px; }
 
 .MasterLayout__header___3uST2 {
   position: relative;
@@ -45,3 +63,237 @@ body {
   width: 100%;
   height: 100%; }
 
+.Login__cont___1p3gk {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around; }
+  .Login__cont___1p3gk .Login__form___1dAUn {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between; }
+  .Login__cont___1p3gk .Login__input___18QYr {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .Login__cont___1p3gk .Login__input___18QYr .Login__textbox___O2oof {
+      margin: 0;
+      border: 3px solid #bc2727;
+      background: transparent;
+      padding: 10px 6px;
+      font-size: 20px;
+      font-family: 'Ropa Sans';
+      color: #adadad;
+      line-height: 12px;
+      vertical-align: middle;
+      border-radius: 0;
+      pointer-events: auto;
+      flex-grow: 1; }
+  .Login__cont___1p3gk input:focus {
+    outline: none; }
+  .Login__cont___1p3gk .Login__submit___-_yFE {
+    background-color: #bc2727;
+    border-radius: 0;
+    border: 3px solid #bc2727;
+    font-size: 20px;
+    font-family: 'Ropa Sans';
+    color: #adadad;
+    padding: 10px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    -webkit-transition: background-color .5s;
+    transition: background-color .5s;
+    -moz-transition: background-color .5s; }
+  .Login__cont___1p3gk .Login__submit___-_yFE:hover {
+    background-color: transparent; }
+  .Login__cont___1p3gk .Login__register___YM3E_ {
+    margin: auto;
+    color: #bc2727;
+    font-size: 26px;
+    font-family: 'Ropa Sans';
+    padding: 5px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    -webkit-transition: color 1s;
+    transition: color 1s;
+    -moz-transition: color 1s; }
+  .Login__cont___1p3gk .Login__register___YM3E_:hover {
+    color: #adadad; }
+  .Login__cont___1p3gk .Login__error___3wKbf {
+    font-size: 20px;
+    font-family: 'Ropa Sans';
+    text-align: center;
+    color: #bc2727; }
+.Register__cont___1t5t5 {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around; }
+
+.Register__form___PK1kN {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap; }
+
+.Register__sec___US2Kn {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1; }
+
+.Register__input___15Zgl {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex-grow: 1; }
+
+.Register__textbox___3fxE4 {
+  margin: 0;
+  border: 3px solid #bc2727;
+  background: transparent;
+  padding: 10px 6px;
+  font-size: 20px;
+  font-family: 'Ropa Sans';
+  color: #adadad;
+  line-height: 12px;
+  vertical-align: middle;
+  border-radius: 0;
+  pointer-events: auto;
+  flex-grow: 1; }
+
+input:focus {
+  outline: none; }
+
+.Register__submit___1tnZC {
+  background-color: #bc2727;
+  border-radius: 0;
+  border: 3px solid #bc2727;
+  font-size: 20px;
+  font-family: 'Ropa Sans';
+  color: #adadad;
+  padding: 10px;
+  box-sizing: border-box;
+  vertical-align: middle;
+  -webkit-transition: background-color .5s;
+  transition: background-color .5s;
+  -moz-transition: background-color .5s;
+  flex-grow: 1; }
+
+.Register__submit___1tnZC:hover {
+  background-color: transparent; }
+
+.Register__login___3D71d {
+  margin: auto;
+  color: #bc2727;
+  font-size: 26px;
+  font-family: 'Ropa Sans';
+  padding: 5px;
+  box-sizing: border-box;
+  vertical-align: middle;
+  -webkit-transition: color 1s;
+  transition: color 1s;
+  -moz-transition: color .25s; }
+
+.Register__login___3D71d:hover {
+  color: #adadad; }
+
+.Register__error___2QZpE {
+  font-size: 20px;
+  font-family: 'Ropa Sans';
+  text-align: center;
+  color: #bc2727; }
+.FileElement__file___O8GR8 {
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
+  border-bottom-color: #bc2727;
+  display: table-row; }
+
+.FileElement__icon___3Fem0 {
+  font-size: 40px;
+  padding: 0px 10px 0px 5px;
+  display: table-cell; }
+
+.FileElement__text___3FNtP {
+  font-family: 'Ropa Sans';
+  font-size: 25px;
+  color: #bc2727;
+  padding: 10px 0px 10px 0px;
+  display: table-cell; }
+
+.FileElement__trigger___2OJS6 {
+  display: table-row-group; }
+.FileList__cont___1JsWU {
+  width: 100%;
+  height: 100%; }
+
+.FileList__content___3p_1i {
+  width: 100%;
+  height: 100%; }
+
+.FileList__files___3hUNg {
+  display: table;
+  width: 100%;
+  padding-left: 10px;
+  border-collapse: collapse;
+  table-layout: auto; }
+
+.FileList__header___9fYej {
+  display: table-row;
+  background-color: #414141;
+  font-family: 'Ropa Sans';
+  font-size: 35px;
+  color: #bc2727;
+  text-align: left; }
+
+.FileList__icon___2Prva {
+  display: table-cell;
+  padding-left: 5px;
+  white-space: pre;
+  text-align: center; }
+
+.FileList__info___ViZtj {
+  display: table-cell;
+  width: 33%; }
+
+.FileList__bread___QYJH7 {
+  height: 0%; }
+
+.FileList__menu___1klEx {
+  background-color: #2f2f2f;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #bc2727;
+  padding: 3px 5px 5px 5px; }
+
+.FileList__item___1lTFy {
+  margin: 5px 5px 5px 5xp; }
+
+.FileList__text___2CbvM {
+  font-family: 'Ropa Sans';
+  color: #bc2727;
+  margin: 0;
+  font-size: 24px; }
+.User__cont___1OZko {
+  width: 100%;
+  height: 100%; }
+
+.User__sidebar___1oiGo {
+  position: relative;
+  background-color: #2f2f2f;
+  float: left;
+  width: 15%;
+  height: 100%; }
+
+.User__content___1niZq {
+  position: relative;
+  background-color: #414141;
+  float: right;
+  width: 85%; }

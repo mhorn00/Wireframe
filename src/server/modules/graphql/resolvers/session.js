@@ -11,9 +11,6 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 try {
                     var decoded = jwt.verify(args.token, secret);
-                    if (decoded.username == 'undefined') {
-                        console.log('what?');
-                    }
                     resolve(true);
                 } catch (e) {
                     resolve(false);

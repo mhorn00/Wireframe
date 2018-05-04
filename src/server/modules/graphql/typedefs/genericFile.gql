@@ -5,7 +5,7 @@
     }
 
     type File {
-        # _id: ID!,
+        _id: ID!,
         userRelativePath: String!,
         rawName: String,
         name: String,

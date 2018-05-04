@@ -12,9 +12,7 @@ var uuid = require('uuid');
 
 async function removeSubitems(username, path, name) {
     // items in this folder path should all removed - all folders within it should have theirs removed also
-    console.log(path + name + '/');
     GenericFile.find({ uploader: username, userRelativePath: path + name }).then((files) => {
-        console.log(files)
         files.forEach((e) => {
             if (e.type == 'dir') {
                 removeSubitems(`${e.userRelativePath}/${e.name}/`).then(() => e.remove());
@@ -81,7 +79,7 @@ var resolvers = {
                         if (res != null) {
                             folder.name = folder.name + "_";
                         }
-                        folder.save().then((e) => { console.log(e); resolve(true) }).catch((e) => resolve(false));
+                        folder.save().then((e) => {resolve(true) }).catch((e) => resolve(false));
                     })
 
                 }
@@ -130,9 +128,7 @@ var resolvers = {
             return await new Promise((resolve,reject)=>{
                 try{
                     var info = jwt.verify(args.token, secret);
-                    console.log(args);
                     GenericFile.findOne({uploader:info.username, userRelativePath: args.path==''?'/':args.path, name: args.name}).then((file)=>{
-                        console.log(file);
                         var url = uuid.v4(3);
                         file.sharing_links.push(url);
                         file.save().then((res)=>resolve(url));

@@ -43,6 +43,7 @@ export function resetList(path) {
     var pathString = '';
     path.forEach(part => pathString += part);
     var query = `query{files(path:"${pathString}" token:"${localStorage.getItem("token")}"){
+            _id,
             rawName,
             name,
             type,
