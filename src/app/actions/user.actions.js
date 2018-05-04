@@ -8,43 +8,50 @@ const ACTIONS = {
 
 export default ACTIONS;
 
-import {createApolloFetch} from 'apollo-fetch';
-import {URL as IP} from '../const';
+import { createApolloFetch } from 'apollo-fetch';
+import { URL as IP } from '../const';
 
-var _fetch = createApolloFetch({uri:IP+'/graphql'})
+var _fetch = createApolloFetch({ uri: IP + '/graphql' })
 
-export function authenticate(token){
-    return dispatch=>{
+export function authenticate(token) {
+    return dispatch => {
         var query = `query{authenticate(token:"${token}")}`
-        _fetch({query}).then(res=>{
-            dispatch(setAuthRes(res.data.authenticate));
+        _fetch({ query }).then(res => {
+            if (res.errors) {
+                console.log('errors')
+                dispatch(setAuthRes(false));
+                localStorage.setItem('token', '');
+            } else {
+                console.log(res);
+                dispatch(setAuthRes(res.data.authenticate));
+            }
         })
         dispatch(setAuthPending());
     }
 }
 
-export function setToken(token){
+export function setToken(token) {
     return {
         type: ACTIONS.SET_TOKEN,
         payload: token
     }
 }
 
-export function setUsername(username){
+export function setUsername(username) {
     return {
         type: ACTIONS.SET_USERNAME,
         payload: username
     }
 }
 
-function setAuthPending(){
+function setAuthPending() {
     return {
         type: ACTIONS.AUTH_PENDING
     }
 }
 
-function setAuthRes(isUserAuthenticated){
-    return{
+function setAuthRes(isUserAuthenticated) {
+    return {
         type: ACTIONS.AUTH_RES,
         payload: isUserAuthenticated
     }

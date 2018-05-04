@@ -8,12 +8,17 @@ import { resetList } from '../../../actions/filepage.actions';
 class FileList extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleClick = this.fileElementClick.bind(this);
+        this.emptyAreaClick = this.emptyAreaClick.bind(this);
     }
 
-    handleClick(e, data) {
+    fileElementClick(e, data) {
         //Dispatch to make new folder
         console.log(data.type,data.file._id)
+    }
+
+    emptyAreaClick(e, data){
+
     }
 
     componentWillMount() {
@@ -45,18 +50,18 @@ class FileList extends React.Component {
                 </ContextMenuTrigger>
 
                 <ContextMenu id="filelist" className={styles.menu}>
-                    <MenuItem data={{ type: 'newFolder' }} onClick={this.handleClick} className={styles.item}>
+                    <MenuItem data={{ type: 'newFolder' }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>New Folder</p>
                     </MenuItem>
                 </ContextMenu>
                 <ContextMenu id="element" className={styles.menu}>
-                        <MenuItem data={{ type: 'rename', element: this.props.key }} onClick={this.handleClick} className={styles.item}>
+                        <MenuItem data={{ type: 'rename', element: this.props.key }} onClick={this.emptyAreaClick} className={styles.item}>
                             <p className={styles.text}>Rename</p>
                         </MenuItem>
-                        <MenuItem data={{ type: 'delete', element: this.props.key }} onClick={this.handleClick} className={styles.item}>
+                        <MenuItem data={{ type: 'delete', element: this.props.key }} onClick={this.emptyAreaClick} className={styles.item}>
                             <p className={styles.text}>Delete</p>
                         </MenuItem>
-                        <MenuItem data={{ type: 'share', element: this.props.key }} onClick={this.handleClick} className={styles.item}>
+                        <MenuItem data={{ type: 'share', element: this.props.key }} onClick={this.emptyAreaClick} className={styles.item}>
                             <p className={styles.text}>Share</p>
                         </MenuItem>
                     </ContextMenu>
