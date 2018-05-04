@@ -6,7 +6,9 @@ var file = new GenericFile({
     userRelativePath: '/',
     rawName: 'test.jsx',
     uploader: 'h',
-    name: 'test'
+    name: 'test',
+    type: 'asm',
+    fileSize: 102020130
 })
 
 file.save().then(res=>console.log(res));

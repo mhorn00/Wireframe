@@ -30,9 +30,10 @@ class FileList extends React.Component {
                         <table className={styles.files}>
                             <tbody>
                             <tr className={styles.header}>
-                                <th>Name</th>
-                                <th>Size</th>
-                                <th>Type</th>
+                                <th className={styles.icon}></th>
+                                <th className={styles.info}>Name</th>
+                                <th className={styles.info}>Size</th>
+                                <th className={styles.info}>Type</th>
                             </tr>
                             {this.props.files.map((f, key) => {
                                 return <FileElement key={key} file={f} />

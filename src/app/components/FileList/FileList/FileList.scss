@@ -10,14 +10,21 @@
 }
 .files{
     width: 100%;
-    padding-left: 10px; 
+    padding-left: 10px;
+    border-collapse: collapse;
+    table-layout: auto;
 }
 .header{
     background-color: $black2;
     font-family: 'Ropa Sans';
-    font-size: 25px;
+    font-size: 35px;
     color: $lightRed;
     text-align: left;
+    .icon{
+        white-space: pre;
+        width: 2%;
+        text-align: center;
+    }
 }
 //===Context Menu Styles===
 .menu{
@@ -34,4 +41,5 @@
     font-family: 'Ropa Sans';
     color: $lightRed;
     margin:0;
+    font-size: 24px;
 }

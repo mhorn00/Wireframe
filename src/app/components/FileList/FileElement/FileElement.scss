@@ -1,1 +1,15 @@
-@import "../../palette.scss";
+@import '../../../palette.scss';
+
+.file{
+     border-bottom-width: 3px;
+     border-bottom-style: solid;
+     border-bottom-color: $lightRed;
+}
+.icon{
+    font-size: 35px
+}
+.text{
+    font-family: 'Ropa Sans';
+    font-size: 25px;
+    color: $lightRed;
+}
