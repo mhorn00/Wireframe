@@ -7,24 +7,22 @@
     z-index: 20;
 }
 .container{
-    height: 100%;
     margin: auto;
     position: relative;
-    width: min-content;
-    width: -moz-min-content;
-    min-width: 90%;
+    min-width: 100%;
     font-size: 150px;
     color: $darkRed;
     overflow: hidden;
+    display: inline;
 }
 .login{
     position: relative;
-    width: 35%;
     height: min-content;
     height: -moz-min-content;
-    margin: 0;
+    width: 30%;
     float: right;
     top: 40%;
+    margin-right: 5%
 }
 .logo{
     position: relative;

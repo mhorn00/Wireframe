@@ -2,3 +2,4 @@ node_modules/**
 vs.code-workspace
 dist/bundle.js
 dist/styles.css
+users/**

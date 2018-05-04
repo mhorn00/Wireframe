@@ -13,6 +13,7 @@ class Login extends React.Component {
         let username;
         let password;
         let err;
+        console.log('is this endering?')
         if(this.props.userReducer.jwt){
             return <Redirect to='/profile'/>
         }

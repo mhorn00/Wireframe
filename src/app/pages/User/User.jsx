@@ -11,7 +11,7 @@ class User extends React.Component {
 
     render() {
         return (
-            <MasterLayout>
+            <MasterLayout location='/profile'>
                 <div className={styles.cont}>
                     <div className={styles.sidebar}>
 
