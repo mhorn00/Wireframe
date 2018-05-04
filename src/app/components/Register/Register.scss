@@ -16,12 +16,12 @@
 }
 .sec{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-grow: 1;
 }
 .input{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: nowrap;
     flex-grow: 1;
 }

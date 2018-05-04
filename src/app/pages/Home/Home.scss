@@ -7,22 +7,12 @@
     z-index: 20;
 }
 .container{
+    height: 100%;
     margin: auto;
     position: relative;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
     width: min-content;
     width: -moz-min-content;
-    height: min-content;
-    height: -moz-min-content;
     min-width: 90%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: space-between;
     font-size: 150px;
     color: $darkRed;
     overflow: hidden;
@@ -30,6 +20,14 @@
 .login{
     position: relative;
     width: 35%;
-    height: 100%;
+    height: min-content;
+    height: -moz-min-content;
     margin: 0;
+    float: right;
+    top: 40%;
+}
+.logo{
+    position: relative;
+    float: left;
+    top: 15%;
 }

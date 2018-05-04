@@ -37,13 +37,13 @@ class Register extends React.Component {
                             <input type="email" placeholder="Email" required="true" ref={node => email = node} onBlur={(e) => {
                                 this.props.dispatch(checkEmail(email.value))
                             }} className={styles.textbox} />
-                            <input type="password" placeholder="Password" required="true" ref={node => password = node} onBlur={(e) => {
-                                if (confirm_password.value) this.props.dispatch(passwordsMatch(password.value, confirm_password.value));
+                            <input type="text" placeholder="Username" required="true" ref={node => username = node} onBlur={(e) => {
+                                this.props.dispatch(checkUsername(username.value))
                             }} className={styles.textbox} />
                         </div>
                         <div className={styles.sec}>
-                            <input type="text" placeholder="Username" required="true" ref={node => username = node} onBlur={(e) => {
-                                this.props.dispatch(checkUsername(username.value))
+                        <input type="password" placeholder="Password" required="true" ref={node => password = node} onBlur={(e) => {
+                                if (confirm_password.value) this.props.dispatch(passwordsMatch(password.value, confirm_password.value));
                             }} className={styles.textbox} />
                             <input type="password" placeholder="Confirm Password" required="true" ref={node => confirm_password = node} onBlur={(e) => {
                                 this.props.dispatch(passwordsMatch(password.value, confirm_password.value));

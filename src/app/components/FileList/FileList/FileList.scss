@@ -20,11 +20,20 @@
     font-size: 35px;
     color: $lightRed;
     text-align: left;
-    .icon{
-        white-space: pre;
-        width: 2%;
-        text-align: center;
-    }
+}
+.icon{
+    padding-left: 5px;
+    white-space: pre;
+    text-align: center;
+}
+.trigger{
+    display: table-row
+}
+.info{
+    width: 33%;
+}
+.bread{
+    height: 0%
 }
 //===Context Menu Styles===
 .menu{

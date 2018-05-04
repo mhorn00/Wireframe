@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import {resetList} from '../../../actions/filepage.actions';
+import { resetList } from '../../../actions/filepage.actions';
 
 class FileList extends React.Component {
     constructor(props) {
@@ -12,10 +12,10 @@ class FileList extends React.Component {
     }
 
     handleClick(e, data) {
-        console.log(data.type);
+        //Dispatch to make new folder
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.props.dispatch(resetList(this.props.dir));
     }
 
@@ -25,33 +25,32 @@ class FileList extends React.Component {
         }
         return (
             <div className={styles.cont}>
-                <ContextMenuTrigger id="filelist_menu">
+                <ContextMenuTrigger id="filelist">
                     <div className={styles.content}>
+                        <div className={styles.bread}>
+                        </div>
+
                         <table className={styles.files}>
                             <tbody>
-                            <tr className={styles.header}>
-                                <th className={styles.icon}></th>
-                                <th className={styles.info}>Name</th>
-                                <th className={styles.info}>Size</th>
-                                <th className={styles.info}>Type</th>
-                            </tr>
-                            {this.props.files.map((f, key) => {
-                                return <FileElement key={key} file={f} />
-                            })}
+                                <tr className={styles.header}>
+                                    <th className={styles.icon}></th>
+                                    <th className={styles.info}>Name</th>
+                                    <th className={styles.info}>Size</th>
+                                    <th className={styles.info}>Type</th>
+                                </tr>
+                                {this.props.files != null ? this.props.files.map((f, key) => {
+                                    return (<FileElement key={key} file={f} />)
+                                }) : <tr></tr>}
+
                             </tbody>
                         </table>
                     </div>
                 </ContextMenuTrigger>
 
-                <ContextMenu id="filelist_menu" className={styles.menu}>
+                <ContextMenu id="filelist" className={styles.menu}>
                     <MenuItem data={{ type: 'newFolder' }} onClick={this.handleClick} className={styles.item}>
                         <p className={styles.text}>New Folder</p>
                     </MenuItem>
-                    <MenuItem divider />
-                    <MenuItem data={{ type: 'share' }} onClick={this.handleClick}>
-                        <p className={styles.text}>Share</p>
-                    </MenuItem>
-
                 </ContextMenu>
             </div>
         )
