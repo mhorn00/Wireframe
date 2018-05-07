@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { resetList } from '../../../actions/filepage.actions';
+import { resetList, makeFolder } from '../../../actions/filepage.actions';
+import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 
 class FileList extends React.Component {
     constructor(props) {
@@ -13,12 +14,14 @@ class FileList extends React.Component {
     }
 
     fileElementClick(e, data) {
-        //Dispatch to make new folder
-        console.log(data.type,data.file._id)
     }
 
     emptyAreaClick(e, data){
-
+        switch(data.type){
+            case "newFolder":{
+                this.props.dispatch(makeFolder());
+            }
+        }
     }
 
     componentWillMount() {
@@ -42,6 +45,9 @@ class FileList extends React.Component {
                                 <div className={styles.info}>Size</div>
                                 <div className={styles.info}>Type</div>
                             </div>
+                            {
+                                this.props.isMakingFolder? <EmptyFolder/> : <div/>
+                            }
                             {this.props.files != null ? this.props.files.map((f, key) => {
                                 return (<FileElement key={key} file={f} />)
                             }) : <div></div>}

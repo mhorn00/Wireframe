@@ -2,7 +2,8 @@ const ACTIONS = {
     REFRESH_REQUEST: 'REFRESH_REQUEST',
     REFRESH_COMPLETE: 'REFRESH_COMPLETE',
     FILEPAGE_ERROR: 'FILEPAGE_ERROR',
-    SET_DIR: 'SET_DIR'
+    SET_DIR: 'SET_DIR',
+    MAKE_FOLDER: 'MAKE_FOLDER'
 }
 
 export default ACTIONS
@@ -17,6 +18,12 @@ import {
 const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
+
+export function makeFolder(){
+    return {
+        type: ACTIONS.MAKE_FOLDER
+    }
+}
 
 export function refreshRequest(source) {
     return {

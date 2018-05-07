@@ -1,0 +1,20 @@
+@import '../../../palette.scss';
+
+.file{
+     border-bottom-width: 3px;
+     border-bottom-style: solid;
+     border-bottom-color: $lightRed;
+     display: table-row;
+}
+.icon{
+    font-size: 40px;
+    padding: 0px 10px 0px 5px;
+    display: table-cell;
+}
+.text{
+    font-family: 'Ropa Sans';
+    font-size: 25px;
+    color: $lightRed;
+    padding: 10px 0px 10px 0px;
+    display: table-cell;
+}

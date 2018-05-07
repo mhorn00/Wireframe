@@ -9,14 +9,19 @@ const defaults = {
     error: null,
     files: null,
     pending: false,
-    dir: ['/']
-    //sort_param: null
+    dir: ['/'],
+    isMakingFolder: false
 }
 
 
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
+        case actions.MAKE_FOLDER:{
+            return Object.assign({}, state, {
+                isMakingFolder: true
+            });
+        }
         case actions.FILEPAGE_ERROR:
             {
                 return Object.assign({}, state, {
