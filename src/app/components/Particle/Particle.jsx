@@ -4,11 +4,6 @@ import Part from 'react-particles-js';
 import params from './ParticleSettings.js';
 
 export default class Particle extends React.Component{
-
-    componentWillUnmount(){
-        this.destroy()
-    }
-
     render(){
         try{
             return( 
