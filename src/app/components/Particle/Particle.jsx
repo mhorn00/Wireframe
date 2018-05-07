@@ -8,7 +8,7 @@ export default class Particle extends React.Component{
         try{
             return( 
                 <div className={style.container}>    
-                    {/*<Part params={params} className={style.canvas}/>*/}
+                    <Part params={params} className={style.canvas}/>
                 </div>
             )
         }
