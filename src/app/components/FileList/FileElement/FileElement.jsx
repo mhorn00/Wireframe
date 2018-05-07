@@ -9,7 +9,9 @@ import HTML5Backend from 'react-dnd-html5-backend'
 
 const fileDragSource = {
     beginDrag(props) {
-        return {};
+        return {
+        
+        };
     }
 };
 
@@ -24,7 +26,7 @@ class FileElement extends React.Component {
     constructor(props) {
         super(props);
         this.getSize = this.getSize.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        //this.handleClick = this.handleClick.bind(this);
     }
 
     getSize(size) {
@@ -74,18 +76,15 @@ class FileElement extends React.Component {
             </div>
         )
 
-        if (this.props.isDragging) {
-            return connectDragSource(contained);
+        if (!this.props.isDragging) {
+            var contained = connectDragSource(contained);
         }
-        else {
-            return connectDragSource(
-                <div>
-                    <ContextMenuTrigger id="element" attributes={{ className: styles.trigger }} collect={() => { return this.props; }}>
-                        {contained}
-                    </ContextMenuTrigger>
-                </div>
-            )
-        }
+        
+        return (
+            <ContextMenuTrigger id="element" attributes={{ className: styles.trigger }} collect={() => { return this.props; }} disable={this.props.isDragging}>
+                {contained}
+            </ContextMenuTrigger>
+        )
     }
 }
 

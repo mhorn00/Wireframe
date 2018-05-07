@@ -44,6 +44,7 @@ var resolvers = {
                 }
                 catch (e) {
                     reject(e);
+                    resolve(null)
                 }
             });
         },
