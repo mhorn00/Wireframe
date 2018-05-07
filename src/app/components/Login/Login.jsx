@@ -14,8 +14,13 @@ class Login extends React.Component {
         let password;
         let err;
         console.log('is this endering?')
-        if(this.props.userReducer.jwt){
+        if(this.props.userReducer.jwt && !this.props.userReducer.auth_pending){
+            console.log('in check for userreducer jwt')
+            console.log(this.props);
             return <Redirect to='/profile'/>
+        }
+        else{
+            console.log(this.props);
         }
         if (this.props.loginReducer.error) {
             if (this.props.error == "ERR_INVALIDUSER") {
@@ -26,11 +31,11 @@ class Login extends React.Component {
                 err = <p style={{ margin: 0 }}>Invalid Password</p>;
             }
         }
-        else if (this.props.loginReducer.jwt) {
+/*         else if (this.props.loginReducer.jwt) {
             localStorage.setItem('token', this.props.loginReducer.jwt);
             localStorage.setItem('username', this.props.loginReducer.username);
             return (<Redirect to='/profile' />)
-        }
+        } */
         if (this.props.pending) {
             return (<img src='Loading/test.png' />)
         }

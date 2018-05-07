@@ -37,6 +37,7 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 var info;
                 try {
+                    console.log(args);
                     info = jwt.verify(args.token, secret);
                     GenericFile.find({ uploader: info.username, userRelativePath: args.path == '' ? '/' : args.path }).then((files) => {
                         resolve(files);

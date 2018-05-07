@@ -3,6 +3,8 @@ import { setDir, refreshRequest } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileElement.scss';
+import {DragDropContext} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend'
 
 class FileElement extends React.Component {
     constructor(props) {
@@ -71,4 +73,6 @@ function mapStateToProps(state) {
     return state.fileListReducer
 }
 
-export default connect(mapStateToProps)(FileElement);
+const connectedFileElement = connect(mapStateToProps)(FileElement);
+
+export default connectedFileElement;

@@ -19,10 +19,9 @@ class MasterLayout extends React.Component {
     }
 
     render() {
-        if(this.props.authenticated===false || this.props.authenticated === null || localStorage.getItem('token')==null){
-            localStorage.setItem('token','');
-            localStorage.setItem('username','');
-            console.log('what');
+        if(this.props.authenticated===false && !this.props.auth_pending || localStorage.getItem('token')==null){
+            console.log('sending you back b/c');
+            console.log(this.props);
             if(this.props.location && this.props.location.pathname!='/') return <Redirect to='/'/>
             else console.log(this.props);
         }

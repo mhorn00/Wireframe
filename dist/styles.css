@@ -5,24 +5,22 @@
   z-index: 20; }
 
 .Home__container___1yW6O {
-  height: 100%;
   margin: auto;
   position: relative;
-  width: min-content;
-  width: -moz-min-content;
-  min-width: 90%;
+  min-width: 100%;
   font-size: 150px;
   color: #902727;
-  overflow: hidden; }
+  overflow: hidden;
+  display: inline; }
 
 .Home__login___3d5GV {
   position: relative;
-  width: 35%;
   height: min-content;
   height: -moz-min-content;
-  margin: 0;
+  width: 30%;
   float: right;
-  top: 40%; }
+  top: 40%;
+  margin-right: 5%; }
 
 .Home__logo___LZVlg {
   position: relative;

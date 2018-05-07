@@ -9,7 +9,8 @@ const userReducer = (state={jwt:localStorage.getItem('token'),username:localStor
         }
         case actions.AUTH_RES:{
             return Object.assign({}, state, {
-                authenticated: action.payload
+                authenticated: action.payload,
+                auth_pending: false
             });
         }
         case actions.SET_TOKEN: {
