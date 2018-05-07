@@ -18,11 +18,9 @@ export function authenticate(token) {
         var query = `query{authenticate(token:"${token}")}`
         _fetch({ query }).then(res => {
             if (res.errors) {
-                console.log('errors')
                 dispatch(setAuthRes(false));
                 localStorage.setItem('token', '');
             } else {
-                console.log(res);
                 dispatch(setAuthRes(res.data.authenticate));
             }
         })

@@ -8,8 +8,7 @@ class MasterLayout extends React.Component {
 
     constructor(props){
         super(props);
-        console.log('props on construction')
-        console.log(props)
+
     }
 
     componentWillMount(){  
@@ -20,10 +19,7 @@ class MasterLayout extends React.Component {
 
     render() {
         if(this.props.authenticated===false && !this.props.auth_pending || localStorage.getItem('token')==null){
-            console.log('sending you back b/c');
-            console.log(this.props);
             if(this.props.location && this.props.location.pathname!='/') return <Redirect to='/'/>
-            else console.log(this.props);
         }
         return (
             <div>

@@ -11,4 +11,4 @@ var file = new GenericFile({
     fileSize: 2321
 })
 
-file.save().then(res=>console.log(res));
+file.save();

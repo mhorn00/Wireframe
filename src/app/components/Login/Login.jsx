@@ -13,14 +13,8 @@ class Login extends React.Component {
         let username;
         let password;
         let err;
-        console.log('is this endering?')
-        if(this.props.userReducer.jwt && !this.props.userReducer.auth_pending){
-            console.log('in check for userreducer jwt')
-            console.log(this.props);
+        if(this.props.loginReducer.jwt && !this.props.loginReducer.auth_pending){
             return <Redirect to='/profile'/>
-        }
-        else{
-            console.log(this.props);
         }
         if (this.props.loginReducer.error) {
             if (this.props.error == "ERR_INVALIDUSER") {
