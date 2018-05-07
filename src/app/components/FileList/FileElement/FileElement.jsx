@@ -27,11 +27,6 @@ class FileElement extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick(e, data) {
-        //Dispatch to make new folder
-        console.log(data.type, data.element)
-    }
-
     getSize(size) {
         if (size < 1000) {
             return size + " B";

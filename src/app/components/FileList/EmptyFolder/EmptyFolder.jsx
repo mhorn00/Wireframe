@@ -10,13 +10,20 @@ class EmptyFolder extends React.Component {
 
     render() {
         let icon = "far fa-folder";
+        let username;
         return (
-                <div className={styles.file}>
-                    <div className={styles.icon}><i className={icon} /></div>
-                    <div className={styles.text}></div>
-                    <div className={styles.text}>{size}</div>
-                    <div className={styles.text}>{file.type}</div>
+            <div className={styles.file}>
+                <div className={styles.icon}><i className={icon} /></div>
+                <div className={styles.text}>
+                    <form onSubmit={e=>{
+                        console.log(username.value)
+                    }}>
+                        <input type="text" placeholder="New Folder" ref={node => username = node} className={styles.textbox} />
+                    </form>
                 </div>
+                <div className={styles.text}>{size}</div>
+                <div className={styles.text}>{file.type}</div>
+            </div>
         )
     }
 }

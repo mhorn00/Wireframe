@@ -17,6 +17,7 @@ class FileList extends React.Component {
     }
 
     fileElementClick(e, data) {
+        //lol do later
     }
 
     emptyAreaClick(e, data){
@@ -48,9 +49,7 @@ class FileList extends React.Component {
                                 <div className={styles.info}>Size</div>
                                 <div className={styles.info}>Type</div>
                             </div>
-                            {
-                                this.props.isMakingFolder? <EmptyFolder/> : <div/>
-                            }
+                            {this.props.isMakingFolder? <EmptyFolder/> : <div/>}
                             {this.props.files != null ? this.props.files.map((f, key) => {
                                 return (<FileElement key={key} file={f} />)
                             }) : <div></div>}
