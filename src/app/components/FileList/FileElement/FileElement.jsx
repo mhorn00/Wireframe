@@ -49,38 +49,43 @@ class FileElement extends React.Component {
 
         var contained = (
             <div onClick={e => {
-            switch (file.type) {
-                case 'dir': {
-                    var newPath = [...this.props.dir, file.name + '/'];
-                    dispatch(setDir(newPath));
-                    dispatch(refreshRequest(newPath, 'setDir'));
-                    break;
+                switch (file.type) {
+                    case 'dir': {
+                        var newPath = [...this.props.dir, file.name + '/'];
+                        dispatch(setDir(newPath));
+                        dispatch(refreshRequest(newPath, 'setDir'));
+                        break;
+                    }
+                    case '\'': {
+                        var newPath = this.props.dir.splice(0, this.props.dir.length - 1);
+                        dispatch(setDir(newPath));
+                        dispatch(refreshRequest(newPath, 'setDir'));
+                        break;
+                    }
+                    default: {
+                        return;
+                    }
                 }
-                case '\'': {
-                    var newPath = this.props.dir.splice(0, this.props.dir.length - 1);
-                    dispatch(setDir(newPath));
-                    dispatch(refreshRequest(newPath, 'setDir'));
-                    break;
-                }
-                default: {
-                    return;
-                }
-            }
-        }} className={styles.file}>
-            <div className={styles.icon}><i className={icon} /></div>
-            <div className={styles.text}>{file.name}</div>
-            <div className={styles.text}>{size}</div>
-            <div className={styles.text}>{file.type}</div>
-        </div>
+            }} className={styles.file}>
+                <div className={styles.icon}><i className={icon} /></div>
+                <div className={styles.text}>{file.name}</div>
+                <div className={styles.text}>{size}</div>
+                <div className={styles.text}>{file.type}</div>
+            </div>
         )
 
-        return connectDragSource(
-            { this.props.isDragging ? <ContextMenuTrigger id="element" attributes={className: styles.trigger } collect={() => {
-                return this.props;
-            }}></ContextMenuTrigger>:<div/>}
-
-            
-        )
+        if (this.props.isDragging) {
+            return connectDragSource(contained);
+        }
+        else {
+            return connectDragSource(
+                <div>
+                    <ContextMenuTrigger id="element" attributes={{ className: styles.trigger }} collect={() => { return this.props; }}>
+                        {contained}
+                    </ContextMenuTrigger>
+                </div>
+            )
+        }
     }
 }
 
