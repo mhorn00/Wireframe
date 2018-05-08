@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './Particle.scss';
-import Part from 'react-particles-js';
+import Part from '../../modules/react-particles-js/';
 import params from './ParticleSettings.js';
 
 export default class Particle extends React.Component{

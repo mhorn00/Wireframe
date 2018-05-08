@@ -77,8 +77,11 @@ var resolvers = {
                         type: "dir"
                     })
                     GenericFile.find({ userRelativePath: args.path, name: args.name, uploader: info.username }).then((res) => {
+                        //TODO: Add a way to make sure none of the folder have the same name
                         if (res != null) {
-                            folder.name = folder.name + "_";
+                            if (folder.name==''){
+                                folder.name = 'New Folder'
+                            }
                         }
                         folder.save().then((e) => {resolve(true) }).catch((e) => resolve(false));
                     })

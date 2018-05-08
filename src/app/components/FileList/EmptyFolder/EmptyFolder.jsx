@@ -8,18 +8,21 @@ class EmptyFolder extends React.Component {
         super(props);
     }
 
+    componentDidMount(){
+        this.filename.focus();
+    }
+
     render() {
         let icon = "far fa-folder";
-        let filename;
         return (
             <div className={styles.file}>
                 <div className={styles.icon}><i className={icon} /></div>
                 <div className={styles.text}>
                     <form onSubmit={e => {
                         e.preventDefault();
-                        this.props.dispatch(finalizeFolder(filename.value, this.props.dir));
+                        this.props.dispatch(finalizeFolder(this.filename.value, this.props.dir));
                     }} className={styles.form}>
-                        <input type="text" placeholder="New Folder" ref={node => filename = node} className={styles.textbox} />
+                        <input type="text" placeholder="New Folder" ref={node => this.filename = node} className={styles.textbox} autoFocus/>
                     </form>
                 </div>
                 <div className={styles.text}></div>
