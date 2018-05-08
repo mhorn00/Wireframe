@@ -8,6 +8,7 @@ import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
 import BreadCrumbs from '../BreadCrumbs/BreadCrumbs.jsx';
+import { Folder } from '../FileElement/FileElement.jsx';
 
 
 class FileList extends React.Component {
@@ -68,7 +69,7 @@ class FileList extends React.Component {
                             </div>
                             {this.props.isMakingFolder ? <EmptyFolder /> : <div />}
                             {this.props.files != null ? this.props.files.map((f, key) => {
-                                return (<FileElement key={key} file={f} />)
+                                return (f.type!=='dir'?<FileElement key={key} file={f} />:<Folder key={key} file={f}/>)
                             }) : <div></div>}
                         </div>
                     </div>
