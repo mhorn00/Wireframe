@@ -12,17 +12,35 @@ class BreadCrumbs extends React.Component {
     setBread(dir) {
         let bread = [];
         let key = 0;
+        bread.push(<div key={key++} className={styles.crumb} onClick={(e) => {
+            e.preventDefault();
+            let newPath = [''];
+            this.props.dispatch(setDir(newPath));
+            this.props.dispatch(resetList(newPath));
+        }}>root</div>);
         dir.forEach(part => {
-            part = part.substring(0, part.length - 1);
+            /* part = part.substring(0, part.length - 1);
             if (part == '') {
-                part = 'root'
+                return;
             }
             bread.push(<div key={key++} className={styles.crumb} onClick={(e) => {
                 e.preventDefault();
                 let newPath = dir.slice(0, dir.indexOf(part != 'root' ? part + '/' : '/') + 1);
+                console.log(newPath);
                 this.props.dispatch(setDir(newPath));
                 this.props.dispatch(resetList(newPath));
-            }}>{part}</div>);
+            }}>{part}</div>); */
+            if (part !== '') {
+                bread.push(
+                    <div key={key++} className={styles.crumb} onClick={(e) => {
+                        e.preventDefault();
+                        console.log(key);
+
+                    }}>
+                    {part}
+                    </div>
+                )
+            }
             bread.push(<div key={key++} className={styles.crumbSep}>/</div>)
         });
         return bread;

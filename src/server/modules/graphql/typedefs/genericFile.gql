@@ -6,7 +6,7 @@
 
     type File {
         _id: ID!,
-        userRelativePath: String!,
+        userRelativePath: [String!],
         rawName: String,
         name: String,
         type: String,
@@ -21,8 +21,8 @@
     }
 
     type Mutation {
-        renameFile(path: String!, oldName: String!, newName: String!, token: String!): Boolean!
-        addFolder(path: String!, name: String!, token: String!): Boolean!
-        remove(path: String!, name: String!, token: String!): Boolean!
-        generateLink(path: String!, name: String!, token: String!): String
+        renameFile(_id: String!, newName: String!, token: String!): Boolean!
+        addFolder(path: [String!], name: String!, token: String!): Boolean!
+        remove(_id: String!, token: String!): Boolean!
+        generateLink(_id: String!, token: String!): String
     }

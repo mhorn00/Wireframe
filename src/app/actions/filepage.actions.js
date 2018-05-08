@@ -21,6 +21,8 @@ import {
     URL as IP
 } from '../const';
 
+import gql from 'graphql-tag';
+
 const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
@@ -41,13 +43,17 @@ export function endRename() {
 export function renameFile(path, oldName, newName) {
     var pathString = '';
     path.forEach(part => pathString += part);
-    var query = `mutation{renameFile(path: "${pathString}", oldName: "${oldName}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
+    var query = gql`mutation($path:[!String]){renameFile(path: $path, oldName: "${oldName}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
-        _fetch({ query }).then(res => {
-            if (res.data && res.data.renameFile){
+        _fetch({
+            query, variables: {
+                path: path
+            }
+        }).then(res => {
+            if (res.data && res.data.renameFile) {
                 dispatch(endRename());
                 dispatch(resetList(path));
-            }else{
+            } else {
                 dispatch(setError(res.errors));
             }
         })
@@ -72,9 +78,20 @@ export function removeFile(path, name) {
 export function finalizeFolder(name, path) {
     var pathString = '';
     path.forEach(part => pathString += part);
-    var query = `mutation{addFolder(path: "${pathString}", name: "${name}", token:"${localStorage.getItem("token")}")}`
+    var query = gql`mutation($path: [String!], $name: String!, $token: String!){
+        addFolder(path: $path, name: $name, token:$token)
+    }`;
+
+    console.log(query);
+    
     return dispatch => {
-        _fetch({ query }).then(res => {
+        _fetch({
+            query, variables: {
+                path,
+                token: localStorage.getItem("token"),
+                name: name
+            }
+        }).then(res => {
             if (res.data && res.data.addFolder) {
                 dispatch(finalizeFolderComplete());
                 dispatch(resetList(path));
@@ -119,9 +136,7 @@ export function setError(error) {
 }
 
 export function resetList(path) {
-    var pathString = '';
-    path.forEach(part => pathString += part);
-    var query = `query{files(path:"${pathString}" token:"${localStorage.getItem("token")}"){
+    var query = `query{files(path:"${path}" token:"${localStorage.getItem("token")}"){
             _id,
             rawName,
             name,

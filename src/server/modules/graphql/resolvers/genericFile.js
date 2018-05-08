@@ -64,7 +64,7 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    GenericFile.update({userRelativePath: args.path, name: args.oldName, uploader: info.username},{name: args.newName}).then(res=>{
+                    GenericFile.update({userRelativePath: args.path, _id: args._id, uploader: info.username},{name: args.newName}).then(res=>{
                         resolve(true);
 
                     }).catch((e)=>{
@@ -82,11 +82,12 @@ var resolvers = {
         addFolder: async function (parent, args, { GenericFile }) {
             // path is in terms from user root directory
             return await new Promise((resolve, reject) => {
+                console.log(args);
                 try {
                     var info = jwt.verify(args.token, secret);
                     var folder = new GenericFile({
                         absolutePath: null,
-                        userRelativePath: args.path == 'undefined' ? '/' : args.path,
+                        userRelativePath: args.path,
                         name: args.name,
                         uploader: info.username,
                         type: "dir"

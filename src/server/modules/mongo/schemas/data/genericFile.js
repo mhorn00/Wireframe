@@ -3,7 +3,10 @@ var {Schema} = mongoose;
 
 let File = new Schema({
     absolutePath: String,
-    userRelativePath: !String,
+    userRelativePath: {
+        type:[!String],
+        default: []
+    },
     rawName: String,
     uploader: !String,
     name: !String,
