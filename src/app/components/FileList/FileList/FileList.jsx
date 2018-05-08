@@ -7,6 +7,7 @@ import { resetList, makeFolder, removeFile, startRename } from '../../../actions
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
+import BreadCrumbs from '../BreadCrumbs/BreadCrumbs.jsx';
 
 
 class FileList extends React.Component {
@@ -55,6 +56,7 @@ class FileList extends React.Component {
                 <ContextMenuTrigger id="filelist" >
                     <div className={styles.content}>
                         <div className={styles.bread}>
+                            <BreadCrumbs />
                         </div>
                         <div className={styles.files}>
                             <div className={styles.header}>
@@ -77,13 +79,13 @@ class FileList extends React.Component {
                     </MenuItem>
                 </ContextMenu>
                 <ContextMenu id="element" className={styles.menu}>
-                    <MenuItem data={{ type: 'rename'}} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'rename' }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Rename</p>
                     </MenuItem>
-                    <MenuItem data={{ type: 'delete'}} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'delete' }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Delete</p>
                     </MenuItem>
-                    <MenuItem data={{ type: 'share'}} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'share' }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Share</p>
                     </MenuItem>
                 </ContextMenu>

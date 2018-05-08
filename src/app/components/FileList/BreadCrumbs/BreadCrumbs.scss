@@ -1,0 +1,13 @@
+@import '../../../palette.scss';
+
+.cont{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.text{
+    font-family: 'Ropa Sans';
+    color: $lightRed;
+    margin:0;
+    font-size: 24px;
+}
