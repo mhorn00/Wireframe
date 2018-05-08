@@ -1,5 +1,5 @@
 import React from 'react';
-import { setDir, refreshRequest, renameFile, resetList } from '../../../actions/filepage.actions';
+import { setDir, renameFile, resetList } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileElement.scss';

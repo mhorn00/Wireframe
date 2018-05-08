@@ -3,11 +3,35 @@
 .cont{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
+    border-bottom-color: $lightRed;   
+    border-bottom-style: solid;
+    border-bottom-width: 3px;  
+    padding: 2px 0px 2px 0px;
 }
-.text{
+.crumb{
     font-family: 'Ropa Sans';
     color: $lightRed;
     margin:0;
-    font-size: 24px;
+    font-size: 40px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: transparent;
+}
+.crumb:hover{
+    border-width: 2px;
+    border-style: solid;
+    border-color: $darkRed;
+    border-collapse: collapse;
+}
+.crumbSep{
+    font-family: 'Ropa Sans';
+    color: $lightRed;
+    margin:0;
+    font-size: 40px;
+    padding: 0px 5px 0px 5px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: transparent;
 }
