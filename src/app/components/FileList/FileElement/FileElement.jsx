@@ -3,7 +3,7 @@ import { setDir, refreshRequest, renameFile, resetList } from '../../../actions/
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileElement.scss';
-import { DragSource } from 'react-dnd';
+import { DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
 
 
@@ -15,11 +15,23 @@ const fileDragSource = {
     }
 };
 
-function collect(connect, monitor) {
+const fileDrop = {
+    canDrop: function () {
+        return true
+    }
+}
+
+function fileCollect(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging(),
         connectDragPreview: connect.dragPreview()
+    }
+}
+
+function folderCollect(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget()
     }
 }
 
@@ -88,21 +100,40 @@ class FileElement extends React.Component {
             </div>
         )
 
-        if (!this.props.isDragging) {
+        if (!this.props.isDragging && file.type !=='dir') {
+            console.log(this.props);
             var contained = connectDragSource(contained);
         }
         else {
             // TODO: Make a custom DragLayer so that dragging looks good
         }
+
+        if (file.type == 'dir') {
+            //contained = DropTarget(contained);
+        }
+
+        const stuff = this;
         return (
             <ContextMenuTrigger id="element" attributes={{
                 className: styles.trigger,
                 style: {
-                    cursor: this.props.isDragging === true ? 'move' : 'pointer'
+                    cursor: function () {
+                        console.log(this);
+                        console.log('hi')
+                        if (stuff.props.canDrop && stuff.props.isMoving) {
+                            return 'copy'
+                        }
+                        else if (stuff.props.isMoving) {
+                            return 'move'
+                        }
+                        else {
+                            return 'pointer'
+                        }
+                    }()
                 }
-            }} collect={() => { return this.props; }} disable={this.props.isDragging}>
+            }} collect={() => { return this.props; }} disable={this.props.isDragging} >
                 {contained}
-            </ContextMenuTrigger>
+            </ContextMenuTrigger >
         )
     }
 }
@@ -113,4 +144,6 @@ function mapStateToProps(state) {
 
 var connectedThing = connect(mapStateToProps)(FileElement);
 
-export default DragSource('file', fileDragSource, collect)(connectedThing);
+export default DragSource('file', fileDragSource, fileCollect)(connectedThing);
+
+export const Folder = DropTarget('folder', fileDrop, folderCollect)(connectedThing);
