@@ -10,15 +10,17 @@ import HTML5Backend from 'react-dnd-html5-backend'
 const fileDragSource = {
     beginDrag(props) {
         return {
-        
+
         };
     }
 };
 
 function collect(connect, monitor) {
+    console.log(monitor.isDragging());
     return {
         connectDragSource: connect.dragSource(),
-        isDragging: monitor.isDragging()
+        isDragging: monitor.isDragging(),
+        connectDragPreview: connect.dragPreview()
     }
 }
 
@@ -45,7 +47,7 @@ class FileElement extends React.Component {
 
     render() {
         var { file, dispatch } = this.props;
-        let { connectDragSource, isDragging } = this.props;
+        let { connectDragSource, isDragging, connectDragPreview } = this.props;
         let icon = "far fa-file";
         let size = this.getSize(file.fileSize);
 
@@ -79,9 +81,16 @@ class FileElement extends React.Component {
         if (!this.props.isDragging) {
             var contained = connectDragSource(contained);
         }
-        
+        else{
+            // TODO: Make a custom DragLayer so that dragging looks good
+        }
         return (
-            <ContextMenuTrigger id="element" attributes={{ className: styles.trigger }} collect={() => { return this.props; }} disable={this.props.isDragging}>
+            <ContextMenuTrigger id="element" attributes={{
+                className: styles.trigger,
+                style: {
+                    cursor: this.props.isDragging===true?'move':'pointer'
+                }
+            }} collect={() => { return this.props; }} disable={this.props.isDragging}>
                 {contained}
             </ContextMenuTrigger>
         )
