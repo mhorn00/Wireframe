@@ -16,7 +16,6 @@ const fileDragSource = {
 };
 
 function collect(connect, monitor) {
-    console.log(monitor.isDragging());
     return {
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging(),

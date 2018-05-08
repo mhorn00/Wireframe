@@ -21,6 +21,7 @@ class FileList extends React.Component {
     }
 
     emptyAreaClick(e, data){
+        console.log(data.type)
         switch(data.type){
             case "newFolder":{
                 this.props.dispatch(makeFolder());
@@ -58,18 +59,18 @@ class FileList extends React.Component {
                 </ContextMenuTrigger>
 
                 <ContextMenu id="filelist" className={styles.menu}>
-                    <MenuItem data={{ type: 'newFolder' }} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'newFolder' }} onClick={this.emptyAreaClick} className={styles.item}>
                         <p className={styles.text}>New Folder</p>
                     </MenuItem>
                 </ContextMenu>
                 <ContextMenu id="element" className={styles.menu}>
-                    <MenuItem data={{ type: 'rename', element: this.props.key }} onClick={this.emptyAreaClick} className={styles.item}>
+                    <MenuItem data={{ type: 'rename', element: this.props.key }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Rename</p>
                     </MenuItem>
-                    <MenuItem data={{ type: 'delete', element: this.props.key }} onClick={this.emptyAreaClick} className={styles.item}>
+                    <MenuItem data={{ type: 'delete', element: this.props.key }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Delete</p>
                     </MenuItem>
-                    <MenuItem data={{ type: 'share', element: this.props.key }} onClick={this.emptyAreaClick} className={styles.item}>
+                    <MenuItem data={{ type: 'share', element: this.props.key }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Share</p>
                     </MenuItem>
                 </ContextMenu>

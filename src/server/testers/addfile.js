@@ -3,7 +3,7 @@ global.mongo = mongoose.createConnection('mongodb://localhost:27017');
 var GenericFile = require('../modules/mongo/schemas/data/genericFile');
 
 var file = new GenericFile({
-    userRelativePath: '/',
+    userRelativePath: '/asdf_',
     rawName: 'test.jsx',
     uploader: 'h',
     name: 'tyeyeyy',

@@ -17,6 +17,11 @@ const defaults = {
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
+        case actions.FINALIZE_FOLDER_COMPLETE:{
+            return Object.assign({}, state, {
+                isMakingFolder: false
+            });
+        }
         case actions.MAKE_FOLDER:{
             return Object.assign({}, state, {
                 isMakingFolder: true

@@ -1,5 +1,5 @@
 import React from 'react';
-import { setDir, refreshRequest } from '../../../actions/filepage.actions';
+import { setDir, refreshRequest, finalizeFolder } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import styles from './EmptyFolder.scss';
 
@@ -10,19 +10,20 @@ class EmptyFolder extends React.Component {
 
     render() {
         let icon = "far fa-folder";
-        let username;
+        let filename;
         return (
             <div className={styles.file}>
                 <div className={styles.icon}><i className={icon} /></div>
                 <div className={styles.text}>
-                    <form onSubmit={e=>{
-                        console.log(username.value)
-                    }}>
-                        <input type="text" placeholder="New Folder" ref={node => username = node} className={styles.textbox} />
+                    <form onSubmit={e => {
+                        e.preventDefault();
+                        this.props.dispatch(finalizeFolder(filename.value, this.props.dir));
+                    }} className={styles.form}>
+                        <input type="text" placeholder="New Folder" ref={node => filename = node} className={styles.textbox} />
                     </form>
                 </div>
-                <div className={styles.text}>{size}</div>
-                <div className={styles.text}>{file.type}</div>
+                <div className={styles.text}></div>
+                <div className={styles.text}></div>
             </div>
         )
     }

@@ -3,7 +3,9 @@ const ACTIONS = {
     REFRESH_COMPLETE: 'REFRESH_COMPLETE',
     FILEPAGE_ERROR: 'FILEPAGE_ERROR',
     SET_DIR: 'SET_DIR',
-    MAKE_FOLDER: 'MAKE_FOLDER'
+    MAKE_FOLDER: 'MAKE_FOLDER',
+    FINALIZE_FOLDER: 'FINALIZE_FOLDER',
+    FINALIZE_FOLDER_COMPLETE: 'FINALIZE_FOLDER_COMPLETE'
 }
 
 export default ACTIONS
@@ -19,7 +21,30 @@ const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
 
-export function makeFolder(){
+export function finalizeFolder(name, path) {
+    var pathString = '';
+    path.forEach(part => pathString += part);
+    var query = `mutation{addFolder(path: "${pathString}", name: "${name}", token:"${localStorage.getItem("token")}")}`
+    return dispatch => {
+        _fetch({ query }).then(res => {
+            console.log(res)
+            if (res.data.addFolder == true) {
+                dispatch(finalizeFolderComplete());
+                dispatch(resetList(path));
+            } else {
+                dispatch(setError(res.error));
+            }
+        })
+    }
+}
+
+function finalizeFolderComplete() {
+    return {
+        type: ACTIONS.FINALIZE_FOLDER_COMPLETE
+    }
+}
+
+export function makeFolder() {
     return {
         type: ACTIONS.MAKE_FOLDER
     }
