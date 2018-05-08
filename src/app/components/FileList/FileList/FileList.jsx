@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { resetList, makeFolder } from '../../../actions/filepage.actions';
+import { resetList, makeFolder, removeFile } from '../../../actions/filepage.actions';
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -12,19 +12,33 @@ import HTML5Backend from 'react-dnd-html5-backend'
 class FileList extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.fileElementClick.bind(this);
+        this.fileElementClick = this.fileElementClick.bind(this);
         this.emptyAreaClick = this.emptyAreaClick.bind(this);
     }
 
     fileElementClick(e, data) {
-        //lol do later
+        console.log(data.dir)
+        switch (data.type) {
+            case "rename": {
+                /* this.props.dispatch(); */
+                return;
+            }
+            case "delete": {
+                this.props.dispatch(removeFile(data.dir, data.file.name));
+                return;
+            }
+            case "share": {
+                /* this.props.dispatch(); */
+                return;
+            }
+        }
     }
 
-    emptyAreaClick(e, data){
-        console.log(data.type)
-        switch(data.type){
-            case "newFolder":{
+    emptyAreaClick(e, data) {
+        switch (data.type) {
+            case "newFolder": {
                 this.props.dispatch(makeFolder());
+                return;
             }
         }
     }
@@ -50,7 +64,7 @@ class FileList extends React.Component {
                                 <div className={styles.info}>Size</div>
                                 <div className={styles.info}>Type</div>
                             </div>
-                            {this.props.isMakingFolder? <EmptyFolder/> : <div/>}
+                            {this.props.isMakingFolder ? <EmptyFolder /> : <div />}
                             {this.props.files != null ? this.props.files.map((f, key) => {
                                 return (<FileElement key={key} file={f} />)
                             }) : <div></div>}
@@ -64,13 +78,13 @@ class FileList extends React.Component {
                     </MenuItem>
                 </ContextMenu>
                 <ContextMenu id="element" className={styles.menu}>
-                    <MenuItem data={{ type: 'rename', element: this.props.key }} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'rename', element: this.props.file }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Rename</p>
                     </MenuItem>
-                    <MenuItem data={{ type: 'delete', element: this.props.key }} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'delete', element: this.props.file }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Delete</p>
                     </MenuItem>
-                    <MenuItem data={{ type: 'share', element: this.props.key }} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'share', element: this.props.file }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Share</p>
                     </MenuItem>
                 </ContextMenu>

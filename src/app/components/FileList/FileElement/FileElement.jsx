@@ -27,7 +27,6 @@ class FileElement extends React.Component {
     constructor(props) {
         super(props);
         this.getSize = this.getSize.bind(this);
-        //this.handleClick = this.handleClick.bind(this);
     }
 
     getSize(size) {
@@ -47,7 +46,7 @@ class FileElement extends React.Component {
     render() {
         var { file, dispatch } = this.props;
         let { connectDragSource, isDragging, connectDragPreview } = this.props;
-        let icon = "far fa-file";
+        let icon = file.type == 'dir' ? 'far fa-folder' : 'far fa-file';
         let size = this.getSize(file.fileSize);
 
         var contained = (
@@ -72,22 +71,22 @@ class FileElement extends React.Component {
             }} className={styles.file}>
                 <div className={styles.icon}><i className={icon} /></div>
                 <div className={styles.text}>{file.name}</div>
-                <div className={styles.text}>{size}</div>
-                <div className={styles.text}>{file.type}</div>
+                <div className={styles.text}>{file.type == 'dir' ? '' : size}</div>
+                <div className={styles.text}>{file.type == 'dir' ? '' : file.type}</div>
             </div>
         )
 
         if (!this.props.isDragging) {
             var contained = connectDragSource(contained);
         }
-        else{
+        else {
             // TODO: Make a custom DragLayer so that dragging looks good
         }
         return (
             <ContextMenuTrigger id="element" attributes={{
                 className: styles.trigger,
                 style: {
-                    cursor: this.props.isDragging===true?'move':'pointer'
+                    cursor: this.props.isDragging === true ? 'move' : 'pointer'
                 }
             }} collect={() => { return this.props; }} disable={this.props.isDragging}>
                 {contained}

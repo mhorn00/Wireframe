@@ -5,7 +5,8 @@ const ACTIONS = {
     SET_DIR: 'SET_DIR',
     MAKE_FOLDER: 'MAKE_FOLDER',
     FINALIZE_FOLDER: 'FINALIZE_FOLDER',
-    FINALIZE_FOLDER_COMPLETE: 'FINALIZE_FOLDER_COMPLETE'
+    FINALIZE_FOLDER_COMPLETE: 'FINALIZE_FOLDER_COMPLETE',
+    REMOVE_FILE: 'REMOVE_FILE'
 }
 
 export default ACTIONS
@@ -21,18 +22,32 @@ const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
 
+export function removeFile(path, name) {
+    var pathString = '';
+    path.forEach(part => pathString += part);
+    var query = `mutation{remove(path: "${pathString}", name: "${name}", token: "${localStorage.getItem("token")}")}`
+    return dispatch => {
+        _fetch({ query }).then(res => {
+            if (res.data && res.data.remove) {
+                dispatch(resetList(path));
+            } else {
+                dispatch(setError(res.errors))
+            }
+        })
+    }
+}
+
 export function finalizeFolder(name, path) {
     var pathString = '';
     path.forEach(part => pathString += part);
     var query = `mutation{addFolder(path: "${pathString}", name: "${name}", token:"${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({ query }).then(res => {
-            console.log(res)
-            if (res.data.addFolder == true) {
+            if (res.data && res.data.addFolder) {
                 dispatch(finalizeFolderComplete());
                 dispatch(resetList(path));
             } else {
-                dispatch(setError(res.error));
+                dispatch(setError(res.errors));
             }
         })
     }
