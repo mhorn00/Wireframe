@@ -25,8 +25,8 @@ async function removeSubitems(username, path, name) {
     })
 }
 
-async function checkFolderName(name, username, path){
-    GenericFile.find({uploader: username, type:"dir", path: path, })
+async function checkFolderName(name, username, path) {
+    GenericFile.find({ uploader: username, type: "dir", path: path, })
 }
 
 var resolvers = {
@@ -60,9 +60,24 @@ var resolvers = {
         }
     },
     Mutation: {
-        addFile: async function (parent, args, { GenericFile }) {
-            /* yes */
-            return true;
+        renameFile: async function (parent, args, { GenericFile }) {
+            return await new Promise((resolve, reject) => {
+                try {
+                    var info = jwt.verify(args.token, secret);
+                    GenericFile.update({userRelativePath: args.path, name: args.oldName, uploader: info.username},{name: args.newName}).then(res=>{
+                        resolve(true);
+
+                    }).catch((e)=>{
+                        throw(e);
+                        resolve(false);
+                        return;
+                    });
+                } catch (e) {
+                    throw (e);
+                    resolve(false);
+                    return;
+                }
+            })
         },
         addFolder: async function (parent, args, { GenericFile }) {
             // path is in terms from user root directory
@@ -79,11 +94,11 @@ var resolvers = {
                     GenericFile.find({ userRelativePath: args.path, name: args.name, uploader: info.username }).then((res) => {
                         //TODO: Add a way to make sure none of the folder have the same name
                         if (res != null) {
-                            if (folder.name==''){
+                            if (folder.name == '') {
                                 folder.name = 'New Folder'
                             }
                         }
-                        folder.save().then((e) => {resolve(true) }).catch((e) => resolve(false));
+                        folder.save().then((e) => { resolve(true) }).catch((e) => resolve(false));
                     })
 
                 }
@@ -128,17 +143,17 @@ var resolvers = {
                 }
             })
         },
-        generateLink: async function(parent, args, {GenericFile}){
-            return await new Promise((resolve,reject)=>{
-                try{
+        generateLink: async function (parent, args, { GenericFile }) {
+            return await new Promise((resolve, reject) => {
+                try {
                     var info = jwt.verify(args.token, secret);
-                    GenericFile.findOne({uploader:info.username, userRelativePath: args.path==''?'/':args.path, name: args.name}).then((file)=>{
+                    GenericFile.findOne({ uploader: info.username, userRelativePath: args.path == '' ? '/' : args.path, name: args.name }).then((file) => {
                         var url = uuid.v4(3);
                         file.sharing_links.push(url);
-                        file.save().then((res)=>resolve(url));
+                        file.save().then((res) => resolve(url));
                     })
                 }
-                catch(e){
+                catch (e) {
                     resolve(false);
                 }
             });

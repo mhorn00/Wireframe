@@ -10,13 +10,24 @@ const defaults = {
     files: null,
     pending: false,
     dir: ['/'],
-    isMakingFolder: false
+    isMakingFolder: false,
+    isRenaming: {isEditing: false, _id: null}
 }
 
 
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
+        case actions.START_RENAME:{
+            return Object.assign({}, state, {
+                isRenaming: {isEditing: true, _id: action.payload}
+            });
+        }
+        case actions.END_RENAME:{
+            return Object.assign({}, state, {
+                isRenaming: {isEditing: false, key: null}
+            });
+        }
         case actions.FINALIZE_FOLDER_COMPLETE:{
             return Object.assign({}, state, {
                 isMakingFolder: false

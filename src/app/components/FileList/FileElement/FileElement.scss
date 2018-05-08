@@ -23,3 +23,19 @@
 .trigger{
     display: table-row-group;
 }
+.form{
+    margin: 0;
+}
+.textbox{
+    margin: 0;
+    border: 3px solid $lightRed;
+    background: transparent;
+    padding: 0px 6px;
+    font-size: 20px;
+    font-family: 'Ropa Sans';
+    color: $grey;
+    line-height: 12px;
+    vertical-align: middle;
+    border-radius: 0;
+    pointer-events: auto;
+}

@@ -6,7 +6,10 @@ const ACTIONS = {
     MAKE_FOLDER: 'MAKE_FOLDER',
     FINALIZE_FOLDER: 'FINALIZE_FOLDER',
     FINALIZE_FOLDER_COMPLETE: 'FINALIZE_FOLDER_COMPLETE',
-    REMOVE_FILE: 'REMOVE_FILE'
+    REMOVE_FILE: 'REMOVE_FILE',
+    RENAME_FILE: 'RENAME_FILE',
+    START_RENAME: 'START_RENAME',
+    END_RENAME: 'END_RENAME'
 }
 
 export default ACTIONS
@@ -22,6 +25,35 @@ const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
 
+export function startRename(_id) {
+    return {
+        type: ACTIONS.START_RENAME,
+        payload: _id
+    }
+}
+
+export function endRename() {
+    return {
+        type: ACTIONS.END_RENAME,
+    }
+}
+
+export function renameFile(path, oldName, newName) {
+    var pathString = '';
+    path.forEach(part => pathString += part);
+    var query = `mutation{renameFile(path: "${pathString}", oldName: "${oldName}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
+    return dispatch => {
+        _fetch({ query }).then(res => {
+            if (res.data && res.data.renameFile){
+                dispatch(endRename());
+                dispatch(resetList(path));
+            }else{
+                dispatch(setError(res.errors));
+            }
+        })
+    }
+}
+
 export function removeFile(path, name) {
     var pathString = '';
     path.forEach(part => pathString += part);
@@ -31,7 +63,7 @@ export function removeFile(path, name) {
             if (res.data && res.data.remove) {
                 dispatch(resetList(path));
             } else {
-                dispatch(setError(res.errors))
+                dispatch(setError(res.errors));
             }
         })
     }

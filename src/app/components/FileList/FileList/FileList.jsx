@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { resetList, makeFolder, removeFile } from '../../../actions/filepage.actions';
+import { resetList, makeFolder, removeFile, startRename } from '../../../actions/filepage.actions';
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -17,10 +17,9 @@ class FileList extends React.Component {
     }
 
     fileElementClick(e, data) {
-        console.log(data.dir)
         switch (data.type) {
             case "rename": {
-                /* this.props.dispatch(); */
+                this.props.dispatch(startRename(data.file._id));
                 return;
             }
             case "delete": {
@@ -78,13 +77,13 @@ class FileList extends React.Component {
                     </MenuItem>
                 </ContextMenu>
                 <ContextMenu id="element" className={styles.menu}>
-                    <MenuItem data={{ type: 'rename', element: this.props.file }} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'rename'}} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Rename</p>
                     </MenuItem>
-                    <MenuItem data={{ type: 'delete', element: this.props.file }} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'delete'}} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Delete</p>
                     </MenuItem>
-                    <MenuItem data={{ type: 'share', element: this.props.file }} onClick={this.fileElementClick} className={styles.item}>
+                    <MenuItem data={{ type: 'share'}} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Share</p>
                     </MenuItem>
                 </ContextMenu>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { setDir, refreshRequest } from '../../../actions/filepage.actions';
+import { setDir, refreshRequest, renameFile } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileElement.scss';
@@ -48,7 +48,6 @@ class FileElement extends React.Component {
         let { connectDragSource, isDragging, connectDragPreview } = this.props;
         let icon = file.type == 'dir' ? 'far fa-folder' : 'far fa-file';
         let size = this.getSize(file.fileSize);
-
         var contained = (
             <div onClick={e => {
                 switch (file.type) {
@@ -70,7 +69,14 @@ class FileElement extends React.Component {
                 }
             }} className={styles.file}>
                 <div className={styles.icon}><i className={icon} /></div>
-                <div className={styles.text}>{file.name}</div>
+                {this.props.isRenaming.isEditing&&this.props.isRenaming._id==file._id
+                    ? <form onSubmit={e => {
+                        e.preventDefault();
+                        this.props.dispatch(renameFile(this.props.dir,file.name,this.filename.value));
+                    }} className={styles.form}>
+                        <input type="text" placeholder="New Folder" ref={node => this.filename = node} className={styles.textbox} autoFocus />
+                    </form>
+                    : <div className={styles.text}>{file.name}</div>}
                 <div className={styles.text}>{file.type == 'dir' ? '' : size}</div>
                 <div className={styles.text}>{file.type == 'dir' ? '' : file.type}</div>
             </div>
