@@ -51,7 +51,7 @@ class FileList extends React.Component {
 
     render() {
         if (!this.props.files && !this.props.error) {
-            return <p>Loading</p>
+            return <p className={styles.loading}>Loading</p>
         }
         return (
             <div className={styles.cont}>
