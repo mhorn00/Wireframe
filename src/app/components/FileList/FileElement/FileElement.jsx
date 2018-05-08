@@ -5,7 +5,8 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileElement.scss';
 import { DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
-
+import {History} from 'react-router';
+import {IP} from '../../../const'
 
 const fileDragSource = {
     beginDrag(props) {
@@ -73,6 +74,12 @@ class FileElement extends React.Component {
                         var newPath = [...this.props.dir, file.name + '/'];
                         dispatch(setDir(newPath));
                         dispatch(resetList(newPath));
+                        var files = history.files?[file,...history.files]:[].push(file);
+                        // i want the back button to work
+                        // TODO: we could just push ID's to the URL, and have the client read the URL and determine if it needs to do something?
+                        history.pushState({what:[]},'epic','epic')
+                        history.pushState({files},`Folder ${file.name} on Wireframe!`,`${IP+'/profile'}`);
+                        console.log(history);
                         break;
                     }
                     case '\'': {
