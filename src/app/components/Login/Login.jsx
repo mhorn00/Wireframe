@@ -17,19 +17,14 @@ class Login extends React.Component {
             return <Redirect to='/profile'/>
         }
         if (this.props.loginReducer.error) {
-            if (this.props.error == "ERR_INVALIDUSER") {
+            if (this.props.loginReducer.error == "ERR_INVALIDUSER") {
                 err = <p style={{ margin: 0 }}>Invalid Username</p>;
-            } else if (this.props.error == "ERR_UNAPPROVED") {
+            } else if (this.props.loginReducer.error == "ERR_UNAPPROVED") {
                 err = <p style={{ margin: 0 }}>Account not approved</p>;
-            } else if (this.props.error == "ERR_WRONGPASS") {
+            } else if (this.props.loginReducer.error == "ERR_WRONGPASS") {
                 err = <p style={{ margin: 0 }}>Invalid Password</p>;
             }
         }
-/*         else if (this.props.loginReducer.jwt) {
-            localStorage.setItem('token', this.props.loginReducer.jwt);
-            localStorage.setItem('username', this.props.loginReducer.username);
-            return (<Redirect to='/profile' />)
-        } */
         if (this.props.pending) {
             return (<img src='Loading/test.png' />)
         }
