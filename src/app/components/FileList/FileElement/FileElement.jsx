@@ -1,5 +1,5 @@
 import React from 'react';
-import { setDir, refreshRequest, renameFile } from '../../../actions/filepage.actions';
+import { setDir, refreshRequest, renameFile, resetList } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileElement.scss';
@@ -43,24 +43,31 @@ class FileElement extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if (this.props.isRenaming.isEditing && this.props.isRenaming._id == file._id) {
+            this.filename.focus();
+        }
+    }
+
     render() {
         var { file, dispatch } = this.props;
         let { connectDragSource, isDragging, connectDragPreview } = this.props;
         let icon = file.type == 'dir' ? 'far fa-folder' : 'far fa-file';
         let size = this.getSize(file.fileSize);
+        console.log(this.props.dir)
         var contained = (
             <div onClick={e => {
                 switch (file.type) {
                     case 'dir': {
                         var newPath = [...this.props.dir, file.name + '/'];
                         dispatch(setDir(newPath));
-                        dispatch(refreshRequest(newPath, 'setDir'));
+                        dispatch(resetList(newPath));
                         break;
                     }
                     case '\'': {
                         var newPath = this.props.dir.splice(0, this.props.dir.length - 1);
                         dispatch(setDir(newPath));
-                        dispatch(refreshRequest(newPath, 'setDir'));
+                        dispatch(resetList(newPath));
                         break;
                     }
                     default: {
@@ -69,10 +76,10 @@ class FileElement extends React.Component {
                 }
             }} className={styles.file}>
                 <div className={styles.icon}><i className={icon} /></div>
-                {this.props.isRenaming.isEditing&&this.props.isRenaming._id==file._id
+                {this.props.isRenaming.isEditing && this.props.isRenaming._id == file._id
                     ? <form onSubmit={e => {
                         e.preventDefault();
-                        this.props.dispatch(renameFile(this.props.dir,file.name,this.filename.value));
+                        this.props.dispatch(renameFile(this.props.dir, file.name, this.filename.value));
                     }} className={styles.form}>
                         <input type="text" placeholder="New Folder" ref={node => this.filename = node} className={styles.textbox} autoFocus />
                     </form>
