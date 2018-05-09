@@ -7,6 +7,8 @@ class Uploader extends React.Component {
     constructor(props) {
         super(props);
         this.onDrop = this.onDrop.bind(this);
+        this.onDragStarted = this.onDragStarted.bind(this);
+        this.onDragStopped = this.onDragStopped.bind(this);
     }
     onDrop(e) {
         e.preventDefault();
@@ -30,7 +32,7 @@ class Uploader extends React.Component {
                 if (e.total !== 0) {
                     progress = parseInt((e.loaded / e.total) * 100, 10);
                 }
-                this.setState({ progress: progress });
+                //set the state to have the props
             });
             xhr.send(data);
         }
@@ -50,7 +52,7 @@ class Uploader extends React.Component {
         return (
             <div className={styles.base}>
                 <p className={styles.text}>Drop Files Here</p>
-                <div onDrop={this.onDrop} onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped} className={styles[`.${this.props.uploadState}`]} onDragOver={(e) => { e.preventDefault() }}>
+                <div onDrop={this.onDrop} onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped} className={styles[`${this.props.uploadState}`]} onDragOver={(e) => { e.preventDefault() }}>
                     <div className={styles.loading}>
                         <p className={styles.text}>--%</p>
                     </div>
@@ -61,7 +63,7 @@ class Uploader extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return state;
+    return state.fileListReducer;
 }
 
 export default connect(mapStateToProps)(Uploader);
