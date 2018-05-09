@@ -48,14 +48,15 @@ class Uploader extends React.Component {
 
     render() {
         return (
-            <div id="container" className={styles.base}>
+            <div className={styles.base}>
                 <p className={styles.text}>Drop Files Here</p>
-                <div onDrop={this.onDrop} onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped} className={styles[`${this.props.uploadState}`]} onDragOver={(e) => { e.preventDefault() }}>
+                <div onDrop={this.onDrop} onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped} className={styles['resting']} onDragOver={(e) => { e.preventDefault() }}>
                     <div className={styles.loading}>
                         <p className={styles.text}>--%</p>
                     </div>
                 </div>
-            </div>)
+            </div>
+        )
     }
 }
 
