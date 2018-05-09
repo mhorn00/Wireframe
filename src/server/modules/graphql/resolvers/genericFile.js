@@ -8,10 +8,6 @@ var usersPath = __dirname + "../../../../../../users/";
 var GenericFile = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
 var bb = require('bluebird');
-<<<<<<< HEAD
-// TODO: make secret file
-=======
->>>>>>> c3ecff73ea3fd65f68664c0cc247eab6f45f3b08
 
 async function removeSubitems(username, path, name) {
     // items in this folder path should all removed - all folders within it should have theirs removed also
