@@ -8,8 +8,6 @@ var usersPath = __dirname + "../../../../../../users/";
 var GenericFile = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
 
-// TODO: make secret file
-
 async function removeSubitems(username, path, name) {
     // items in this folder path should all removed - all folders within it should have theirs removed also
     GenericFile.find({ uploader: username, userRelativePath: path + name }).then((files) => {
@@ -32,8 +30,6 @@ async function checkFolderName(name, username, path) {
 var resolvers = {
     Query: {
         files: async function (parent, args, { GenericFile }) {
-            // given args.path, find all top level files and return array of paths
-            //TODO: make this a promise
             return await new Promise((resolve, reject) => {
                 var info;
                 try {
@@ -49,23 +45,16 @@ var resolvers = {
                 }
             });
         },
-        folders: async function (parent, args, { GenericFile }) {
-            // TODO: make folders seperate??? Or just have them in the same database??
-            return await new Promise((resolve, reject) => {
-
-            })
-        },
         file: async function (parent, args, { GenericFile }) {
-
-            return await new Promise((resolve,reject)=>{
-                try{
+            return await new Promise((resolve, reject) => {
+                try {
                     var info = jwt.verify(args.token);
-                    GenericFile.findOne({_id: args.id, uploader:info.username}).then((res)=>{
-                        if(res) resolve(res);
+                    GenericFile.findOne({ _id: args.id, uploader: info.username }).then((res) => {
+                        if (res) resolve(res);
                         resolve(null);
                     })
                 }
-                catch(e){
+                catch (e) {
                     resolve(false);
                 }
             })
@@ -76,11 +65,11 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    GenericFile.update({userRelativePath: args.path, _id: args._id, uploader: info.username},{name: args.newName}).then(res=>{
+                    GenericFile.update({ userRelativePath: args.path, _id: args._id, uploader: info.username }, { name: args.newName }).then(res => {
                         resolve(true);
 
-                    }).catch((e)=>{
-                        throw(e);
+                    }).catch((e) => {
+                        throw (e);
                         resolve(false);
                         return;
                     });
@@ -99,7 +88,7 @@ var resolvers = {
                     var info = jwt.verify(args.token, secret);
                     var path = [];
                     var id = args.path;
-                    
+
                     var folder = new GenericFile({
                         absolutePath: null,
                         userRelativePath: args.path,

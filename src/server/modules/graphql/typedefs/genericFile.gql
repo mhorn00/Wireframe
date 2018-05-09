@@ -1,7 +1,6 @@
     type Query {
         files(path:[String!] token:String!): [File]
         file(_id: String! token:String!): File,
-        folders(path: String! token: String!): [File]
     }
 
     type File {

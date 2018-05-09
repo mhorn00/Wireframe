@@ -43,12 +43,8 @@ var resolvers = {
                                 token: '',
                                 error: 'ERR_UNAPPROVED'
                             }
-                            //('resolving unapproved!');
-                            //(user);
                             resolve(UnapprovedSession);
                             return;
-                        } else {
-                            //(user);
                         }
                         if (verifyRes === true) {
                             var token = jwt.sign({

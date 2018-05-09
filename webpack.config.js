@@ -55,9 +55,6 @@ module.exports = {
                 exclude: /node_modules/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-
-                    // Could also be write as follow:
-                    // use: 'css-loader?modules&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
                     use: [
                         {
                             loader: 'css-loader',
@@ -75,9 +72,6 @@ module.exports = {
                 exclude: /node_modules/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-
-                    // Could also be write as follow:
-                    // use: 'css-loader?modules&importLoader=2&sourceMap&localIdentName=[name]__[local]___[hash:base64:5]!sass-loader'
                     use: [
                         {
                             loader: 'css-loader',

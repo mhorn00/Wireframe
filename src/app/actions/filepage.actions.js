@@ -9,7 +9,8 @@ const ACTIONS = {
     REMOVE_FILE: 'REMOVE_FILE',
     RENAME_FILE: 'RENAME_FILE',
     START_RENAME: 'START_RENAME',
-    END_RENAME: 'END_RENAME'
+    END_RENAME: 'END_RENAME',
+    UPLOAD_STATE: 'UPLOAD_STATE'
 }
 
 export default ACTIONS
@@ -26,6 +27,13 @@ import gql from 'graphql-tag';
 const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
+
+export function uploadState(type){
+    return {
+        type: ACTIONS.UPLOAD_STATE,
+        payload: type
+    }
+}
 
 export function startRename(_id) {
     return {

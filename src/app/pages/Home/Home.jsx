@@ -7,7 +7,7 @@ import LoginContainer from '../../components/LoginContainer/LoginContainer.jsx';
 export default class Home extends React.Component {
     render() {
         return (
-            <MasterLayout location={this.props.location}>
+            <MasterLayout location={this.props.location} >
                 <div className={styles.top}>
                     <Particle />
                     <div className={styles.content}>
