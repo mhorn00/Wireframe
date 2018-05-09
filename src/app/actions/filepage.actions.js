@@ -43,7 +43,7 @@ export function endRename() {
 export function renameFile(path, oldName, newName) {
     var pathString = '';
     path.forEach(part => pathString += part);
-    var query = gql`mutation($path:[!String]){renameFile(path: $path, oldName: "${oldName}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
+    var query = gql`mutation($path:![!String]){renameFile(path: $path, oldName: "${oldName}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({
             query, variables: {
@@ -87,7 +87,7 @@ export function finalizeFolder(name, path) {
     return dispatch => {
         _fetch({
             query, variables: {
-                path,
+                path: path,
                 token: localStorage.getItem("token"),
                 name: name
             }
@@ -136,7 +136,8 @@ export function setError(error) {
 }
 
 export function resetList(path) {
-    var query = `query{files(path:"${path}" token:"${localStorage.getItem("token")}"){
+    console.log(path);
+    var query = gql`query($path:[String!]){files(path:$path token:"${localStorage.getItem("token")}"){
             _id,
             rawName,
             name,
@@ -147,7 +148,9 @@ export function resetList(path) {
     }`
     return dispatch => {
         dispatch(refreshRequest('resetList'));
-        _fetch({ query }).then(res => {
+        _fetch({ query, variables:{
+            path: path
+        } }).then(res => {
             if (res.data && res.data.files) {
                 dispatch(refreshComplete(res.data.files));
             }

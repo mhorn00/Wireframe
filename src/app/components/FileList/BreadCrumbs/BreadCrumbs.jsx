@@ -9,7 +9,7 @@ class BreadCrumbs extends React.Component {
         this.setBread = this.setBread.bind(this);
     }
 
-    setBread(dir) {
+    setBread(file) {
         let bread = [];
         let key = 0;
         bread.push(<div key={key++} className={styles.crumb} onClick={(e) => {
@@ -18,7 +18,7 @@ class BreadCrumbs extends React.Component {
             this.props.dispatch(setDir(newPath));
             this.props.dispatch(resetList(newPath));
         }}>root</div>);
-        dir.forEach(part => {
+        file.userRelativePath.forEach(part => {
             /* part = part.substring(0, part.length - 1);
             if (part == '') {
                 return;
@@ -31,13 +31,19 @@ class BreadCrumbs extends React.Component {
                 this.props.dispatch(resetList(newPath));
             }}>{part}</div>); */
             if (part !== '') {
+                console.log('this below me')
+                let fileIndex = this.props.files.findIndex(item => item._id === part);
+                console.log(fileIndex);
+                console.log(this.props.files);
                 bread.push(
                     <div key={key++} className={styles.crumb} onClick={(e) => {
                         e.preventDefault();
-                        console.log(key);
-
+                        var slice = dir.slice(0, fileIndex);
+                        console.log(slice);
+                        this.props.dispatch(setDir(slice));
+                        this.props.dispatch(resetList(slice));
                     }}>
-                    {part}
+                        {}
                     </div>
                 )
             }

@@ -38,7 +38,8 @@ var resolvers = {
                 var info;
                 try {
                     info = jwt.verify(args.token, secret);
-                    GenericFile.find({ uploader: info.username, userRelativePath: args.path == '' ? '/' : args.path }).then((files) => {
+                    console.log(args);
+                    GenericFile.find({ uploader: info.username, userRelativePath: args.path }).then((files) => {
                         resolve(files);
                     })
                 }

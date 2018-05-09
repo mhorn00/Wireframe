@@ -9,7 +9,7 @@ const defaults = {
     error: null,
     files: null,
     pending: false,
-    dir: [''],
+    dir: '',
     isMakingFolder: false,
     isRenaming: {isEditing: false, _id: null}
 }
@@ -59,6 +59,7 @@ const filepage = (state = defaults, action) => {
                 })
             }
         case actions.SET_DIR:{
+            console.log(action.payload);
             return Object.assign({},state,{
                 dir: action.payload,
                 error: null,

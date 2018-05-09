@@ -1,5 +1,5 @@
     type Query {
-        files(path:String! token:String!): [File]
+        files(path:[String!] token:String!): [File]
         file(path:String! token:String!): File,
         folders(path: String! token: String!): [File]
     }
