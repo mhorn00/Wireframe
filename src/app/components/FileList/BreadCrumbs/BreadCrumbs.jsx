@@ -2,6 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styles from './BreadCrumbs.scss';
 import { setDir, resetList } from '../../../actions/filepage.actions';
+import {createApolloFetch} from 'apollo-fetch';
+import {URL as IP} from '../../../const';
+
+var _fetch = createApolloFetch({uri:IP+'/graphql'})
 
 class BreadCrumbs extends React.Component {
     constructor(props) {
@@ -24,21 +28,22 @@ class BreadCrumbs extends React.Component {
             this.props.dispatch(resetList(newPath));
         }}>{part}</div>); */
         this.props.dir.forEach(path => {
-            let indexOfPath = this.props.files.findIndex(file => file._id === path);
-            if (path === '') path = 'root' // if path === '' it is the root element (empty id)
-            bread.push((
-                <div key={key++} className={styles.crumb} onClick={(e) => {
-                    e.preventDefault();
-                    let newDir = this.props.dir.slice(0, indexOfPath);
-                    this.props.dispatch(setDir(newDir));
-                    this.props.dispatch(resetList(newDir));
-                }}>
-                    {path}
-                </div>
-            ))
-            bread.push(<div key={key++} className={styles.crumbSep} > /</div >)
-        }
-        )
+            if(path!==''){
+                var query = `query{file(_id:"${path}" token:"${localStorage.getItem('token')}"){
+                    _id,
+                    name,
+                }}`
+                _fetch({query}).then(res=>{
+                    console.log(res);
+                    if(res.data.file){
+                        console.log(res.data.file);
+                        bread.push((<div key={key++} className={styles.crumb}>
+                                {res.data.file.name}
+                            </div>))
+                    }
+                })
+            }
+        })
         return bread;
     }
 

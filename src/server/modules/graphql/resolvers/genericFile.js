@@ -57,7 +57,18 @@ var resolvers = {
         },
         file: async function (parent, args, { GenericFile }) {
 
-            return {};
+            return await new Promise((resolve,reject)=>{
+                try{
+                    var info = jwt.verify(args.token);
+                    GenericFile.findOne({_id: args.id, uploader:info.username}).then((res)=>{
+                        if(res) resolve(res);
+                        resolve(null);
+                    })
+                }
+                catch(e){
+                    resolve(false);
+                }
+            })
         }
     },
     Mutation: {
