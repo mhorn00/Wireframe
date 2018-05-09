@@ -7,11 +7,7 @@ var _path = require('path')
 var usersPath = __dirname + "../../../../../../users/";
 var GenericFile = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
-<<<<<<< HEAD
 var bb = require('bluebird');
-// TODO: make secret file
-=======
->>>>>>> 761f64fbc363c4acb61b4d4a6ae5297c26af1b97
 
 async function removeSubitems(username, path, name) {
     // items in this folder path should all removed - all folders within it should have theirs removed also
@@ -52,7 +48,6 @@ var resolvers = {
         file: async function (parent, args, { GenericFile }) {
             return await new Promise((resolve, reject) => {
                 try {
-<<<<<<< HEAD
                     var info = jwt.verify(args.token, secret);
                     GenericFile.findOne({ _id: args._id }).then((res) => {
                         if (res) resolve(res);
@@ -70,11 +65,6 @@ var resolvers = {
                     var info = jwt.verify(args.token, secret);
                     var fileParents = [];
                     if(args._id==''){
-=======
-                    var info = jwt.verify(args.token);
-                    GenericFile.findOne({ _id: args.id, uploader: info.username }).then((res) => {
-                        if (res) resolve(res);
->>>>>>> 761f64fbc363c4acb61b4d4a6ae5297c26af1b97
                         resolve(null);
                         return;
                     }
