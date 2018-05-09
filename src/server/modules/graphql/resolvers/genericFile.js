@@ -86,6 +86,9 @@ var resolvers = {
                 console.log(args);
                 try {
                     var info = jwt.verify(args.token, secret);
+                    var path = [];
+                    var id = args.path;
+                    
                     var folder = new GenericFile({
                         absolutePath: null,
                         userRelativePath: args.path,

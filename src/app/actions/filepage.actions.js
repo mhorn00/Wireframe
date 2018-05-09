@@ -76,14 +76,9 @@ export function removeFile(path, name) {
 }
 
 export function finalizeFolder(name, path) {
-    var pathString = '';
-    path.forEach(part => pathString += part);
     var query = gql`mutation($path: [String!], $name: String!, $token: String!){
         addFolder(path: $path, name: $name, token:$token)
-    }`;
-
-    console.log(query);
-    
+    }`;    
     return dispatch => {
         _fetch({
             query, variables: {
@@ -136,14 +131,14 @@ export function setError(error) {
 }
 
 export function resetList(path) {
-    console.log(path);
     var query = gql`query($path:[String!]){files(path:$path token:"${localStorage.getItem("token")}"){
             _id,
             rawName,
             name,
             type,
             uploadDate,
-            fileSize
+            fileSize,
+            userRelativePath
         }
     }`
     return dispatch => {
@@ -152,6 +147,7 @@ export function resetList(path) {
             path: path
         } }).then(res => {
             if (res.data && res.data.files) {
+                console.log(res.data.files);
                 dispatch(refreshComplete(res.data.files));
             }
             else {

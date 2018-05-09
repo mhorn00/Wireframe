@@ -9,7 +9,7 @@ const defaults = {
     error: null,
     files: null,
     pending: false,
-    dir: '',
+    dir: [''],
     isMakingFolder: false,
     isRenaming: {isEditing: false, _id: null}
 }
