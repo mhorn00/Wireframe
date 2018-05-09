@@ -29,8 +29,8 @@ class FileList extends React.Component {
                 return;
             }
             case "share": {
-                //TODO: add share later
-                /* this.props.dispatch(); */
+                //TODO: add share link
+                //this.props.dispatch();
                 return;
             }
         }

@@ -71,12 +71,7 @@ var resolvers = {
                     user.save().then(()=>resolve(true));
                 })
             })
-        },
-        /* approve: async function(parent,args,{User}){
-            return await new Promise((resolve,reject)=>{
-                
-            })
-        } */
+        }
     }
 }
 

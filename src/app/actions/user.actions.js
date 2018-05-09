@@ -19,7 +19,8 @@ export function authenticate(token) {
         _fetch({ query }).then(res => {
             if (res.errors) {
                 dispatch(setAuthRes(false));
-                localStorage.setItem('token', '');
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
             } else {
                 dispatch(setAuthRes(res.data.authenticate));
             }

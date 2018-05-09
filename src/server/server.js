@@ -82,23 +82,17 @@ app.post('/upload', upload.single('file'), function (req, res) {
     }
 })
 
-//app.use(bodyParser.json());
-
-
 app.get('/filedl', function (req, res) {
     try{
         var info = jwt.verify(req.query.token, secret);
-        //(req.query);
         var _path = path.resolve(__dirname+`../../../users/${info.username}/${req.query.rawName}`);
         res.download(_path, function (err) {
             if (err) {
-                //(err);
             }
         });
     }
     catch(e){
         res.send('Sorry, invalid something.')
-        //(e);
     }
 })
 
@@ -126,6 +120,5 @@ app.get('/*', function (req, res) {
 });
 
 app.listen(PORT, function () {
-    //('HEWWO????? 0w0')
 })
 

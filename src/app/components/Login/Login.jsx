@@ -4,6 +4,7 @@ import { login } from '../../actions/login.actions';
 import { connect } from 'react-redux';
 import { switchScreen } from '../../actions/homecontainer.actions';
 import { Redirect } from 'react-router-dom'
+import {authenticate} from '../../actions/user.actions';
 
 class Login extends React.Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class Login extends React.Component {
         let username;
         let password;
         let err;
+        //TODO: make this check if authenticated from userReducer
         if(this.props.loginReducer.jwt && !this.props.loginReducer.auth_pending){
             return <Redirect to='/profile'/>
         }
@@ -26,6 +28,7 @@ class Login extends React.Component {
             }
         }
         if (this.props.pending) {
+            //TODO: make this a actual Imgae
             return (<img src='Loading/test.png' />)
         }
         return (

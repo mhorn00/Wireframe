@@ -11,13 +11,19 @@ const defaults = {
     pending: false,
     dir: [''],
     isMakingFolder: false,
-    isRenaming: {isEditing: false, _id: null}
+    isRenaming: {isEditing: false, _id: null},
+    uploadState: 'resting'
 }
 
 
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
+        case actions.UPLOAD_STATE:{
+            return Object.assign({}, state, {
+                uploadState: action.payload
+            });
+        }
         case actions.START_RENAME:{
             return Object.assign({}, state, {
                 isRenaming: {isEditing: true, _id: action.payload}
