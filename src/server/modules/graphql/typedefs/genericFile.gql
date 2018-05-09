@@ -1,7 +1,7 @@
     type Query {
         files(path:[String!] token:String!): [File]
         file(_id: String! token:String!): File,
-        folders(path: String! token: String!): [File]
+        getCrumbs(_id: String! token: String!): [String]!
     }
 
     type File {

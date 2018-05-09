@@ -9,7 +9,9 @@ const ACTIONS = {
     REMOVE_FILE: 'REMOVE_FILE',
     RENAME_FILE: 'RENAME_FILE',
     START_RENAME: 'START_RENAME',
-    END_RENAME: 'END_RENAME'
+    END_RENAME: 'END_RENAME',
+    GET_CRUMBS: 'GET_CRUMBS',
+    SET_CRUMBS: 'SET_CRUMBS'
 }
 
 export default ACTIONS
@@ -78,7 +80,7 @@ export function removeFile(path, name) {
 export function finalizeFolder(name, path) {
     var query = gql`mutation($path: [String!], $name: String!, $token: String!){
         addFolder(path: $path, name: $name, token:$token)
-    }`;    
+    }`;
     return dispatch => {
         _fetch({
             query, variables: {
@@ -143,16 +145,36 @@ export function resetList(path) {
     }`
     return dispatch => {
         dispatch(refreshRequest('resetList'));
-        _fetch({ query, variables:{
-            path: path
-        } }).then(res => {
+        _fetch({
+            query, variables: {
+                path: path
+            }
+        }).then(res => {
             if (res.data && res.data.files) {
-                console.log(res.data.files);
                 dispatch(refreshComplete(res.data.files));
             }
             else {
                 dispatch(setError(res.errors));
             }
+        })
+    }
+}
+
+function setCrumbs(payload) {
+    return {
+        type: ACTIONS.SET_CRUMBS,
+        payload
+    }
+}
+
+export function getCrumbs(_id) {
+    var crumbs = [];
+    console.log(_id);
+    return dispatch => {
+        var query = `query{getCrumbs(_id:"${_id}" token:"${localStorage.getItem('token')}")
+    }`
+        _fetch({ query }).then(res => {
+            console.log(res);
         })
     }
 }

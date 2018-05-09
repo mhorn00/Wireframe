@@ -59,7 +59,6 @@ const filepage = (state = defaults, action) => {
                 })
             }
         case actions.SET_DIR:{
-            console.log(action.payload);
             return Object.assign({},state,{
                 dir: action.payload,
                 error: null,

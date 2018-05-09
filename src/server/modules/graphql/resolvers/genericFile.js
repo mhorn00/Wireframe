@@ -7,7 +7,7 @@ var _path = require('path')
 var usersPath = __dirname + "../../../../../../users/";
 var GenericFile = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
-
+var bb = require('bluebird');
 // TODO: make secret file
 
 async function removeSubitems(username, path, name) {
@@ -38,7 +38,6 @@ var resolvers = {
                 var info;
                 try {
                     info = jwt.verify(args.token, secret);
-                    console.log(args);
                     GenericFile.find({ uploader: info.username, userRelativePath: args.path }).then((files) => {
                         resolve(files);
                     })
@@ -49,25 +48,52 @@ var resolvers = {
                 }
             });
         },
-        folders: async function (parent, args, { GenericFile }) {
-            // TODO: make folders seperate??? Or just have them in the same database??
-            return await new Promise((resolve, reject) => {
-
-            })
-        },
         file: async function (parent, args, { GenericFile }) {
-
-            return await new Promise((resolve,reject)=>{
-                try{
-                    var info = jwt.verify(args.token);
-                    GenericFile.findOne({_id: args.id, uploader:info.username}).then((res)=>{
-                        if(res) resolve(res);
+            return await new Promise((resolve, reject) => {
+                try {
+                    var info = jwt.verify(args.token, secret);
+                    GenericFile.findOne({ _id: args._id }).then((res) => {
+                        if (res) resolve(res);
                         resolve(null);
                     })
                 }
-                catch(e){
+                catch (e) {
                     resolve(false);
                 }
+            })
+        },
+        getCrumbs: async function (parent, args, { GenericFile }) {
+            return await new Promise((resolve, reject) => {
+                try {
+                    var info = jwt.verify(args.token, secret);
+                    var fileParents = [];
+                    if(args._id==''){
+                        resolve(null);
+                        return;
+                    }
+                    else{
+                        console.log(args);
+                    }
+                    GenericFile.findOne({ _id: args._id }).then(res => {
+                        fileParents = res.userRelativePath
+                    });
+                    var promises = [];
+                    var parentNames = [];
+                    fileParents.forEach(parentId => {
+                        if(parentId!=='')
+                        promises.push(GenericFile.findOne({ _id: parentId }).then(p => parentNames.push(p.name)).catch(e=>console.log(e)));
+                    })
+                    console.log('am i eve nfucking running')
+                    bb.all(promises).then(res => {
+                        console.log(res);
+                        resolve([...res]);
+                    })
+                }
+                catch (e) {
+                    resolve(false);
+                    console.log(e);
+                }
+
             })
         }
     },
@@ -76,11 +102,11 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    GenericFile.update({userRelativePath: args.path, _id: args._id, uploader: info.username},{name: args.newName}).then(res=>{
+                    GenericFile.update({ userRelativePath: args.path, _id: args._id, uploader: info.username }, { name: args.newName }).then(res => {
                         resolve(true);
 
-                    }).catch((e)=>{
-                        throw(e);
+                    }).catch((e) => {
+                        throw (e);
                         resolve(false);
                         return;
                     });
@@ -99,7 +125,7 @@ var resolvers = {
                     var info = jwt.verify(args.token, secret);
                     var path = [];
                     var id = args.path;
-                    
+
                     var folder = new GenericFile({
                         absolutePath: null,
                         userRelativePath: args.path,

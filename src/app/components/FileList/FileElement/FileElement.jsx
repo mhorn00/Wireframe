@@ -108,7 +108,6 @@ class FileElement extends React.Component {
         )
 
         if (!this.props.isDragging && file.type !=='dir') {
-            console.log(this.props);
             var contained = connectDragSource(contained);
         }
         else {
@@ -125,8 +124,6 @@ class FileElement extends React.Component {
                 className: styles.trigger,
                 style: {
                     cursor: function () {
-                        console.log(this);
-                        console.log('hi')
                         if (stuff.props.canDrop && stuff.props.isMoving) {
                             return 'copy'
                         }

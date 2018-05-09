@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './BreadCrumbs.scss';
-import { setDir, resetList } from '../../../actions/filepage.actions';
+import { setDir, resetList, getCrumbs } from '../../../actions/filepage.actions';
 import {createApolloFetch} from 'apollo-fetch';
 import {URL as IP} from '../../../const';
 
@@ -16,6 +16,7 @@ class BreadCrumbs extends React.Component {
     setBread(file) {
         let bread = [];
         let key = 0;
+
         /* part = part.substring(0, part.length - 1);
         if (part == '') {
             return;
@@ -28,9 +29,9 @@ class BreadCrumbs extends React.Component {
             this.props.dispatch(resetList(newPath));
         }}>{part}</div>); */
         this.props.dir.forEach(path => {
-            if(path!==''){
+            if(path!=''){
+                console.log(`I AM CHECKING ${path}`)
                 var query = `query{file(_id:"${path}" token:"${localStorage.getItem('token')}"){
-                    _id,
                     name,
                 }}`
                 _fetch({query}).then(res=>{
@@ -49,7 +50,13 @@ class BreadCrumbs extends React.Component {
 
     render() {
         let breadcrumbs = this.setBread(this.props.dir);
-
+        var pop = this.props.dir.pop();
+        console.log('pop',pop)
+        if(pop!=''){
+            this.props.dispatch(getCrumbs(pop));
+        }
+        console.log(this.props.dir);
+        
         return (
             <div className={styles.cont}>
                 {breadcrumbs}
