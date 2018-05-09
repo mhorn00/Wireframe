@@ -8,6 +8,14 @@ const userReducer = (state={jwt:localStorage.getItem('token'),username:localStor
             });
         }
         case actions.AUTH_RES:{
+            if(action.payload===false){
+                console.log('its false buddy')
+                localStorage.clear('username');
+                localStorage.clear('token');
+            }
+            else{
+                console.log('true btw');
+            }
             return Object.assign({}, state, {
                 authenticated: action.payload,
                 auth_pending: false
