@@ -90,7 +90,6 @@ var resolvers = {
                         _id: args._id
                     }).then(res => {
                         fileParents = res.userRelativePath;
-                        console.log('fileparents:',fileParents)
                         var promises = [];
                         var parentNames = [];
                         fileParents.forEach(parentId => {
