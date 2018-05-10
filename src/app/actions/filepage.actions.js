@@ -12,7 +12,8 @@ const ACTIONS = {
     END_RENAME: 'END_RENAME',
     GET_CRUMBS: 'GET_CRUMBS',
     SET_CRUMBS: 'SET_CRUMBS',
-    UPLOAD_STATE: 'UPLOAD_STATE'
+    UPLOAD_STATE: 'UPLOAD_STATE',
+    UPDATE_PROGRESS: 'UPDATE_PROGRESS'
 }
 
 export default ACTIONS
@@ -29,6 +30,13 @@ import gql from 'graphql-tag';
 const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
+
+export function updateProgress(progress){
+    return{
+        type: ACTIONS.UPLOAD_STATE,
+        payload: progress
+    }
+}
 
 export function uploadState(type){
     return {
