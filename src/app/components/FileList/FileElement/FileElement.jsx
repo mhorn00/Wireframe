@@ -114,7 +114,7 @@ class FileElement extends React.Component {
         )
 
         if (!this.props.isDragging && file.type !=='dir') {
-            var contained = connectDragSource(contained);
+            var contained = /* connectDragSource */(contained);
         }
         else {
             // TODO: Make a custom DragLayer so that dragging looks good
@@ -154,6 +154,6 @@ function mapStateToProps(state) {
 
 var connectedThing = connect(mapStateToProps)(FileElement);
 
-export default DragSource('file', fileDragSource, fileCollect)(connectedThing);
+export default /* DragSource('file', fileDragSource, fileCollect) */(connectedThing);
 
-export const Folder = DropTarget('file', fileDrop, folderCollect)(connectedThing);
+export const Folder = /* DropTarget('file', fileDrop, folderCollect) */(connectedThing);
