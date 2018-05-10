@@ -14,7 +14,7 @@ class Uploader extends React.Component {
     onDrop(e) {
         console.log('AHHHHHHHHHHHHHHH')
         e.preventDefault();
-        for (var i = 0; i < e.dataTransfer.files.length; i++) {
+       /*  for (var i = 0; i < e.dataTransfer.files.length; i++) {
             var data = new FormData();
             data.append('file', e.dataTransfer.files[i]);
             data.append('token', localStorage.getItem("token"));
@@ -38,7 +38,7 @@ class Uploader extends React.Component {
                 this.props.dispatch(updateProgress(progress));
             });
             xhr.send(data);
-        }
+        } */
     }
 
     onDragStarted(e) {
@@ -55,7 +55,9 @@ class Uploader extends React.Component {
         return (
             <div className={styles.base}>
                 <p className={styles.text}>Drop Files Here</p>
-                <div onDrop={this.onDrop} onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped} className={styles[`${this.props.uploadState}`]} onDragOver={(e) => { console.log('HEWWO') }}>
+                <div onDrop={this.onDrop}  onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped} className={styles[`${this.props.uploadState}`]} onDragOver={(e) => { 
+                    e.preventDefault();
+                    console.log('HEWWO') }}>
                     <div className={styles.loading}>
                         <p className={styles.text}>{this.props.uploadProgress}</p>
                     </div>
