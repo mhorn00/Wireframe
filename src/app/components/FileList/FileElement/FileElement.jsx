@@ -71,7 +71,13 @@ class FileElement extends React.Component {
             <div onClick={e => {
                 switch (file.type) {
                     case 'dir': {
-                        var newPath = [...this.props.dir,file._id];
+                        console.log('PROPS BELOW');
+                        console.log(this.props);
+                        var newPath = [...[""], file._id]
+                        console.log('im newpath');
+                        console.log(newPath);
+                        console.log(newPath[0])
+                        console.log('newpath size ',newPath.length)
                         dispatch(setDir(newPath));
                         dispatch(resetList(newPath));
                         /* var files = history.files?[file,...history.files]:[].push(file);

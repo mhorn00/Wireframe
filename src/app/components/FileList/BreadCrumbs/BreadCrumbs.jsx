@@ -50,7 +50,7 @@ class BreadCrumbs extends React.Component {
 
     render() {
         let breadcrumbs = this.setBread(this.props.dir);
-        var pop = this.props.dir.pop();
+        var pop = this.props.dir[this.props.dir.length-1];
         console.log('pop',pop)
         if(pop!=''){
             this.props.dispatch(getCrumbs(pop));
