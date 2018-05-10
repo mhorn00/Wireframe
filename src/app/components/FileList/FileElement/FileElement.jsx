@@ -73,7 +73,7 @@ class FileElement extends React.Component {
                     case 'dir': {
                         console.log('PROPS BELOW');
                         console.log(this.props);
-                        var newPath = [...[""], file._id]
+                        var newPath = [...this.props.dir, file._id]
                         console.log('im newpath');
                         console.log(newPath);
                         console.log(newPath[0])
