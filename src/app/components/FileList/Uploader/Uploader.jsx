@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { uploadState } from '../../../actions/filepage.actions';
 import styles from './Uploader.scss'
+import {URL as IP} from '../../../const';
 
 class Uploader extends React.Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class Uploader extends React.Component {
     }
     onDrop(e) {
         e.preventDefault();
+        console.log('hello retard');
         for (var i = 0; i < e.dataTransfer.files.length; i++) {
             var data = new FormData();
             data.append('file', e.dataTransfer.files[i]);
