@@ -48,10 +48,11 @@ var secret = require('./secret');
 var fs = require('fs');
 
 app.post('/upload', upload.single('file'), function (req, res) {
-    
+    console.log("start upload")
     if (req.body.fromSite == 'true') {
         var token = req.body.token;
         try {
+            console.log("try upload")
             var info;
             if (info = jwt.verify(token, secret)) {
                 var file = req.file;
@@ -59,6 +60,7 @@ app.post('/upload', upload.single('file'), function (req, res) {
                 var tpath = path.resolve('./users/' + info.username + '/'+ file.originalname);
                 GenericFile.remove({name: file.originalname, userRelativePath: uPath}).then(()=>{
                     var writeFile = fs.writeFile(tpath, file.buffer, (err, result) => {
+                        console.log("start write")
                         if (err) throw err;
                         var mongoFile = new GenericFile({
                             absolutePath:'',
@@ -74,6 +76,10 @@ app.post('/upload', upload.single('file'), function (req, res) {
             }
         }
         catch (e) {
+            console.log("err at try")
+            if (e){
+                throw e;
+            }
             res.send('Denied');
         }
     }
