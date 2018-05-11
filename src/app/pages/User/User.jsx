@@ -4,6 +4,7 @@ import styles from './User.scss';
 import MasterLayout from '../../layouts/MasterLayout/MasterLayout.jsx';
 import FileList from '../../components/FileList/FileList/FileList.jsx';
 import Uploader from '../../components/FileList/Uploader/Uploader.jsx';
+import FolderStructure from '../../components/FileList/FolderStructure/FolderStructure.jsx';
 
 class User extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class User extends React.Component {
                 <div className={styles.cont}>
                     <div className={styles.sidebar}>
                         <div className={styles.folderStruc}>
-
+                            <FolderStructure />
                         </div>
                         <div className={styles.uploader}>
                             <Uploader />

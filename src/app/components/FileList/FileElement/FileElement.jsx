@@ -69,6 +69,9 @@ class FileElement extends React.Component {
         let size = this.getSize(file.fileSize);
         var contained = (
             <div onClick={e => {
+                if (this.props.isRenaming.isEditing){
+                    return;
+                }
                 switch (file.type) {
                     case 'dir': {
                         var newPath = [...this.props.dir, file._id]
@@ -97,9 +100,9 @@ class FileElement extends React.Component {
                 {this.props.isRenaming.isEditing && this.props.isRenaming._id == file._id
                     ? <form onSubmit={e => {
                         e.preventDefault();
-                        this.props.dispatch(renameFile(this.props.dir, file.name, this.filename.value));
+                        this.props.dispatch(renameFile(this.props.dir, file._id, this.filename.value));
                     }} className={styles.form}>
-                        <input type="text" placeholder="New Folder" ref={node => this.filename = node} className={styles.textbox} autoFocus />
+                        <input type="text" placeholder={file.name} ref={node => this.filename = node} className={styles.textbox} autoFocus />
                     </form>
                     : <div className={styles.text}>{file.name}</div>}
                 <div className={styles.text}>{file.type == 'dir' ? '' : size}</div>
