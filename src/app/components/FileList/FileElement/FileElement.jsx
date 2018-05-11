@@ -65,7 +65,7 @@ class FileElement extends React.Component {
     render() {
         var { file, dispatch } = this.props;
         let { connectDragSource, isDragging, connectDragPreview } = this.props;
-        let icon = file.type == 'dir' ? 'far fa-folder' : 'far fa-file';
+        let icon = file.type == '|dir|' ? 'far fa-folder' : 'far fa-file';
         let size = this.getSize(file.fileSize);
         var contained = (
             <div onClick={e => {
@@ -73,7 +73,7 @@ class FileElement extends React.Component {
                     return;
                 }
                 switch (file.type) {
-                    case 'dir': {
+                    case '|dir|': {
                         var newPath = [...this.props.dir, file._id]
                         dispatch(setDir(newPath));
                         dispatch(resetList(newPath));
@@ -83,12 +83,6 @@ class FileElement extends React.Component {
                         history.pushState({what:[]},'epic','epic')
                         history.pushState({files},`Folder ${file.name} on Wireframe!`,`${IP+'/profile'}`);
                         console.log(history); */
-                        break;
-                    }
-                    case '\'': {
-                        var newPath = this.props.dir.splice(0, this.props.dir.length - 1);
-                        dispatch(setDir(newPath));
-                        dispatch(resetList(newPath));
                         break;
                     }
                     default: {
@@ -105,19 +99,19 @@ class FileElement extends React.Component {
                         <input type="text" placeholder={file.name} ref={node => this.filename = node} className={styles.textbox} autoFocus />
                     </form>
                     : <div className={styles.text}>{file.name}</div>}
-                <div className={styles.text}>{file.type == 'dir' ? '' : size}</div>
-                <div className={styles.text}>{file.type == 'dir' ? '' : file.type}</div>
+                <div className={styles.text}>{file.type == '|dir|' ? '' : size}</div>
+                <div className={styles.text}>{file.type == '|dir|' ? '' : file.type}</div>
             </div>
         )
 
-        if (!this.props.isDragging && file.type !=='dir') {
+        if (!this.props.isDragging && file.type !=='|dir|') {
             var contained = /* connectDragSource */(contained);
         }
         else {
             // TODO: Make a custom DragLayer so that dragging looks good
         }
 
-        if (file.type == 'dir') {
+        if (file.type == '|dir|') {
             //contained = DropTarget(contained);
         }
 

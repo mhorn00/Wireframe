@@ -12,5 +12,9 @@
             "export default connect(mapStateToProps)(${TM_FILENAME_BASE});"
                 
         ]
+    },
+    "Console Log":{
+        "prefix":"clog",
+        "body":"console.log(${1})"
     }
 }

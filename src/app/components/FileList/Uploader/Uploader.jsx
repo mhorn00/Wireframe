@@ -12,10 +12,8 @@ class Uploader extends React.Component {
         this.onDragStopped = this.onDragStopped.bind(this);
     }
     onDrop(e) {
-        console.log('AHHHHHHHHHHHHHHH')
         e.preventDefault();
         for (var i = 0; i < e.dataTransfer.files.length; i++) {
-            console.log('hi');
             var data = new FormData();
             data.append('file', e.dataTransfer.files[i]);
             data.append('token', localStorage.getItem("token"));

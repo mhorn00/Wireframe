@@ -11,14 +11,15 @@ var GenericFile = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
 var bb = require('bluebird');
 
-async function removeSubitems(username, path, name) {
+async function removeSubitems(username, path, _id) {
     // items in this folder path should all removed - all folders within it should have theirs removed also
+    console.log("hksdjlafhkljasdhfkljdsahfrkjlsahjkfldhsdkljzh")
     GenericFile.find({
         uploader: username,
-        userRelativePath: path + name
+        userRelativePath: [...path,_id]
     }).then((files) => {
         files.forEach((e) => {
-            if (e.type == 'dir') {
+            if (e.type == '|dir|') {
                 removeSubitems(`${e.userRelativePath}/${e.name}/`).then(() => e.remove());
             } else {
                 fs.unlinkSync(_path.resolve(`${usersPath}${username}/${e.name}`));
@@ -45,7 +46,6 @@ var resolvers = {
                 var info;
                 try {
                     info = jwt.verify(args.token, secret);
-                    console.log(args);
                     GenericFile.find({
                         uploader: info.username,
                         userRelativePath: args.path
@@ -103,7 +103,7 @@ var resolvers = {
                                 }));
                                 promises.push(prom);
                             }
-                            else{
+                            else {
                                 var prom = GenericFile.find({
                                     uploader: info.username,
                                     userRelativePath: ['']
@@ -113,15 +113,12 @@ var resolvers = {
 
                         })
                         bb.all(promises).then(results => {
-                            console.log(results);
-                            console.log('resultnames');
-                            console.log(resultNames);
+
                         })
                     });
 
                 } catch (e) {
                     resolve(false);
-                    console.log(e);
                 }
 
             })
@@ -134,8 +131,7 @@ var resolvers = {
                     var info = jwt.verify(args.token, secret);
                     let struc = [];
                     let user = info.username;
-                    GenericFile.find({uploader: user}).then(res =>{
-                        console.log(res);
+                    GenericFile.find({ uploader: user }).then(res => {
                         resolve(res);
                     });
                 } catch (e) {
@@ -183,15 +179,13 @@ var resolvers = {
                 try {
                     var info = jwt.verify(args.token, secret);
                     var path = [];
-
                     var folder = new GenericFile({
                         absolutePath: null,
                         userRelativePath: args.path,
                         name: args.name,
                         uploader: info.username,
-                        type: "dir"
+                        type: "|dir|"
                     })
-                    console.log(folder);
                     GenericFile.find({
                         userRelativePath: args.path,
                         name: args.name,
@@ -221,20 +215,19 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    if (args.path == 'undefined') args.path = '';
                     GenericFile.find({
-                        userRelativePath: args.path === '' ? '/' : args.path,
-                        name: args.name
+                        _id: args._id
                     }).then((res) => {
                         res.forEach(element => {
-                            if (element.type == 'dir') {
+                            if (element.type == '|dir|') {
+                                //TODO: check if this remove subfolder still works
                                 removeSubitems(element.uploader, element.userRelativePath, element.name).then(() => {
                                     element.remove();
                                     resolve(true);
                                 });
                             } else {
                                 try {
-                                    fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${element.uploader}/${element.path === undefined ? '/' : element.path}/${element.name}`));
+                                    fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${element.uploader}/${element.name}`));
                                     element.remove().then(() => resolve(true));
                                 } catch (e) {
                                     if (e.code == 'ENOENT') {

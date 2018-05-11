@@ -73,7 +73,7 @@ export function renameFile(path, _id, newName) {
 }
 
 export function removeFile(path, _id) {
-    var query = gql`mutation{remove(_id: "${_id}", token: "${localStorage.getItem("token")}")}`
+    var query = `mutation{remove(_id: "${_id}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({ query }).then(res => {
             if (res.data && res.data.remove) {
@@ -173,12 +173,10 @@ function setCrumbs(payload) {
 
 export function getCrumbs(_id) {
     var crumbs = [];
-    console.log(_id);
     return dispatch => {
         var query = `query{getCrumbs(_id:"${_id}" token:"${localStorage.getItem('token')}")
     }`
         _fetch({ query }).then(res => {
-            console.log(res);
         })
     }
 }

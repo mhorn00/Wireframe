@@ -12,9 +12,6 @@ const userReducer = (state={jwt:localStorage.getItem('token'),username:localStor
                 localStorage.clear('username');
                 localStorage.clear('token');
             }
-            else{
-                console.log('true btw');
-            }
             return Object.assign({}, state, {
                 authenticated: action.payload,
                 auth_pending: false

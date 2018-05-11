@@ -30,14 +30,11 @@ class BreadCrumbs extends React.Component {
         }}>{part}</div>); */
         this.props.dir.forEach(path => {
             if(path!=''){
-                console.log(`I AM CHECKING ${path}`)
                 var query = `query{file(_id:"${path}" token:"${localStorage.getItem('token')}"){
                     name,
                 }}`
                 _fetch({query}).then(res=>{
-                    console.log(res);
                     if(res.data.file){
-                        console.log(res.data.file);
                         bread.push((<div key={key++} className={styles.crumb}>
                                 {res.data.file.name}
                             </div>))
@@ -51,11 +48,9 @@ class BreadCrumbs extends React.Component {
     render() {
         let breadcrumbs = this.setBread(this.props.dir);
         var pop = this.props.dir[this.props.dir.length-1];
-        console.log('pop',pop)
         if(pop!=''){
             this.props.dispatch(getCrumbs(pop));
         }
-        console.log(this.props.dir);
         
         return (
             <div className={styles.cont}>
