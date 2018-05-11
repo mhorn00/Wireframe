@@ -20,7 +20,7 @@ export function setLoginPending(isLoginPending) {
 
 export function login(username, password) {
     return dispatch => {
-        var query = `mutation{createSession(username:"${username}", pass:"${password}"){token, username, error}}`
+        var query = `mutation{createSession(username:"${username}", pass:"${password}"){token, username, rootFolder ,error}}`
         _fetch({ query }).then(res => {
             if(res.data.createSession.error===''){
                 dispatch(setLoginSuccess(res.data.createSession))

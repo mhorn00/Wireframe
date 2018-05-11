@@ -16,7 +16,7 @@ async function removeSubitems(username, path, _id) {
     console.log("hksdjlafhkljasdhfkljdsahfrkjlsahjkfldhsdkljzh")
     GenericFile.find({
         uploader: username,
-        userRelativePath: [...path,_id]
+        userRelativePath: [...path, _id]
     }).then((files) => {
         files.forEach((e) => {
             if (e.type == '|dir|') {
@@ -40,21 +40,24 @@ async function checkFolderName(name, username, path) {
 var resolvers = {
     Query: {
         files: async function (parent, args, {
-            GenericFile
+            GenericFile, Folder
         }) {
             return await new Promise((resolve, reject) => {
                 var info;
                 try {
                     info = jwt.verify(args.token, secret);
-                    GenericFile.find({
-                        uploader: info.username,
-                        userRelativePath: args.path
-                    }).then((files) => {
-                        resolve(files);
+                    console.log(args);
+                    var children = [];
+                    Folder.findOne({_id:args.parentId}).then(res=>{
+                        console.log('i am the folder you asked for');
+                        console.log(res);
+                        res.children.forEach(child=>{
+                            children.push(child);
+                        })
+                        resolve(children);
                     })
                 } catch (e) {
-                    reject(e);
-                    resolve(null)
+                    resolve(false);
                 }
             });
         },
@@ -172,36 +175,26 @@ var resolvers = {
             })
         },
         addFolder: async function (parent, args, {
-            GenericFile
+            GenericFile, Folder
         }) {
             // path is in terms from user root directory
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    var path = [];
-                    var folder = new GenericFile({
-                        absolutePath: null,
-                        userRelativePath: args.path,
+                    var folder = new Folder({
                         name: args.name,
-                        uploader: info.username,
-                        type: "|dir|"
+                        parentId: args.parentId,
+                        owner: info.username
                     })
-                    GenericFile.find({
-                        userRelativePath: args.path,
-                        name: args.name,
-                        uploader: info.username
-                    }).then((res) => {
-                        //TODO: Add a way to make sure none of the folder have the same name
-                        if (res != null) {
-                            if (folder.name == '') {
-                                folder.name = 'New Folder'
-                            }
-                        }
-                        folder.save().then((e) => {
-                            resolve(true)
-                        }).catch((e) => resolve(false));
+                    console.log(args);
+                    folder.save().then(() => {
+                        Folder.findOne({ _id: args.parentId }).then(res => {
+                            res.children.push({ type: "|dir|", id: folder._id });
+                            res.save().then(() => {
+                                resolve(true);
+                            })
+                        })
                     })
-
                 } catch (e) {
                     throw (e);
                     resolve(false);

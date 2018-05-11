@@ -15,7 +15,7 @@ const defaults = {
     error: null,
     files: null,
     pending: false,
-    dir: [""],
+    dir: [localStorage.getItem('rootFolder')],
     isMakingFolder: false,
     isRenaming: {
         isEditing: false,

@@ -23,10 +23,7 @@ let User = new Schema({
         type: Boolean,
         default: false
     },
-    files: {
-        type: FolderSchema,
-        required: true
-    }
+    rootFolder: String
 })
 
 module.exports = mongo.model('User', User);

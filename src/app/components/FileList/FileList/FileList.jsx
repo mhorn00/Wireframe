@@ -7,7 +7,6 @@ import { resetList, makeFolder, removeFile, startRename } from '../../../actions
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
-import BreadCrumbs from '../BreadCrumbs/BreadCrumbs.jsx';
 import { Folder } from '../FileElement/FileElement.jsx';
 
 
@@ -58,7 +57,6 @@ class FileList extends React.Component {
                 <ContextMenuTrigger id="filelist" >
                     <div className={styles.content}>
                         <div className={styles.bread}>
-                            <BreadCrumbs />
                         </div>
                         <div className={styles.files}>
                             <div className={styles.header}>

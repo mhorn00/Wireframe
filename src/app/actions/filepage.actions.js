@@ -86,7 +86,8 @@ export function removeFile(path, _id) {
 }
 
 export function finalizeFolder(name, path) {
-    var query = gql`mutation($path: [String!]){addFolder(path: $path, name: "${name}", token: "${localStorage.getItem("token")}")}`;
+    console.log(path);
+    var query = `mutation{addFolder(parentId: "${path}", name: "${name}", token: "${localStorage.getItem("token")}")}`;
     return dispatch => {
         _fetch({
             query, variables: {
@@ -136,23 +137,17 @@ export function setError(error) {
     }
 }
 
-export function resetList(path) {
-    var query = gql`query($path:[String!]){files(path:$path token:"${localStorage.getItem("token")}"){
-            _id,
-            rawName,
-            name,
-            type,
-            uploadDate,
-            fileSize,
-            userRelativePath
+export function resetList(parentId) {
+   var query = `query{files(parentId:"${parentId}" token:"${localStorage.getItem("token")}"){
+            childId,
+            childName,
+            childType
         }
     }`
     return dispatch => {
         dispatch(refreshRequest('resetList'));
         _fetch({
-            query, variables: {
-                path: path
-            }
+            query
         }).then(res => {
             if (res.data && res.data.files) {
                 dispatch(refreshComplete(res.data.files));
@@ -161,7 +156,7 @@ export function resetList(path) {
                 dispatch(setError(res.errors));
             }
         })
-    }
+    } 
 }
 
 function setCrumbs(payload) {

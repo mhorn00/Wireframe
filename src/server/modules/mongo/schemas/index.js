@@ -1,5 +1,5 @@
-var GenericFile = require('./data/genericFile');
+var {GenericFile, Folder} = require('./data/genericFile');
 var User = require('./user/user');
 var Session = require('./user/session');
 
-module.exports = {GenericFile, User, Session};
+module.exports = {GenericFile, Folder, User, Session};

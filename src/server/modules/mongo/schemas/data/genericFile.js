@@ -17,35 +17,26 @@ let File = new Schema({
 
 let Folder = new Schema({
     name: String,
-    path: [String],
+    parentId: String,
     owner: String,
     name: String,
     makeDate: {
         type: Date,
         default: Date.now()
     },
-    children: [] // Mixed array so that both files and folders may be children 
+    children: [{
+        childName: String,
+        childType: String,
+        childId: String
+    }] // Mixed array so that both files and folders may be children 
+
+    /*
+        children: [{
+
+        }]
+    */
 })
 
 let FolderModel = mongo.model('Folder',Folder);
 let FileModel = mongo.model('File', File)
-module.exports = {File:FileModel,Folder: FolderModel, FolderSchema: Folder};
-
-let Test = new FolderModel({
-    name: 'classic number 2',
-    path: [''],
-    owner: 'me bitch',
-})
-
-Test.save().then(()=>{
-    Test.children.push(new FolderModel({
-        name:'i am le nested foler 1',
-        children: [new FolderModel({
-            name: 'i am le nested foler number 2',
-            children: [new FileModel({
-                name: 'HI !!!'
-            })]
-        })]
-    }))
-    Test.save().then(()=>console.log('hey that is AWESOME'))
-})
+module.exports = {GenericFile:FileModel,Folder: FolderModel, FolderSchema: Folder};

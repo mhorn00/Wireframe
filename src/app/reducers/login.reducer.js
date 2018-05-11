@@ -12,8 +12,10 @@ const login = (state = { username: localStorage.getItem('username')?localStorage
             return Object.assign({}, state,{error:action.payload, pending:false})
         }
         case actions.SET_LOGIN_SUCCESS: {
+            console.log(action.payload);
             localStorage.setItem("token",action.payload.token);
             localStorage.setItem("username", action.payload.username);
+            localStorage.setItem("rootFolder", action.payload.rootFolder)
             return Object.assign({}, state,{jwt: action.payload.token, username: action.payload.username, pending: false})
         }
         default: return state;

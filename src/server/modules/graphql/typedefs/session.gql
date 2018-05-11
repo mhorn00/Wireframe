@@ -5,7 +5,8 @@ type Query {
 type Session{
     username: String,
     token: String,
-    error: String
+    error: String,
+    rootFolder: String
 }
 
 type Mutation {

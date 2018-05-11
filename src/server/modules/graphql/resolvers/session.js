@@ -52,14 +52,19 @@ var resolvers = {
                             }, secret, {
                                 expiresIn: '1d'
                             });
-                            var NewSession = {
-                                username: args.username,
-                                token: token,
-                                error: ''
-                            }
-                            if (token && args.username != "undefined") {
-                                resolve(NewSession);
-                            }
+                            User.findOne({username: args.username}).then((user)=>{
+                                var NewSession = {
+                                    username: args.username,
+                                    token: token,
+                                    rootFolder: user.rootFolder,
+                                    error: ''
+                                }
+                                if (token && args.username != "undefined") {
+                                    resolve(NewSession);
+                                }
+                            })
+                            
+                            
                         } else {
                             resolve({
                                 username: '',
