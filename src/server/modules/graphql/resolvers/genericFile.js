@@ -94,16 +94,16 @@ var resolvers = {
                         var promises = [];
                         var parentNames = [];
                         fileParents.forEach(parentId => {
-                            if(parentId!==''){
+                            if (parentId !== '') {
                                 var prom = GenericFile.findOne({
                                     _id: parentId
-                                }).then(res=>resultNames.push({
+                                }).then(res => resultNames.push({
                                     name: res.name,
                                     _id: res._id
                                 }));
                                 promises.push(prom);
                             }
-                            else{
+                            else {
                                 console.log('hey im good homie');
                                 var prom = GenericFile.find({
                                     uploader: info.username,
@@ -125,6 +125,26 @@ var resolvers = {
                 }
 
             })
+        },
+        getStructure: async function (parent, args, {
+            GenericFile
+        }) {
+            return await new Promise((resolve, reject) => {
+                try {
+                    var info = jwt.verify(args.token, secret);
+                    let struc = [];
+                    let user = info.username;
+                    GenericFile.find({uploader: user}).then(res =>{
+                        console.log(res);
+                        resolve(res);
+                    });
+                } catch (e) {
+                    throw (e)
+                    resolve(null);
+                    return;
+                }
+            })
+
         }
     },
     Mutation: {

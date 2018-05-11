@@ -31,14 +31,14 @@ const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
 
-export function updateProgress(progress){
-    return{
+export function updateProgress(progress) {
+    return {
         type: ACTIONS.UPLOAD_STATE,
         payload: progress
     }
 }
 
-export function uploadState(type){
+export function uploadState(type) {
     return {
         type: ACTIONS.UPLOAD_STATE,
         payload: type
@@ -58,10 +58,8 @@ export function endRename() {
     }
 }
 
-export function renameFile(path, oldName, newName) {
-    var pathString = '';
-    path.forEach(part => pathString += part);
-    var query = gql`mutation($path:![!String]){renameFile(path: $path, oldName: "${oldName}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
+export function renameFile(path, _id, newName) {
+    var query = gql`mutation($path:[String!]){renameFile(path: $path, _id: "${_id}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({
             query, variables: {
@@ -78,12 +76,14 @@ export function renameFile(path, oldName, newName) {
     }
 }
 
-export function removeFile(path, name) {
-    var pathString = '';
-    path.forEach(part => pathString += part);
-    var query = `mutation{remove(path: "${pathString}", name: "${name}", token: "${localStorage.getItem("token")}")}`
+export function removeFile(path, _id) {
+    var query = gql`mutation($path:[String!]){remove(path: $path, _id: "${_id}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
-        _fetch({ query }).then(res => {
+        _fetch({
+            query, variables: {
+                path: path
+            }
+        }).then(res => {
             if (res.data && res.data.remove) {
                 dispatch(resetList(path));
             } else {
@@ -94,15 +94,11 @@ export function removeFile(path, name) {
 }
 
 export function finalizeFolder(name, path) {
-    var query = gql`mutation($path: [String!], $name: String!, $token: String!){
-        addFolder(path: $path, name: $name, token:$token)
-    }`;
+    var query = gql`mutation($path: [String!]){addFolder(path: $path, name: "${name}", token: "${localStorage.getItem("token")}")}`;
     return dispatch => {
         _fetch({
             query, variables: {
                 path: path,
-                token: localStorage.getItem("token"),
-                name: name
             }
         }).then(res => {
             if (res.data && res.data.addFolder) {
