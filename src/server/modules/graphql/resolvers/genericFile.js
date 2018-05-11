@@ -47,14 +47,21 @@ var resolvers = {
                 try {
                     info = jwt.verify(args.token, secret);
                     console.log(args);
+                    var childrenPromises = [];
                     var children = [];
                     Folder.findOne({_id:args.parentId}).then(res=>{
-                        console.log('i am the folder you asked for');
-                        console.log(res);
                         res.children.forEach(child=>{
-                            children.push(child);
+                            if(child.childType==='|dir|'){
+                                childrenPromises.push(Folder.findOne({_id:child.childId}));
+                            }
+                            else{
+                                childrenPromises.push(GenericFile.findOne({_id:child.childId}));
+                            }
                         })
-                        resolve(children);
+                        bb.all(childrenPromises).then(res=>{
+                            console.log(res);
+                            resolve(res);
+                        })
                     })
                 } catch (e) {
                     resolve(false);
@@ -189,7 +196,7 @@ var resolvers = {
                     console.log(args);
                     folder.save().then(() => {
                         Folder.findOne({ _id: args.parentId }).then(res => {
-                            res.children.push({ type: "|dir|", id: folder._id });
+                            res.children.push({ childType: "|dir|", childId: folder._id, childName: args.name });
                             res.save().then(() => {
                                 resolve(true);
                             })
