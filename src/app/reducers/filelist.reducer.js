@@ -86,6 +86,8 @@ const filepage = (state = defaults, action) => {
             }
         case actions.REFRESH_COMPLETE:
             {
+                console.log('action payload');
+                console.log(action.payload);
                 return Object.assign({}, state, {
                     files: action.payload,
                     pending: false

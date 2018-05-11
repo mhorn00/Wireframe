@@ -1,5 +1,5 @@
     type Query {
-        files(parentId:String, token:String!): [FolderChildren]
+        files(parentId:String, token:String!): [File]
         file(_id: String! token:String!): File
         getCrumbs(_id: String! token: String!): [String]!
         getStructure(token: String!): [File]
@@ -13,7 +13,6 @@
 
     type File {
         _id: ID!,
-        rawName: String,
         name: String,
         type: String,
         uploadDate: String,

@@ -139,9 +139,9 @@ export function setError(error) {
 
 export function resetList(parentId) {
    var query = `query{files(parentId:"${parentId}" token:"${localStorage.getItem("token")}"){
-            childId,
-            childName,
-            childType
+            name,
+            type,
+            fileSize,
         }
     }`
     return dispatch => {
