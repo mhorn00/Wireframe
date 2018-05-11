@@ -59,13 +59,9 @@ export function endRename() {
 }
 
 export function renameFile(path, _id, newName) {
-    var query = gql`mutation($path:[String!]){renameFile(path: $path, _id: "${_id}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
+    var query = gql`mutation{renameFile(_id: "${_id}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
-        _fetch({
-            query, variables: {
-                path: path
-            }
-        }).then(res => {
+        _fetch({ query }).then(res => {
             if (res.data && res.data.renameFile) {
                 dispatch(endRename());
                 dispatch(resetList(path));
@@ -77,13 +73,9 @@ export function renameFile(path, _id, newName) {
 }
 
 export function removeFile(path, _id) {
-    var query = gql`mutation($path:[String!]){remove(path: $path, _id: "${_id}", token: "${localStorage.getItem("token")}")}`
+    var query = gql`mutation{remove(_id: "${_id}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
-        _fetch({
-            query, variables: {
-                path: path
-            }
-        }).then(res => {
+        _fetch({ query }).then(res => {
             if (res.data && res.data.remove) {
                 dispatch(resetList(path));
             } else {

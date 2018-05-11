@@ -180,7 +180,6 @@ var resolvers = {
         }) {
             // path is in terms from user root directory
             return await new Promise((resolve, reject) => {
-                console.log(args);
                 try {
                     var info = jwt.verify(args.token, secret);
                     var path = [];
