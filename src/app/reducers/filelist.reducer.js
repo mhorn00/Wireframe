@@ -21,13 +21,20 @@ const defaults = {
         isEditing: false,
         _id: null
     },
-    uploadState: 'resting'
+    uploadState: 'resting',
+    uploadProgress: 0
 }
 
 
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
+        case actions.UPDATE_PROGRESS:
+            {
+                return Object.assign({}, state, {
+                    uploadProgress: action.payload
+                });
+            }
         case actions.UPLOAD_STATE:
             {
                 return Object.assign({}, state, {

@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { uploadState } from '../../../actions/filepage.actions';
+import { uploadState, updateProgress } from '../../../actions/filepage.actions';
 import styles from './Uploader.scss'
+import { URL as IP } from '../../../const';
 
 class Uploader extends React.Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class Uploader extends React.Component {
         this.onDragStopped = this.onDragStopped.bind(this);
     }
     onDrop(e) {
+        console.log('AHHHHHHHHHHHHHHH')
         e.preventDefault();
         for (var i = 0; i < e.dataTransfer.files.length; i++) {
             console.log('hi');
@@ -25,6 +27,7 @@ class Uploader extends React.Component {
                     this.props.dispatch(uploadState('uploading'));
                 } else if (xhr.readyState == XMLHttpRequest.DONE) {
                     this.props.dispatch(uploadState('resting'));
+                    this.props.dispatch(updateProgress(0));
                 }
             };
             xhr.open('POST', `${IP}/upload`, true);
@@ -33,10 +36,10 @@ class Uploader extends React.Component {
                 if (e.total !== 0) {
                     progress = parseInt((e.loaded / e.total) * 100, 10);
                 }
-                //set the state to have the props
+                this.props.dispatch(updateProgress(progress));
             });
             xhr.send(data);
-        }
+        } 
     }
 
     onDragStarted(e) {
@@ -55,7 +58,7 @@ class Uploader extends React.Component {
                 <p className={styles.text}>Drop Files Here</p>
                 <div className={styles[`${this.props.uploadState}`]} onDrop={this.onDrop} onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped}  onDragOver={(e) => { e.preventDefault() }}>
                     <div className={styles.loading}>
-                        <p className={styles.text}>--%</p>
+                        <p className={styles.text}>{this.props.uploadProgress}</p>
                     </div>
                 </div>
             </div>

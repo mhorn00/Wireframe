@@ -82,31 +82,40 @@ var resolvers = {
                 try {
                     var info = jwt.verify(args.token, secret);
                     var fileParents = [];
+                    var resultNames = [];
                     if (args._id == '') {
                         resolve(null);
                         return;
-                    } else {}
+                    } else { }
                     GenericFile.findOne({
                         _id: args._id
                     }).then(res => {
                         fileParents = res.userRelativePath;
-                        console.log('fileparents:',fileParents)
                         var promises = [];
                         var parentNames = [];
                         fileParents.forEach(parentId => {
-                            if (parentId !== '') {
+                            if(parentId!==''){
                                 var prom = GenericFile.findOne({
                                     _id: parentId
+                                }).then(res=>resultNames.push({
+                                    name: res.name,
+                                    _id: res._id
+                                }));
+                                promises.push(prom);
+                            }
+                            else{
+                                console.log('hey im good homie');
+                                var prom = GenericFile.find({
+                                    uploader: info.username,
+                                    userRelativePath: ['']
                                 });
                                 promises.push(prom);
                             }
 
                         })
                         console.log('i am promises');
-                        console.log(promises);
-                          bb.all(promises).then(results => {
-                            console.log('i am results');
-                            console.log(results)
+                        bb.all(promises).then(results => {
+                            console.log(results);
                         })
                     });
 
@@ -130,15 +139,15 @@ var resolvers = {
                         _id: args._id,
                         uploader: info.username
                     }, {
-                        name: args.newName
-                    }).then(res => {
-                        resolve(true);
+                            name: args.newName
+                        }).then(res => {
+                            resolve(true);
 
-                    }).catch((e) => {
-                        throw (e);
-                        resolve(false);
-                        return;
-                    });
+                        }).catch((e) => {
+                            throw (e);
+                            resolve(false);
+                            return;
+                        });
                 } catch (e) {
                     throw (e);
                     resolve(false);
