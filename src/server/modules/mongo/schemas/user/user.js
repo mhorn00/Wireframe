@@ -1,17 +1,31 @@
-var { Schema } = require('mongoose');
+var {
+    Schema
+} = require('mongoose');
 var uuid = require('uuid');
+var {
+    FolderSchema
+} = require('../data/genericFile');
+
+//console.log(FolderSchema);
 
 let User = new Schema({
     username: !String,
     email: !String,
     registrationHash: {
         type: String,
-        default: function(){return `${uuid.v4()}`}
+        default: function () {
+            return `${uuid.v4()}`
+        }
     },
     hashedPass: !String,
     creationDate: !Date,
     approved: {
-        type: Boolean, default: false
+        type: Boolean,
+        default: false
+    },
+    files: {
+        type: FolderSchema,
+        required: true
     }
 })
 
