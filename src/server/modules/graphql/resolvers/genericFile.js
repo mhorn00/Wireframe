@@ -103,8 +103,7 @@ var resolvers = {
                                 }));
                                 promises.push(prom);
                             }
-                            else {
-                                console.log('hey im good homie');
+                            else{
                                 var prom = GenericFile.find({
                                     uploader: info.username,
                                     userRelativePath: ['']
@@ -113,9 +112,10 @@ var resolvers = {
                             }
 
                         })
-                        console.log('i am promises');
                         bb.all(promises).then(results => {
                             console.log(results);
+                            console.log('resultnames');
+                            console.log(resultNames);
                         })
                     });
 

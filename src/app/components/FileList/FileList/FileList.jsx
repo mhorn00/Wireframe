@@ -69,7 +69,7 @@ class FileList extends React.Component {
                             </div>
                             {this.props.isMakingFolder ? <EmptyFolder /> : <div />}
                             {this.props.files != null ? this.props.files.map((f, key) => {
-                                return (f.type!=='dir'?<FileElement key={key} file={f} />:<Folder key={key} file={f}/>)
+                                return (f.type !== 'dir' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
                             }) : <p> i have no files </p>}
                         </div>
                     </div>
