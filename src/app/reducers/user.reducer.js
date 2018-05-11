@@ -3,13 +3,24 @@ import actions from '../actions/user.actions';
 const defaults = {
     jwt: localStorage.getItem('token'),
     username: localStorage.getItem('username'),
-    rootId: '',
+    rootFolder: localStorage.getItem('rootFolder'),
     authenticated: null,
     auth_pending: false
 }
 
 const userReducer = (state =defaults, action) => {
     switch (action.type) {
+        case actions.LOGOUT: {
+            localStorage.removeItem('username');
+            localStorage.removeItem('rootFolder');
+            localStorage.removeItem('token');
+            return Object.assign({}, state, {
+                authenticated: null,
+                jwt: undefined,
+                username: undefined,
+                rootFolder: undefined
+            });
+        }
         case actions.AUTH_PENDING: {
             return Object.assign({}, state, {
                 auth_pending: true
@@ -17,8 +28,8 @@ const userReducer = (state =defaults, action) => {
         }
         case actions.AUTH_RES: {
             if (action.payload === false) {
-                localStorage.clear('username');
-                localStorage.clear('token');
+                localStorage.removeItem('username');
+                localStorage.removeItem('token');
             }
             return Object.assign({}, state, {
                 authenticated: action.payload,

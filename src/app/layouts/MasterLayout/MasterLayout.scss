@@ -7,6 +7,7 @@ body{
 }
 .logo{
     padding: 7px 10px 0px 10px;
+    flex-grow: 1;
 }
 .header{
     position: relative;
@@ -17,8 +18,36 @@ body{
     border-bottom-style: solid;
     border-bottom-color: $lightRed;
     z-index: 10;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 .content{
     height: 90%;
     width: 100%;
+}
+.logout{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    padding: 0 10px 0 20px;
+    .button{
+        font-size: 25px;
+        color: $white;
+        margin: 0 10px 0 10px;
+        font-family: 'Ropa Sans';
+        border-color: transparent;
+        text-decoration: none;
+        transition: color .5s;
+        background-color: transparent;
+    }
+    .button:hover{
+        color: $lightRed;
+    }
+}
+.links{
+    flex-grow: 5;
 }

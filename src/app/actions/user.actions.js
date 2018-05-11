@@ -3,7 +3,8 @@ const ACTIONS = {
     AUTH_PENDING: 'AUTH_PENDING',
     AUTH_RES: 'AUTH_RES',
     SET_TOKEN: 'SET_TOKEN',
-    SET_USERNAME: 'SET_USERNAME'
+    SET_USERNAME: 'SET_USERNAME',
+    LOGOUT: 'LOGOUT'
 }
 
 export default ACTIONS;
@@ -12,6 +13,12 @@ import { createApolloFetch } from 'apollo-fetch';
 import { URL as IP } from '../const';
 
 var _fetch = createApolloFetch({ uri: IP + '/graphql' })
+
+export function logout(){
+    return {
+        type: ACTIONS.LOGOUT
+    }
+}
 
 export function authenticate(token) {
     return dispatch => {

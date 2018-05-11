@@ -52,6 +52,7 @@ class FileList extends React.Component {
         if (!this.props.files && !this.props.error) {
             return <p className={styles.loading}>Loading</p>
         }
+        console.log(this.props.files)
         return (
             <div className={styles.cont}>
                 <ContextMenuTrigger id="filelist" >
@@ -67,8 +68,8 @@ class FileList extends React.Component {
                             </div>
                             {this.props.isMakingFolder ? <EmptyFolder /> : <div />}
                             {this.props.files != null ? this.props.files.map((f, key) => {
-                                return (f.type !== 'dir' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
-                            }) : <p> i have no files </p>}
+                                return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
+                            }) : <div></div>}
                         </div>
                     </div>
                 </ContextMenuTrigger>
