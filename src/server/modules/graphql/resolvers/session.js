@@ -30,8 +30,8 @@ var resolvers = {
                     .then(user => {
                         if (user == null) {
                             resolve({
-                                username: '',
-                                token: '',
+                                username: undefined,
+                                token: undefined,
                                 error: 'ERR_INVALIDUSER'
                             });
                             return;
@@ -40,7 +40,7 @@ var resolvers = {
                         if (user.approved === false) {
                             var UnapprovedSession = {
                                 username: args.username,
-                                token: '',
+                                token: undefined,
                                 error: 'ERR_UNAPPROVED'
                             }
                             resolve(UnapprovedSession);
@@ -57,7 +57,7 @@ var resolvers = {
                                     username: args.username,
                                     token: token,
                                     rootFolder: user.rootFolder,
-                                    error: ''
+                                    error: undefined
                                 }
                                 if (token && args.username != "undefined") {
                                     resolve(NewSession);
@@ -67,8 +67,8 @@ var resolvers = {
                             
                         } else {
                             resolve({
-                                username: '',
-                                token: '',
+                                username: undefined,
+                                token: undefined,
                                 error: 'ERR_WRONGPASS'
                             });
                         }

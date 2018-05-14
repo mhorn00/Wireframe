@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './MasterLayout.scss';
 import { connect } from 'react-redux';
-import { authenticate, logout } from '../../actions/user.actions';
+import { authenticate, logout } from '../../actions/login.actions'
 import { Redirect } from 'react-router-dom';
 
 class MasterLayout extends React.Component {
@@ -12,19 +12,20 @@ class MasterLayout extends React.Component {
     }
 
     componentWillMount() {
-        if (this.props.jwt && this.props.authenticated === null) {
+        if (this.props.jwt && !this.props.authenticated) {
             this.props.dispatch(authenticate(this.props.jwt));
         }
     }
 
     render() {
-        if (this.props.authenticated === false && !this.props.auth_pending) {
+        /* if (!this.props.authenticated && !this.props.auth_pending) {
             localStorage.removeItem('token');
             localStorage.removeItem('username');
+            localStorage.removeItem('rootFolder');
             if (this.props.location && this.props.location.pathname != '/') {
                 return <Redirect to='/' />
             }
-        }
+        } */
         return (
             <div>
                 <header>
@@ -36,10 +37,9 @@ class MasterLayout extends React.Component {
 
                         </div>
                         <div className={styles.logout} >
-                            {this.props.authenticated == true ? <button className={styles.button} onClick={e => {
+                            {this.props.authenticated? <button className={styles.button} onClick={e => {
                                 e.preventDefault();
                                 this.props.dispatch(logout());
-                                //TODO: set authenticated to true :D
                             }}>Logout</button> : null}
                         </div>
                     </nav>
@@ -53,7 +53,7 @@ class MasterLayout extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return state.userReducer;
+    return state.loginReducer;
 }
 
 export default connect(mapStateToProps)(MasterLayout);

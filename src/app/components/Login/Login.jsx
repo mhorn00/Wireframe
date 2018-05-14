@@ -1,10 +1,9 @@
 import React from 'react';
 import styles from './Login.scss';
-import { login } from '../../actions/login.actions';
+import { login, authenticate } from '../../actions/login.actions';
 import { connect } from 'react-redux';
 import { switchScreen } from '../../actions/homecontainer.actions';
 import { Redirect } from 'react-router-dom'
-import {authenticate} from '../../actions/user.actions';
 
 class Login extends React.Component {
     constructor(props) {
@@ -14,20 +13,19 @@ class Login extends React.Component {
         let username;
         let password;
         let err;
-        //TODO: make this check if authenticated from userReducer
-        if(this.props.loginReducer.jwt && !this.props.loginReducer.auth_pending){
-            return <Redirect to='/profile'/>
+        if (this.props.jwt && !this.props.auth_pending) {
+            return <Redirect to='/profile' />
         }
-        if (this.props.loginReducer.error) {
-            if (this.props.loginReducer.error == "ERR_INVALIDUSER") {
+        if (this.props.login_error) {
+            if (this.props.login_error == "ERR_INVALIDUSER") {
                 err = <p style={{ margin: 0 }}>Invalid Username</p>;
-            } else if (this.props.loginReducer.error == "ERR_UNAPPROVED") {
+            } else if (this.props.login_error == "ERR_UNAPPROVED") {
                 err = <p style={{ margin: 0 }}>Account not approved</p>;
-            } else if (this.props.loginReducer.error == "ERR_WRONGPASS") {
+            } else if (this.props.login_error == "ERR_WRONGPASS") {
                 err = <p style={{ margin: 0 }}>Invalid Password</p>;
             }
         }
-        if (this.props.pending) {
+        if (this.props.login_pending) {
             //TODO: make this a actual Imgae
             return (<img src='Loading/test.png' />)
         }
@@ -45,7 +43,6 @@ class Login extends React.Component {
                         <input type="password" placeholder="Password" ref={node => password = node} className={styles.textbox} />
                     </div>
                     <input type="submit" className={styles.submit} />
-
                 </form>
                 <a onClick={e => {
                     this.props.dispatch(switchScreen("register"));
@@ -56,7 +53,7 @@ class Login extends React.Component {
 }
 
 function mapStateToprops(state) {
-    return { userReducer: state.userReducer, loginReducer: state.loginReducer }
+    return state.loginReducer
 }
 
 export default connect(mapStateToprops)(Login);

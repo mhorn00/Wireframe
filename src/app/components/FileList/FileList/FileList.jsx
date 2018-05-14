@@ -29,7 +29,7 @@ class FileList extends React.Component {
             }
             case "share": {
                 //TODO: add share link
-                //this.props.dispatch();
+                //this.props.dispatch(createShareLink);
                 return;
             }
         }
@@ -44,7 +44,7 @@ class FileList extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(resetList(this.props.dir));
     }
 

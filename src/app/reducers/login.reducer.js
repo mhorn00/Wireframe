@@ -1,24 +1,86 @@
 import actions from '../actions/login.actions';
 
-const login = (state = { username: localStorage.getItem('username')?localStorage.getItem('username'):null, pending: false, error: null, jwt: localStorage.getItem('token')?localStorage.getItem('token'):'' }, action) => {
-    switch(action.type){
-        case actions.SET_LOGIN_PENDING: {
-            return Object.assign({},state,{pending: action.payload})
-        }
-        case actions.SET_LOGIN_REQUEST: {
-            return Object.assign({},state,{pending: true});
-        }
-        case actions.SET_LOGIN_ERROR: {
-            return Object.assign({}, state,{error:action.payload, pending:false})
-        }
-        case actions.SET_LOGIN_SUCCESS: {
-            console.log(action.payload);
-            localStorage.setItem("token",action.payload.token);
-            localStorage.setItem("username", action.payload.username);
-            localStorage.setItem("rootFolder", action.payload.rootFolder)
-            return Object.assign({}, state,{jwt: action.payload.token, username: action.payload.username, pending: false})
-        }
-        default: return state;
+const defaults = {
+    username: localStorage.getItem('username') ? localStorage.getItem('username') : undefined,
+    jwt: localStorage.getItem('token') ? localStorage.getItem('token') : undefined,
+    rootFolder: localStorage.getItem('rootFolder') ? localStorage.getItem('rootFolder') : undefined,
+    login_pending: false,
+    login_error: null,
+    auth_error: null,
+    authenticated: false,
+    auth_pending: false
+}
+
+const login = (state = defaults, action) => {
+    switch (action.type) {
+        case actions.AUTH_ERROR:
+            {
+                return Object.assign({}, state, {
+                    auth_pending: false,
+                    authenticated: false,
+                    auth_error: actions.payload
+                })
+            }
+        case actions.AUTH_SUCCESS:
+            {
+                return Object.assign({}, state, {
+                    auth_pending: false,
+                    authenticated: true
+                })
+            }
+        case actions.AUTH_FAILURE:
+            {
+                return Object.assign({}, state, {
+                    auth_pending: false,
+                    authenticated: false
+                })
+            }
+        case actions.AUTH_PENDING:
+            {
+                return Object.assign({}, state, {
+                    auth_pending: true
+                })
+            }
+        case actions.LOGOUT:
+            {
+                localStorage.removeItem("token");
+                localStorage.removeItem("username");
+                localStorage.removeItem("rootFolder");
+                return Object.assign({}, state, {
+                    authenticated: false,
+                    username: undefined,
+                    jwt: undefined,
+                    rootFolder: undefined
+                })
+            }
+        case actions.LOGIN_PENDING:
+            {
+                return Object.assign({}, state, {
+                    login_pending: true
+                })
+            }
+        case actions.LOGIN_SUCCESS:
+            {
+                localStorage.setItem("token", action.payload.token);
+                localStorage.setItem("username", action.payload.username);
+                localStorage.setItem("rootFolder", action.payload.rootFolder);
+                return Object.assign({}, state, {
+                    jwt: action.payload.token,
+                    username: action.payload.username,
+                    rootFolder: action.payload.rootFolder,
+                    login_pending: false,
+                    authenticated: true
+                })
+            }
+        case actions.LOGIN_ERROR:
+            {
+                return Object.assign({}, state, {
+                    error: action.payload,
+                    login_pending: false
+                })
+            }
+        default:
+            return state;
     }
 }
 

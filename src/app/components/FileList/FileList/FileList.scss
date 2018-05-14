@@ -1,22 +1,24 @@
 @import '../../../palette.scss';
+.cont {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
 
-.cont{
-    width: 100%;
-    height: 100%;
-    overflow-y: auto; 
-}
-.content{
+.content {
     width: 100%;
     height: 100%;
 }
-.files{
+
+.files {
     display: table;
     width: 100%;
     padding-left: 10px;
     border-collapse: collapse;
     table-layout: auto;
 }
-.header{
+
+.header {
     display: table-row;
     background-color: $black2;
     font-family: 'Ropa Sans';
@@ -24,38 +26,45 @@
     color: $lightRed;
     text-align: left;
 }
-.icon{
+
+.icon {
     display: table-cell;
     padding-left: 5px;
     white-space: pre;
     text-align: center;
 }
-.info{
+
+.info {
     display: table-cell;
     width: 33%;
 }
-.bread{
+
+.bread {
     padding: 5px 0px 5px 10px;
 }
-.loading{
+
+.loading {
     font-family: 'Ropa Sans';
     font-size: 35px;
     color: $lightRed;
 }
+
 //===Context Menu Styles===
-.menu{
+.menu {
     background-color: $black1;
     border-width: 2px;
     border-style: solid;
     border-color: $lightRed;
     padding: 3px 5px 5px 5px;
 }
-.item{
+
+.item {
     margin: 5px 5px 5px 5xp;
 }
-.text{
+
+.text {
     font-family: 'Ropa Sans';
     color: $lightRed;
-    margin:0;
+    margin: 0;
     font-size: 24px;
 }
