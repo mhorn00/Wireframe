@@ -5,20 +5,11 @@
     height: 100%;
     width: 100%;
     z-index: 20;
-}
-.container{
-    margin: auto;
-    position: relative;
-    min-width: 100%;
-    font-size: 150px;
-    color: $darkRed;
-    overflow: hidden;
-    display: inline;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
-    top: 10%;
-    justify-content: center;
 }
 .login{
     height: min-content;
