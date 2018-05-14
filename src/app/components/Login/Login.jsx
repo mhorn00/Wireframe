@@ -14,6 +14,7 @@ class Login extends React.Component {
         let password;
         let err;
         if (this.props.authenticated && this.props.jwt && !this.props.auth_pending) {
+            console.log(this.props);
             return <Redirect to='/profile' />
         }
         if (this.props.login_error) {
