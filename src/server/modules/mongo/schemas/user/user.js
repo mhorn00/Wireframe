@@ -6,8 +6,6 @@ var {
     FolderSchema
 } = require('../data/genericFile');
 
-//console.log(FolderSchema);
-
 let User = new Schema({
     username: !String,
     email: !String,

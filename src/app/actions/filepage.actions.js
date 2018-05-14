@@ -86,7 +86,6 @@ export function removeFile(path, _id) {
 }
 
 export function finalizeFolder(name, path) {
-    console.log(path);
     var query = `mutation{addFolder(parentId: "${path}", name: "${name}", token: "${localStorage.getItem("token")}")}`;
     return dispatch => {
         _fetch({

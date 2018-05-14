@@ -13,7 +13,6 @@ var bb = require('bluebird');
 
 async function removeSubitems(username, path, _id) {
     // items in this folder path should all removed - all folders within it should have theirs removed also
-    console.log("hksdjlafhkljasdhfkljdsahfrkjlsahjkfldhsdkljzh")
     GenericFile.find({
         uploader: username,
         userRelativePath: [...path, _id]
@@ -46,7 +45,6 @@ var resolvers = {
                 var info;
                 try {
                     info = jwt.verify(args.token, secret);
-                    console.log(args);
                     var childrenPromises = [];
                     var children = [];
                     Folder.findOne({_id:args.parentId}).then(res=>{
@@ -59,7 +57,6 @@ var resolvers = {
                             }
                         })
                         bb.all(childrenPromises).then(res=>{
-                            console.log(res);
                             resolve(res);
                         })
                     })
@@ -193,7 +190,6 @@ var resolvers = {
                         parentId: args.parentId,
                         owner: info.username
                     })
-                    console.log(args);
                     folder.save().then(() => {
                         Folder.findOne({ _id: args.parentId }).then(res => {
                             res.children.push({ childType: "|dir|", childId: folder._id, childName: args.name });
