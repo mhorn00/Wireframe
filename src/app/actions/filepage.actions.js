@@ -86,17 +86,17 @@ export function removeFile(path, _id) {
     }
 }
 
-export function finalizeFolder(name, path) {
-    var query = `mutation{addFolder(parentId: "${path}", name: "${name}", token: "${localStorage.getItem("token")}")}`;
+export function finalizeFolder(name, parentId) {
+    var query = `mutation{addFolder(parentId: "${parentId}", name: "${name}", token: "${localStorage.getItem("token")}")}`;
     return dispatch => {
         _fetch({
             query, variables: {
-                path: path,
+                path: parentId,
             }
         }).then(res => {
             if (res.data && res.data.addFolder) {
                 dispatch(finalizeFolderComplete());
-                dispatch(refreshFileList(path[path.length-1]));
+                dispatch(refreshFileList(parentId));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -141,6 +141,7 @@ export function refreshFileList(parentId) {
             name,
             type,
             fileSize,
+            _id
         }
     }`
     return dispatch => {
