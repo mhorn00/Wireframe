@@ -49,9 +49,8 @@ var resolvers = {
                     var children = [];
                     childrenPromises.push(Folder.find({ parentId: args.parentId }));
                     childrenPromises.push(GenericFile.find({ parentId: args.parentId }));
-                    bb.all(childrenPromises).then(res => {
-                        console.log(res);
-                        resolve([...res[0], res[1]]);
+                    bb.all(childrenPromises).then(res =>{
+                        resolve(res[0].concat(res[1]));
                     })
                 } catch (e) {
                     console.log(e)

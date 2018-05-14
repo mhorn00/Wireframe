@@ -77,7 +77,8 @@ export function removeFile(path, _id) {
     return dispatch => {
         _fetch({ query }).then(res => {
             if (res.data && res.data.remove) {
-                dispatch(refreshFileList(path));
+                console.log(path);
+                dispatch(refreshFileList(path[path.length-1]));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -95,7 +96,7 @@ export function finalizeFolder(name, path) {
         }).then(res => {
             if (res.data && res.data.addFolder) {
                 dispatch(finalizeFolderComplete());
-                dispatch(refreshFileList(path));
+                dispatch(refreshFileList(path[path.length-1]));
             } else {
                 dispatch(setError(res.errors));
             }
