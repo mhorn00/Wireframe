@@ -33,7 +33,7 @@ const _fetch = createApolloFetch({
 
 export function updateProgress(progress) {
     return {
-        type: ACTIONS.UPLOAD_STATE,
+        type: ACTIONS.UPDATE_PROGRESS,
         payload: progress
     }
 }
