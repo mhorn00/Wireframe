@@ -14,18 +14,17 @@
     color: $darkRed;
     overflow: hidden;
     display: inline;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    top: 10%;
+    justify-content: center;
 }
 .login{
-    position: relative;
     height: min-content;
     height: -moz-min-content;
-    width: 30%;
-    float: right;
-    top: 40%;
-    margin-right: 5%
 }
 .logo{
     position: relative;
-    float: left;
     top: 15%;
 }

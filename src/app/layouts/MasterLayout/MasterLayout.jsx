@@ -18,6 +18,9 @@ class MasterLayout extends React.Component {
         if (!this.props.authenticated && !this.props.auth_pending && this.props.auth_failed && !this.props.logged_out) {
             this.props.dispatch(logout());
         }
+        if (!localStorage.getItem('token') || !localStorage.getItem('username') || !localStorage.getItem('rootFolder')) {
+            this.props.dispatch(logout());
+        }
     }
 
     render() {

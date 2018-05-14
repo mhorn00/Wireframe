@@ -82,7 +82,7 @@ const login = (state = defaults, action) => {
         case actions.LOGIN_ERROR:
             {
                 return Object.assign({}, state, {
-                    error: action.payload,
+                    login_error: action.payload,
                     login_pending: false
                 })
             }
