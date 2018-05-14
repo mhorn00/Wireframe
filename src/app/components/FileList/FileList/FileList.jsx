@@ -46,7 +46,6 @@ class FileList extends React.Component {
 
     componentDidMount() {
         //FIXME: this.porps.dir is null at this point for some reason. thats why right after you log in, refresh list gets stuck
-        console.log(this.props);
         this.props.dispatch(resetList(this.props.dir));
     }
 
@@ -97,7 +96,7 @@ class FileList extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return state.fileListReducer,state.loginReducer;
+    return state.fileListReducer;
 }
 
 export default DragDropContext(HTML5Backend)(connect(mapStateToProps)(FileList));
