@@ -72,12 +72,11 @@ export function renameFile(path, _id, newName) {
     }
 }
 
-export function removeFile(path, _id) {
-    var query = `mutation{remove(_id: "${_id}", token: "${localStorage.getItem("token")}")}`
+export function removeFile(file, path) {
+    var query = `mutation{remove(_id: "${file._id}", type:"${file.type}" token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({ query }).then(res => {
             if (res.data && res.data.remove) {
-                console.log(path);
                 dispatch(refreshFileList(path[path.length-1]));
             } else {
                 dispatch(setError(res.errors));
@@ -147,7 +146,6 @@ export function refreshFileList(parentId) {
     return dispatch => {
         dispatch(refreshRequested());
         _fetch({ query }).then(res => {
-            console.log(res);
             if (res.data && res.data.files) {
                 dispatch(refreshComplete(res.data.files));
             }

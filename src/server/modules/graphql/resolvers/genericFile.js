@@ -11,23 +11,6 @@ var GenericFile = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
 var bb = require('bluebird');
 
-async function removeSubitems(username, path, _id) {
-    // items in this folder path should all removed - all folders within it should have theirs removed also
-    GenericFile.find({
-        uploader: username,
-        userRelativePath: [...path, _id]
-    }).then((files) => {
-        files.forEach((e) => {
-            if (e.type == '|dir|') {
-                removeSubitems(`${e.userRelativePath}/${e.name}/`).then(() => e.remove());
-            } else {
-                fs.unlinkSync(_path.resolve(`${usersPath}${username}/${e.name}`));
-                e.remove();
-            }
-        })
-    })
-}
-
 async function checkFolderName(name, username, path) {
     GenericFile.find({
         uploader: username,
@@ -49,7 +32,7 @@ var resolvers = {
                     var children = [];
                     childrenPromises.push(Folder.find({ parentId: args.parentId }));
                     childrenPromises.push(GenericFile.find({ parentId: args.parentId }));
-                    bb.all(childrenPromises).then(res =>{
+                    bb.all(childrenPromises).then(res => {
                         resolve(res[0].concat(res[1]));
                     })
                 } catch (e) {
@@ -199,33 +182,32 @@ var resolvers = {
             });
         },
         remove: async function (parent, args, {
-            GenericFile
+            GenericFile, Folder
         }) {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    GenericFile.find({
-                        _id: args._id
-                    }).then((res) => {
-                        res.forEach(element => {
-                            if (element.type == '|dir|') {
-                                //TODO: check if this remove subfolder still works
-                                removeSubitems(element.uploader, element.userRelativePath, element.name).then(() => {
-                                    element.remove();
-                                    resolve(true);
-                                });
-                            } else {
-                                try {
-                                    fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${element.uploader}/${element.name}`));
-                                    element.remove().then(() => resolve(true));
-                                } catch (e) {
-                                    if (e.code == 'ENOENT') {
-                                        element.remove().then(() => resolve(true));
-                                    } else resolve(false);
-                                }
-                            }
+                    console.log(args);
+                    if (args.type === '|dir|') {
+                        Folder.findOne({
+                            _id: args._id
+                        }).then((element) => {
+                            console.log(element);
+                            Folder.remove({ _id: element._id }).then(() => resolve(true));
                         });
-                    })
+                    }
+                    else {
+                        GenericFile.findOne({ _id: args._id }).then(item => {
+                            try {
+                                fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${element.uploader}/${element.name}`));
+                                element.remove().then(() => resolve(true));
+                            } catch (e) {
+                                if (e.code == 'ENOENT') {
+                                    element.remove().then(() => resolve(true));
+                                } else resolve(false);
+                            }
+                        })
+                    }
                 } catch (e) {
                     throw (e);
                     resolve(false);

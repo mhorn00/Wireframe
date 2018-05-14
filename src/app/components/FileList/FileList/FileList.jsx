@@ -24,7 +24,8 @@ class FileList extends React.Component {
                 return;
             }
             case "delete": {
-                this.props.dispatch(removeFile(data.dir, data.file._id));
+                console.log(data);
+                this.props.dispatch(removeFile(data.file, data.dir));
                 return;
             }
             case "share": {
