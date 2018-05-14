@@ -1,5 +1,5 @@
 import React from 'react';
-import { setDir, renameFile, resetList } from '../../../actions/filepage.actions';
+import { setDir, renameFile, refreshFileList } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileElement.scss';
@@ -65,6 +65,7 @@ class FileElement extends React.Component {
     render() {
         var { file, dispatch } = this.props;
         let { connectDragSource, isDragging, connectDragPreview } = this.props;
+        console.log(this.props);
         let icon = file.type == '|dir|' ? 'far fa-folder' : 'far fa-file';
         let size = this.getSize(file.fileSize);
         var contained = (
@@ -76,7 +77,7 @@ class FileElement extends React.Component {
                     case '|dir|': {
                         var newPath = [...this.props.dir, file._id]
                         dispatch(setDir(newPath));
-                        dispatch(resetList(newPath));
+                        dispatch(refreshFileList(newPath));
                         /* var files = history.files?[file,...history.files]:[].push(file);
                         // i want the back button to work
                         // TODO: we could just push ID's to the URL, and have the client read the URL and determine if it needs to do something?

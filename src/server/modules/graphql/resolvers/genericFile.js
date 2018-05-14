@@ -47,20 +47,14 @@ var resolvers = {
                     info = jwt.verify(args.token, secret);
                     var childrenPromises = [];
                     var children = [];
-                    Folder.findOne({_id:args.parentId}).then(res=>{
-                        res.children.forEach(child=>{
-                            if(child.childType==='|dir|'){
-                                childrenPromises.push(Folder.findOne({_id:child.childId}));
-                            }
-                            else{
-                                childrenPromises.push(GenericFile.findOne({_id:child.childId}));
-                            }
-                        })
-                        bb.all(childrenPromises).then(res=>{
-                            resolve(res);
-                        })
+                    childrenPromises.push(Folder.find({ parentId: args.parentId }));
+                    childrenPromises.push(GenericFile.find({ parentId: args.parentId }));
+                    bb.all(childrenPromises).then(res => {
+                        console.log(res);
+                        resolve([...res[0], res[1]]);
                     })
                 } catch (e) {
+                    console.log(e)
                     resolve(false);
                 }
             });

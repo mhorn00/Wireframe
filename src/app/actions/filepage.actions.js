@@ -59,12 +59,12 @@ export function endRename() {
 }
 
 export function renameFile(path, _id, newName) {
-    var query = gql`mutation{renameFile(_id: "${_id}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
+    var query = `mutation{renameFile(_id: "${_id}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({ query }).then(res => {
             if (res.data && res.data.renameFile) {
                 dispatch(endRename());
-                dispatch(resetList(path));
+                dispatch(refreshFileList(path));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -77,7 +77,7 @@ export function removeFile(path, _id) {
     return dispatch => {
         _fetch({ query }).then(res => {
             if (res.data && res.data.remove) {
-                dispatch(resetList(path));
+                dispatch(refreshFileList(path));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -95,7 +95,7 @@ export function finalizeFolder(name, path) {
         }).then(res => {
             if (res.data && res.data.addFolder) {
                 dispatch(finalizeFolderComplete());
-                dispatch(resetList(path));
+                dispatch(refreshFileList(path));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -115,7 +115,7 @@ export function makeFolder() {
     }
 }
 
-export function refreshRequest() {
+export function refreshRequested() {
     return {
         type: ACTIONS.REFRESH_REQUEST
     }
@@ -135,7 +135,7 @@ export function setError(error) {
     }
 }
 
-export function resetList(parentId) {
+export function refreshFileList(parentId) {
     var query = `query{files(parentId:"${parentId}" token:"${localStorage.getItem("token")}"){
             name,
             type,
@@ -143,8 +143,9 @@ export function resetList(parentId) {
         }
     }`
     return dispatch => {
-        dispatch(refreshRequest());
+        dispatch(refreshRequested());
         _fetch({ query }).then(res => {
+            console.log(res);
             if (res.data && res.data.files) {
                 dispatch(refreshComplete(res.data.files));
             }
@@ -168,6 +169,7 @@ export function getCrumbs(_id) {
         var query = `query{getCrumbs(_id:"${_id}" token:"${localStorage.getItem('token')}")
     }`
         _fetch({ query }).then(res => {
+            dispatch(setCrumbs(res.data.getCrumbs))
         })
     }
 }

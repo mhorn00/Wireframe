@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { resetList, makeFolder, removeFile, startRename} from '../../../actions/filepage.actions';
+import { refreshFileList, makeFolder, removeFile, startRename} from '../../../actions/filepage.actions';
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -46,7 +46,7 @@ class FileList extends React.Component {
 
     componentDidMount() {
         //FIXME: this.porps.dir is null at this point for some reason. thats why right after you log in, refresh list gets stuck
-        this.props.dispatch(resetList(this.props.dir));
+        this.props.dispatch(refreshFileList(this.props.dir));
     }
 
     render() {
@@ -68,7 +68,7 @@ class FileList extends React.Component {
                             </div>
                             {this.props.isMakingFolder ? <EmptyFolder /> : <div />}
                             {this.props.files != null ? this.props.files.map((f, key) => {
-                                return (f.childType !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
+                                return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
                             }) : <div></div>}
                         </div>
                     </div>
