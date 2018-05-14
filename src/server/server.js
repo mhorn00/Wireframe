@@ -101,7 +101,7 @@ app.get('/filedl', function (req, res) {
 app.get('/registerUser/:hash', function (req, res) {
     User.findOne({ registrationHash: req.params.hash }).then((u) => {
         u.approved = true;
-        fs.mkdirSync(__dirname + "/../../users/" + u.username);
+        fs.mkdirSync(path.resolve(__dirname + "/../../users/" + u.username));
         u.save().then(() => res.send(`approved ${u.username}`));
     })
 })
