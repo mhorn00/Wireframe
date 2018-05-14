@@ -8,7 +8,9 @@ const defaults = {
     login_error: null,
     auth_error: null,
     authenticated: false,
-    auth_pending: false
+    auth_pending: false,
+    logged_out: false,
+    auth_failed: false
 }
 
 const login = (state = defaults, action) => {
@@ -18,21 +20,24 @@ const login = (state = defaults, action) => {
                 return Object.assign({}, state, {
                     auth_pending: false,
                     authenticated: false,
-                    auth_error: actions.payload
+                    auth_error: action.payload,
+                    auth_failed: true
                 })
             }
         case actions.AUTH_SUCCESS:
             {
                 return Object.assign({}, state, {
                     auth_pending: false,
-                    authenticated: true
+                    authenticated: true,
+                    auth_failed: false
                 })
             }
         case actions.AUTH_FAILURE:
             {
                 return Object.assign({}, state, {
                     auth_pending: false,
-                    authenticated: false
+                    authenticated: false,
+                    auth_failed: true
                 })
             }
         case actions.AUTH_PENDING:
@@ -50,7 +55,8 @@ const login = (state = defaults, action) => {
                     authenticated: false,
                     username: undefined,
                     jwt: undefined,
-                    rootFolder: undefined
+                    rootFolder: undefined,
+                    logged_out: true
                 })
             }
         case actions.LOGIN_PENDING:
@@ -69,7 +75,8 @@ const login = (state = defaults, action) => {
                     username: action.payload.username,
                     rootFolder: action.payload.rootFolder,
                     login_pending: false,
-                    authenticated: true
+                    authenticated: true,
+                    logged_out: false
                 })
             }
         case actions.LOGIN_ERROR:

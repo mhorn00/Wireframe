@@ -4,7 +4,7 @@ const ACTIONS = {
     LOGIN_ERROR: 'LOGIN_ERROR',
     AUTHENTICATE: 'AUTHENTICATE',
     AUTH_PENDING: 'AUTH_PENDING',
-    AUTH_SUCCESS: 'AUTH_RES',
+    AUTH_SUCCESS: 'AUTH_SUCCESS',
     AUTH_FAILURE: 'AUTH_FAILURE',
     AUTH_ERROR: 'AUTH_ERROR',
     LOGOUT: 'LOGOUT'
@@ -22,7 +22,7 @@ export function authenticate(token) {
         dispatch(authPending());
         var query = `query{authenticate(token:"${token}")}`
         _fetch({ query }).then(res => {
-            if (res.errors) {
+            if (res.error) {
                 dispatch(authError(res.errors));
                 localStorage.removeItem('token');
                 localStorage.removeItem('username');
@@ -53,13 +53,13 @@ function authError(err) {
 
 function authSuccess() {
     return {
-        type: ACTIONS.AUTH_ERROR
+        type: ACTIONS.AUTH_SUCCESS
     }
 }
 
 function authFailure() {
     return {
-        type: ACTIONS.AUTH_ERROR
+        type: ACTIONS.AUTH_FAILURE
     }
 }
 export function logout() {

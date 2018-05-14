@@ -11,21 +11,19 @@ class MasterLayout extends React.Component {
 
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.props.jwt && !this.props.authenticated) {
             this.props.dispatch(authenticate(this.props.jwt));
+        }
+        if (!this.props.authenticated && !this.props.auth_pending && this.props.auth_failed && !this.props.logged_out) {
+            this.props.dispatch(logout());
         }
     }
 
     render() {
-        /* if (!this.props.authenticated && !this.props.auth_pending) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
-            localStorage.removeItem('rootFolder');
-            if (this.props.location && this.props.location.pathname != '/') {
-                return <Redirect to='/' />
-            }
-        } */
+        if (this.props.location && this.props.location.pathname != '/' && this.props.logged_out && (this.props.auth_failed || !this.props.authenticated)) {
+            return <Redirect to='/' />
+        }
         return (
             <div>
                 <header>
@@ -37,7 +35,7 @@ class MasterLayout extends React.Component {
 
                         </div>
                         <div className={styles.logout} >
-                            {this.props.authenticated? <button className={styles.button} onClick={e => {
+                            {this.props.authenticated && !this.props.logged_out ? <button className={styles.button} onClick={e => {
                                 e.preventDefault();
                                 this.props.dispatch(logout());
                             }}>Logout</button> : null}
