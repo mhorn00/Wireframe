@@ -115,10 +115,9 @@ export function makeFolder() {
     }
 }
 
-export function refreshRequest(source) {
+export function refreshRequest() {
     return {
-        type: ACTIONS.REFRESH_REQUEST,
-        source
+        type: ACTIONS.REFRESH_REQUEST
     }
 }
 
@@ -137,17 +136,15 @@ export function setError(error) {
 }
 
 export function resetList(parentId) {
-   var query = `query{files(parentId:"${parentId}" token:"${localStorage.getItem("token")}"){
+    var query = `query{files(parentId:"${parentId}" token:"${localStorage.getItem("token")}"){
             name,
             type,
             fileSize,
         }
     }`
     return dispatch => {
-        dispatch(refreshRequest('resetList'));
-        _fetch({
-            query
-        }).then(res => {
+        dispatch(refreshRequest());
+        _fetch({ query }).then(res => {
             if (res.data && res.data.files) {
                 dispatch(refreshComplete(res.data.files));
             }
@@ -155,7 +152,7 @@ export function resetList(parentId) {
                 dispatch(setError(res.errors));
             }
         })
-    } 
+    }
 }
 
 function setCrumbs(payload) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { setDir, refreshRequest, finalizeFolder } from '../../../actions/filepage.actions';
+import { finalizeFolder } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import styles from './EmptyFolder.scss';
 
