@@ -19,6 +19,26 @@ async function checkFolderName(name, username, path) {
     })
 }
 
+async function removeSubItems(parentId) {
+    Folder.findOne({ _id: parentId }).then(folder => {
+        folder.children.forEach(child => {
+            if (child.type === '|dir|') removeSubItems(child._id);
+            else {
+                GenericFile.findOne({ _id: child._id }).then(item => {
+                    try {
+                        fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${item.uploader}/${item.name}`));
+                        item.remove().then(() => resolve(true));
+                    } catch (e) {
+                        if (e.code == 'ENOENT') {
+                            item.remove().then(() => resolve(true));
+                        } else resolve(false);
+                    }
+                })
+            }
+        })
+    })
+}
+
 var resolvers = {
     Query: {
         files: async function (parent, args, {
@@ -192,8 +212,8 @@ var resolvers = {
                         Folder.findOne({
                             _id: args._id
                         }).then((element) => {
-                            console.log(element);
                             Folder.remove({ _id: element._id }).then(() => resolve(true));
+
                         });
                     }
                     else {
