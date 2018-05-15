@@ -16,7 +16,8 @@
         name: String,
         type: String,
         uploadDate: String,
-        fileSize: Int
+        fileSize: Int,
+        owner: String!
     }
 
     input NewFile {

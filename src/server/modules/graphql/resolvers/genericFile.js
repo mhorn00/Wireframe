@@ -13,8 +13,8 @@ var bb = require('bluebird');
 
 async function checkFolderName(name, username, path) {
     GenericFile.find({
-        uploader: username,
-        type: "dir",
+        owner: username,
+        type: "|dir|",
         path: path,
     })
 }
@@ -26,7 +26,7 @@ async function removeSubItems(parentId) {
             else {
                 GenericFile.findOne({ _id: child._id }).then(item => {
                     try {
-                        fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${item.uploader}/${item.name}`));
+                        fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${item.owner}/${item.name}`));
                         item.remove().then(() => resolve(true));
                     } catch (e) {
                         if (e.code == 'ENOENT') {
@@ -108,7 +108,7 @@ var resolvers = {
                             }
                             else {
                                 var prom = GenericFile.find({
-                                    uploader: info.username,
+                                    owner: info.username,
                                     userRelativePath: ['']
                                 });
                                 promises.push(prom);
@@ -134,7 +134,7 @@ var resolvers = {
                     var info = jwt.verify(args.token, secret);
                     let struc = [];
                     let user = info.username;
-                    GenericFile.find({ uploader: user }).then(res => {
+                    GenericFile.find({ owner: user }).then(res => {
                         resolve(res);
                     });
                 } catch (e) {
@@ -148,15 +148,14 @@ var resolvers = {
     },
     Mutation: {
         renameFile: async function (parent, args, {
-            GenericFile
+            GenericFile, Folder
         }) {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
                     GenericFile.update({
-                        userRelativePath: args.path,
                         _id: args._id,
-                        uploader: info.username
+                        owner: info.username
                     }, {
                             name: args.newName
                         }).then(res => {
@@ -207,7 +206,6 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    console.log(args);
                     if (args.type === '|dir|') {
                         Folder.findOne({
                             _id: args._id
@@ -219,11 +217,11 @@ var resolvers = {
                     else {
                         GenericFile.findOne({ _id: args._id }).then(item => {
                             try {
-                                fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${element.uploader}/${element.name}`));
-                                element.remove().then(() => resolve(true));
+                                fs.unlinkSync(item.absolutePath);
+                                item.remove().then(() => resolve(true));
                             } catch (e) {
                                 if (e.code == 'ENOENT') {
-                                    element.remove().then(() => resolve(true));
+                                    item.remove().then(() => resolve(true));
                                 } else resolve(false);
                             }
                         })
@@ -241,7 +239,7 @@ var resolvers = {
                 try {
                     var info = jwt.verify(args.token, secret);
                     GenericFile.findOne({
-                        uploader: info.username,
+                        owner: info.username,
                         userRelativePath: args.path == '' ? '/' : args.path,
                         name: args.name
                     }).then((file) => {

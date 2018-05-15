@@ -13,7 +13,8 @@ let File = new Schema({
         default: Date.now()
     },
     fileSize: Number,
-    sharing_links: [String]
+    sharing_links: [String],
+    owner: !String
 })
 
 let Folder = new Schema({

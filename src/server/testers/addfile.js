@@ -6,7 +6,7 @@ var User = require('../modules/mongo/schemas/user/user');
 var file = new GenericFile({
     userRelativePath: ['', '5af24809537861548b3f5d46'],
     rawName: 'subfolder',
-    uploader: 'h',
+    owner: 'h',
     name: 'subfolder',
     type: 'dir',
     fileSize: 2321

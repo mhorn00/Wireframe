@@ -56,7 +56,7 @@ class Uploader extends React.Component {
             <div className={styles.base}>
                 <p className={styles.text}>Drop Files Here</p>
                 <div className={styles[`${this.props.uploadState}`]} onDrop={this.onDrop} onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped}  onDragOver={(e) => { e.preventDefault() }}>
-                    <div className={styles.loading}>
+                    <div className={styles.loading} style={{ height: 100 - this.props.uploadProgress + '%' }}>
                         <p className={styles.text}>{this.props.uploadProgress}</p>
                     </div>
                 </div>

@@ -62,10 +62,10 @@ app.post('/upload', upload.single('file'), function (req, res) {
                         fileSize: file.size,
                         parentId: req.body.path,
                         name: file.originalname,
-                        uploader: info.username,
+                        owner: info.username,
                         type: file.mimetype
                     });
-                    mongoFile.save().then((e) => res.send('Recived and saved'));
+                    mongoFile.save().then((e) => {res.send('Recived and saved')});
                     Folder.findOne({_id:req.body.path}).then((folder)=>{
                         folder.children.push(mongoFile);
                         folder.save();
@@ -113,7 +113,7 @@ app.get('/f/:hash', function (req, res) {
         if (result.type == 'dir') {
             res.send("<p> sorry, can't share folders yet </p>")
         }
-        var _path = path.resolve(__dirname + `../../../users/${result.uploader}/${result.name}`);
+        var _path = path.resolve(__dirname + `../../../users/${result.owner}/${result.name}`);
         res.sendFile(_path);
     })
 })
