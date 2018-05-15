@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { resetList, makeFolder, removeFile, startRename} from '../../../actions/filepage.actions';
+import { resetList, makeFolder, removeFile, startRename } from '../../../actions/filepage.actions';
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -30,6 +30,10 @@ class FileList extends React.Component {
             case "share": {
                 //TODO: add share link
                 //this.props.dispatch(createShareLink);
+                return;
+            }
+            case "download": {
+                this.props.dispatch(downloadFile(data.file));
                 return;
             }
         }
@@ -88,6 +92,9 @@ class FileList extends React.Component {
                     </MenuItem>
                     <MenuItem data={{ type: 'share' }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Share</p>
+                    </MenuItem>
+                    <MenuItem data={{ type: 'download' }} onClick={this.fileElementClick} className={styles.item}>
+                        <p className={styles.text}>Download</p>
                     </MenuItem>
                 </ContextMenu>
             </div>
