@@ -1,28 +1,48 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './Breadcrumbs.scss';
-import { resolvePath } from '../../../actions/filepage.actions.js';
+import { resolvePath, refreshFileList, setDir } from '../../../actions/filepage.actions.js';
 
 class BreadCrumbs extends React.Component {
     constructor(props) {
         super(props);
-        this.getBread = this.getBread.bind(this);
+        this.getCrumbs = this.getCrumbs.bind(this);
     }
 
     componentWillMount() {
         this.props.dispatch(resolvePath(this.props.dir))
+        //FIXME: for some reason this needs to be here of the file list doesnt update inside folders. weird
+        this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length-1]))
     }
 
-    getBread(dir) {
+    getCrumbs(dir) {
         let crumbs = [];
         let key = 0;
+        try {
+            this.props.resolvedPath.resolvePath.forEach(crumb => {
+                crumbs.push(<div key={key++} className={styles.crumb} onClick={(e) => {
+                    e.preventDefault();
+                    let newDir = this.props.dir.splice(0,this.props.dir.indexOf(crumb._id)+1);
+                    console.log(this.props.dir,newDir,this.props.dir.indexOf(crumb._id)+1)
+                    this.props.dispatch(setDir(newDir));
+                    this.props.dispatch(refreshFileList(newDir));
+                }}>{crumb.name}</div>)
+                crumbs.push(<div key={key++} className={styles.crumbSep}>/</div>)
+            })
+        } catch (e) {
+            return undefined;
+        }
+        return crumbs;
     }
 
     render() {
-        let crumbs = this.getBread(this.props.dir);
+        let bread;
+        if (!this.props.resolvePathPending) {
+            bread = this.getCrumbs(this.props.dir);
+        }
         return (
             <div className={styles.cont}>
-                {crumbs}
+                {this.props.resolvePathPending ? <div>Loading</div> : bread}
             </div>
         )
     }

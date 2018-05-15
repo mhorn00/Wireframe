@@ -12,7 +12,8 @@ const ACTIONS = {
     END_RENAME: 'END_RENAME',
     UPLOAD_STATE: 'UPLOAD_STATE',
     UPDATE_PROGRESS: 'UPDATE_PROGRESS',
-    RESOLVE_PATH: 'RESOLVE_PATH'
+    RESOLVE_PATH_PENDING: 'RESOLVE_PATH_PENDING',
+    RESOLVE_PATH_DONE: 'RESOLVE_PATH_DONE'
 }
 
 export default ACTIONS
@@ -26,10 +27,29 @@ const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
 
+function resolvePathPending() {
+    return {
+        type: ACTIONS.RESOLVE_PATH_PENDING,
+    }
+}
+
+function resolvePathDone(path) {
+    return {
+        type: ACTIONS.RESOLVE_PATH_DONE,
+        payload: path
+    }
+}
+
 export function resolvePath(dir) {
-    var query = gql`query($path: [String]!){resolvePath(path: $path, token: "${localStorage.getItem("token")}")}`
+    var query = gql`query($path: [String]!){resolvePath(path: $path, token: "${localStorage.getItem("token")}"){
+            name
+            _id
+        }
+    }`
     return dispatch => {
+        dispatch(resolvePathPending())
         _fetch({ query, variables: { path: dir } }).then(res => {
+            dispatch(resolvePathDone(res.data));
         })
     }
 }
@@ -159,9 +179,9 @@ export function refreshFileList(parentId) {
     }
 }
 
-export function setDir(path) {
+export function setDir(dir) {
     return {
         type: ACTIONS.SET_DIR,
-        payload: path
+        payload: dir
     }
 }

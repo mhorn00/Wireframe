@@ -3,7 +3,7 @@
         file(_id: String! token: String!): File
         getCrumbs(_id: String! token: String!): [String]!
         getStructure(token: String!): [File]
-        resolvePath(path: [String]!, token: String!): [String]!
+        resolvePath(path: [String]!, token: String!): [File]!
     }
 
     type FolderChildren {

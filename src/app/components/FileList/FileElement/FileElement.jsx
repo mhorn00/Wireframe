@@ -77,12 +77,6 @@ class FileElement extends React.Component {
                         var newPath = [...this.props.dir, file._id]
                         dispatch(setDir(newPath));
                         dispatch(refreshFileList(newPath));
-                        /* var files = history.files?[file,...history.files]:[].push(file);
-                        // i want the back button to work
-                        // TODO: we could just push ID's to the URL, and have the client read the URL and determine if it needs to do something?
-                        history.pushState({what:[]},'epic','epic')
-                        history.pushState({files},`Folder ${file.name} on Wireframe!`,`${IP+'/profile'}`);
-                        console.log(history); */
                         break;
                     }
                     default: {

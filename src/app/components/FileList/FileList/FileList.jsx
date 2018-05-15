@@ -48,7 +48,7 @@ class FileList extends React.Component {
 
     componentDidMount() {
         //FIXME: this.porps.dir is null at this point for some reason. thats why right after you log in, refresh list gets stuck
-        this.props.dispatch(refreshFileList(this.props.dir));
+        this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length-1]))
     }
 
     render() {

@@ -126,25 +126,6 @@ var resolvers = {
 
             })
         },
-        getStructure: async function (parent, args, {
-            GenericFile
-        }) {
-            return await new Promise((resolve, reject) => {
-                try {
-                    var info = jwt.verify(args.token, secret);
-                    let struc = [];
-                    let user = info.username;
-                    GenericFile.find({ owner: user }).then(res => {
-                        resolve(res);
-                    });
-                } catch (e) {
-                    throw (e)
-                    resolve(null);
-                    return;
-                }
-            })
-
-        },
         resolvePath: async function (parent, args, {
             Folder
         }) {
@@ -152,13 +133,16 @@ var resolvers = {
                 try {
                     var info = jwt.verify(args.token, secret);
                     let resDir = [];
+                    let promises = [];
                     args.path.forEach(id=>{
-                        Folder.findOne({_id: id}).then(res=>{
-                            resDir.push(res.name);
-                        });
-                        console.log("RES DIR",resDir)
+                        promises.push(Folder.findOne({_id: id}));
                     });
-                    resolve(resDir);
+                    bb.all(promises).then(res=>{
+                        res.forEach(i=>{
+                            resDir.push(i);
+                        })
+                        resolve(resDir)
+                    })
                 } catch (e) {
                     throw (e);
                     resolve(null);
