@@ -10,26 +10,29 @@ const ACTIONS = {
     RENAME_FILE: 'RENAME_FILE',
     START_RENAME: 'START_RENAME',
     END_RENAME: 'END_RENAME',
-    GET_CRUMBS: 'GET_CRUMBS',
-    SET_CRUMBS: 'SET_CRUMBS',
     UPLOAD_STATE: 'UPLOAD_STATE',
-    UPDATE_PROGRESS: 'UPDATE_PROGRESS'
+    UPDATE_PROGRESS: 'UPDATE_PROGRESS',
+    RESOLVE_PATH: 'RESOLVE_PATH'
 }
 
 export default ACTIONS
 
-import {
-    createApolloFetch
-} from 'apollo-fetch';
-import {
-    URL as IP
-} from '../const';
+import { createApolloFetch } from 'apollo-fetch';
+import { URL as IP } from '../const';
 
 import gql from 'graphql-tag';
 
 const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
+
+export function resolvePath(dir) {
+    var query = gql`query($path: [String]!){resolvePath(path: $path, token: "${localStorage.getItem("token")}")}`
+    return dispatch => {
+        _fetch({ query, variables: { path: dir } }).then(res => {
+        })
+    }
+}
 
 export function updateProgress(progress) {
     return {
@@ -64,7 +67,7 @@ export function renameFile(path, file, newName) {
         _fetch({ query }).then(res => {
             if (res.data && res.data.renameFile) {
                 dispatch(endRename());
-                dispatch(refreshFileList(path[path.length-1]));
+                dispatch(refreshFileList(path[path.length - 1]));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -77,7 +80,7 @@ export function removeFile(file, path) {
     return dispatch => {
         _fetch({ query }).then(res => {
             if (res.data && res.data.remove) {
-                dispatch(refreshFileList(path[path.length-1]));
+                dispatch(refreshFileList(path[path.length - 1]));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -152,24 +155,6 @@ export function refreshFileList(parentId) {
             else {
                 dispatch(setError(res.errors));
             }
-        })
-    }
-}
-
-function setCrumbs(payload) {
-    return {
-        type: ACTIONS.SET_CRUMBS,
-        payload
-    }
-}
-
-export function getCrumbs(_id) {
-    var crumbs = [];
-    return dispatch => {
-        var query = `query{getCrumbs(_id:"${_id}" token:"${localStorage.getItem('token')}")
-    }`
-        _fetch({ query }).then(res => {
-            dispatch(setCrumbs(res.data.getCrumbs))
         })
     }
 }

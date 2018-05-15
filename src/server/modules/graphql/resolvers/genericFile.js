@@ -144,7 +144,28 @@ var resolvers = {
                 }
             })
 
-        }
+        },
+        resolvePath: async function (parent, args, {
+            Folder
+        }) {
+            return await new Promise((resolve, reject) => {
+                try {
+                    var info = jwt.verify(args.token, secret);
+                    let resDir = [];
+                    args.path.forEach(id=>{
+                        Folder.findOne({_id: id}).then(res=>{
+                            resDir.push(res.name);
+                        });
+                        console.log("RES DIR",resDir)
+                    });
+                    resolve(resDir);
+                } catch (e) {
+                    throw (e);
+                    resolve(null);
+                    return;
+                }
+            })
+        },
     },
     Mutation: {
         renameFile: async function (parent, args, {
@@ -162,7 +183,7 @@ var resolvers = {
                             return;
                         });
                     } else {
-                        Folder.update({ _id: args._id}, { name: args.newName }).then(res=>{
+                        Folder.update({ _id: args._id }, { name: args.newName }).then(res => {
                             resolve(true);
                         }).catch((e) => {
                             throw (e);

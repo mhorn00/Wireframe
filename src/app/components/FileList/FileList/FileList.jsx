@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { refreshFileList, makeFolder, removeFile, startRename} from '../../../actions/filepage.actions';
+import { refreshFileList, makeFolder, removeFile, startRename } from '../../../actions/filepage.actions';
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
 import { Folder } from '../FileElement/FileElement.jsx';
+import BreadCrumbs from '../BreadCrumbs/BreadCrumbs.jsx';
 
 
 class FileList extends React.Component {
@@ -59,6 +60,7 @@ class FileList extends React.Component {
                 <ContextMenuTrigger id="filelist" >
                     <div className={styles.content}>
                         <div className={styles.bread}>
+                            <BreadCrumbs />
                         </div>
                         <div className={styles.files}>
                             <div className={styles.header}>
