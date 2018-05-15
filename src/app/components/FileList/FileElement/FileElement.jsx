@@ -1,5 +1,5 @@
 import React from 'react';
-import { setDir, renameFile, resetList } from '../../../actions/filepage.actions';
+import { setDir, renameFile, refreshFileList } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileElement.scss';
@@ -76,13 +76,7 @@ class FileElement extends React.Component {
                     case '|dir|': {
                         var newPath = [...this.props.dir, file._id]
                         dispatch(setDir(newPath));
-                        dispatch(resetList(newPath));
-                        /* var files = history.files?[file,...history.files]:[].push(file);
-                        // i want the back button to work
-                        // TODO: we could just push ID's to the URL, and have the client read the URL and determine if it needs to do something?
-                        history.pushState({what:[]},'epic','epic')
-                        history.pushState({files},`Folder ${file.name} on Wireframe!`,`${IP+'/profile'}`);
-                        console.log(history); */
+                        dispatch(refreshFileList(newPath));
                         break;
                     }
                     default: {
@@ -94,7 +88,7 @@ class FileElement extends React.Component {
                 {this.props.isRenaming.isEditing && this.props.isRenaming._id == file._id
                     ? <form onSubmit={e => {
                         e.preventDefault();
-                        this.props.dispatch(renameFile(this.props.dir, file._id, this.filename.value));
+                        this.props.dispatch(renameFile(this.props.dir, file, this.filename.value));
                     }} className={styles.form}>
                         <input type="text" placeholder={file.name} ref={node => this.filename = node} className={styles.textbox} autoFocus />
                     </form>

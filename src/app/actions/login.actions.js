@@ -14,6 +14,7 @@ export default ACTIONS;
 
 import { createApolloFetch } from 'apollo-fetch';
 import { URL } from '../const';
+import { setDir } from './filepage.actions';
 
 var _fetch = createApolloFetch({ uri: `${URL}/graphql` });
 
@@ -78,9 +79,10 @@ export function login(username, password) {
             error}}`
         _fetch({ query }).then(res => {
             if (!res.data.createSession.error) {
-                dispatch(LoginSuccess(res.data.createSession))
+                dispatch(setDir([res.data.createSession.rootFolder]))
+                dispatch(loginSuccess(res.data.createSession))
             } else {
-                dispatch(LoginError(res.data.createSession.error));
+                dispatch(loginError(res.data.createSession.error));
             }
         })
     }
@@ -92,14 +94,14 @@ function loginPending() {
     }
 }
 
-function LoginSuccess(session) {
+function loginSuccess(session) {
     return {
         type: ACTIONS.LOGIN_SUCCESS,
         payload: session
     };
 }
 
-function LoginError(loginError) {
+function loginError(loginError) {
     return {
         type: ACTIONS.LOGIN_ERROR,
         payload: loginError

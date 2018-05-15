@@ -10,20 +10,16 @@ const ACTIONS = {
     RENAME_FILE: 'RENAME_FILE',
     START_RENAME: 'START_RENAME',
     END_RENAME: 'END_RENAME',
-    GET_CRUMBS: 'GET_CRUMBS',
-    SET_CRUMBS: 'SET_CRUMBS',
     UPLOAD_STATE: 'UPLOAD_STATE',
-    UPDATE_PROGRESS: 'UPDATE_PROGRESS'
+    UPDATE_PROGRESS: 'UPDATE_PROGRESS',
+    RESOLVE_PATH_PENDING: 'RESOLVE_PATH_PENDING',
+    RESOLVE_PATH_DONE: 'RESOLVE_PATH_DONE'
 }
 
 export default ACTIONS
 
-import {
-    createApolloFetch
-} from 'apollo-fetch';
-import {
-    URL as IP
-} from '../const';
+import { createApolloFetch } from 'apollo-fetch';
+import { URL as IP } from '../const';
 
 import gql from 'graphql-tag';
 
@@ -31,9 +27,36 @@ const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
 
+function resolvePathPending() {
+    return {
+        type: ACTIONS.RESOLVE_PATH_PENDING,
+    }
+}
+
+function resolvePathDone(path) {
+    return {
+        type: ACTIONS.RESOLVE_PATH_DONE,
+        payload: path
+    }
+}
+
+export function resolvePath(dir) {
+    var query = gql`query($path: [String]!){resolvePath(path: $path, token: "${localStorage.getItem("token")}"){
+            name
+            _id
+        }
+    }`
+    return dispatch => {
+        dispatch(resolvePathPending())
+        _fetch({ query, variables: { path: dir } }).then(res => {
+            dispatch(resolvePathDone(res.data));
+        })
+    }
+}
+
 export function updateProgress(progress) {
     return {
-        type: ACTIONS.UPLOAD_STATE,
+        type: ACTIONS.UPDATE_PROGRESS,
         payload: progress
     }
 }
@@ -58,13 +81,13 @@ export function endRename() {
     }
 }
 
-export function renameFile(path, _id, newName) {
-    var query = gql`mutation{renameFile(_id: "${_id}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
+export function renameFile(path, file, newName) {
+    var query = `mutation{renameFile(_id: "${file._id}", type: "${file.type}"newName: "${newName}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({ query }).then(res => {
             if (res.data && res.data.renameFile) {
                 dispatch(endRename());
-                dispatch(resetList(path));
+                dispatch(refreshFileList(path[path.length - 1]));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -72,12 +95,12 @@ export function renameFile(path, _id, newName) {
     }
 }
 
-export function removeFile(path, _id) {
-    var query = `mutation{remove(_id: "${_id}", token: "${localStorage.getItem("token")}")}`
+export function removeFile(file, path) {
+    var query = `mutation{remove(_id: "${file._id}", type:"${file.type}" token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({ query }).then(res => {
             if (res.data && res.data.remove) {
-                dispatch(resetList(path));
+                dispatch(refreshFileList(path[path.length - 1]));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -85,17 +108,17 @@ export function removeFile(path, _id) {
     }
 }
 
-export function finalizeFolder(name, path) {
-    var query = `mutation{addFolder(parentId: "${path}", name: "${name}", token: "${localStorage.getItem("token")}")}`;
+export function finalizeFolder(name, parentId) {
+    var query = `mutation{addFolder(parentId: "${parentId}", name: "${name}", token: "${localStorage.getItem("token")}")}`;
     return dispatch => {
         _fetch({
             query, variables: {
-                path: path,
+                path: parentId,
             }
         }).then(res => {
             if (res.data && res.data.addFolder) {
                 dispatch(finalizeFolderComplete());
-                dispatch(resetList(path));
+                dispatch(refreshFileList(parentId));
             } else {
                 dispatch(setError(res.errors));
             }
@@ -115,7 +138,7 @@ export function makeFolder() {
     }
 }
 
-export function refreshRequest() {
+export function refreshRequested() {
     return {
         type: ACTIONS.REFRESH_REQUEST
     }
@@ -135,15 +158,16 @@ export function setError(error) {
     }
 }
 
-export function resetList(parentId) {
+export function refreshFileList(parentId) {
     var query = `query{files(parentId:"${parentId}" token:"${localStorage.getItem("token")}"){
             name,
             type,
             fileSize,
+            _id
         }
     }`
     return dispatch => {
-        dispatch(refreshRequest());
+        dispatch(refreshRequested());
         _fetch({ query }).then(res => {
             if (res.data && res.data.files) {
                 dispatch(refreshComplete(res.data.files));
@@ -155,26 +179,9 @@ export function resetList(parentId) {
     }
 }
 
-function setCrumbs(payload) {
-    return {
-        type: ACTIONS.SET_CRUMBS,
-        payload
-    }
-}
-
-export function getCrumbs(_id) {
-    var crumbs = [];
-    return dispatch => {
-        var query = `query{getCrumbs(_id:"${_id}" token:"${localStorage.getItem('token')}")
-    }`
-        _fetch({ query }).then(res => {
-        })
-    }
-}
-
-export function setDir(path) {
+export function setDir(dir) {
     return {
         type: ACTIONS.SET_DIR,
-        payload: path
+        payload: dir
     }
 }

@@ -54,22 +54,23 @@ app.post('/upload', upload.single('file'), function (req, res) {
             var info;
             if (info = jwt.verify(token, secret)) {
                 var file = req.file;
-                var userPath = req.body.path;
-                var absPath = path.resolve('./users/' + info.username + '/' + file.originalname);
-                GenericFile.remove({ name: file.originalname, userRelativePath: userPath }).then(() => {
-                    var writeFile = fs.writeFile(absPath, file.buffer, (err, result) => {
-                        if (err) throw err;
-                        var mongoFile = new GenericFile({
-                            absolutePath: absPath,
-                            userRelativePath: userPath,
-                            fileSize: file.size,
-                            name: file.originalname,
-                            uploader: info.username,
-                            type: file.mimetype
-                        });
-                        mongoFile.save().then((e) => res.send('Recived and saved'));
+                var absPath = path.resolve('./users/' + info.username + '/' + file.originalname + req.body.path);
+                var writeFile = fs.writeFile(absPath, file.buffer, (err, result) => {
+                    if (err) throw err;
+                    var mongoFile = new GenericFile({
+                        absolutePath: absPath,
+                        fileSize: file.size,
+                        parentId: req.body.path,
+                        name: file.originalname,
+                        owner: info.username,
+                        type: file.mimetype
                     });
-                })
+                    mongoFile.save().then((e) => {res.send('Recived and saved')});
+                    Folder.findOne({_id:req.body.path}).then((folder)=>{
+                        folder.children.push(mongoFile);
+                        folder.save();
+                    })
+                });
             }
         }
         catch (e) {
@@ -101,7 +102,7 @@ app.get('/filedl', function (req, res) {
 app.get('/registerUser/:hash', function (req, res) {
     User.findOne({ registrationHash: req.params.hash }).then((u) => {
         u.approved = true;
-        fs.mkdirSync(__dirname + "/../../users/" + u.username);
+        fs.mkdirSync(path.resolve(__dirname + "/../../users/" + u.username));
         u.save().then(() => res.send(`approved ${u.username}`));
     })
 })
@@ -112,7 +113,7 @@ app.get('/f/:hash', function (req, res) {
         if (result.type == 'dir') {
             res.send("<p> sorry, can't share folders yet </p>")
         }
-        var _path = path.resolve(__dirname + `../../../users/${result.uploader}/${result.name}`);
+        var _path = path.resolve(__dirname + `../../../users/${result.owner}/${result.name}`);
         res.sendFile(_path);
     })
 })

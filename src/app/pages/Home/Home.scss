@@ -5,27 +5,21 @@
     height: 100%;
     width: 100%;
     z-index: 20;
-}
-.container{
-    margin: auto;
-    position: relative;
-    min-width: 100%;
-    font-size: 150px;
-    color: $darkRed;
-    overflow: hidden;
-    display: inline;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 .login{
-    position: relative;
     height: min-content;
     height: -moz-min-content;
-    width: 30%;
-    float: right;
-    top: 40%;
-    margin-right: 5%
 }
 .logo{
-    position: relative;
-    float: left;
-    top: 15%;
+    height: 65%;
+    width: 50%;
+}
+.test{
+    width: 100%;
+    height: 100%;
 }

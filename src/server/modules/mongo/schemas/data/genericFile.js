@@ -6,20 +6,25 @@ let File = new Schema({
     rawName: String,
     name: !String,
     type: String,
+    parentId: !String,
     uploadDate:{
         type: Date,
         required: true,
         default: Date.now()
     },
     fileSize: Number,
-    sharing_links: [String]
+    sharing_links: [String],
+    owner: !String
 })
 
 let Folder = new Schema({
     name: String,
     parentId: String,
     owner: String,
-    name: String,
+    type: {
+        type: String,
+        default: '|dir|'
+    },
     makeDate: {
         type: Date,
         default: Date.now()

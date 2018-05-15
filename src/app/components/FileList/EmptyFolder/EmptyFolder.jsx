@@ -20,7 +20,7 @@ class EmptyFolder extends React.Component {
                 <div className={styles.text}>
                     <form onSubmit={e => {
                         e.preventDefault();
-                        this.props.dispatch(finalizeFolder(this.filename.value, this.props.dir));
+                        this.props.dispatch(finalizeFolder(this.filename.value, this.props.dir[this.props.dir.length-1]));
                     }} className={styles.form}>
                         <input type="text" placeholder="New Folder" ref={node => this.filename = node} className={styles.textbox} autoFocus/>
                     </form>

@@ -11,28 +11,31 @@ var GenericFile = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
 var bb = require('bluebird');
 
-async function removeSubitems(username, path, _id) {
-    // items in this folder path should all removed - all folders within it should have theirs removed also
+async function checkFolderName(name, username, path) {
     GenericFile.find({
-        uploader: username,
-        userRelativePath: [...path, _id]
-    }).then((files) => {
-        files.forEach((e) => {
-            if (e.type == '|dir|') {
-                removeSubitems(`${e.userRelativePath}/${e.name}/`).then(() => e.remove());
-            } else {
-                fs.unlinkSync(_path.resolve(`${usersPath}${username}/${e.name}`));
-                e.remove();
-            }
-        })
+        owner: username,
+        type: "|dir|",
+        path: path,
     })
 }
 
-async function checkFolderName(name, username, path) {
-    GenericFile.find({
-        uploader: username,
-        type: "dir",
-        path: path,
+async function removeSubItems(parentId) {
+    Folder.findOne({ _id: parentId }).then(folder => {
+        folder.children.forEach(child => {
+            if (child.type === '|dir|') removeSubItems(child._id);
+            else {
+                GenericFile.findOne({ _id: child._id }).then(item => {
+                    try {
+                        fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${item.owner}/${item.name}`));
+                        item.remove().then(() => resolve(true));
+                    } catch (e) {
+                        if (e.code == 'ENOENT') {
+                            item.remove().then(() => resolve(true));
+                        } else resolve(false);
+                    }
+                })
+            }
+        })
     })
 }
 
@@ -47,20 +50,13 @@ var resolvers = {
                     info = jwt.verify(args.token, secret);
                     var childrenPromises = [];
                     var children = [];
-                    Folder.findOne({_id:args.parentId}).then(res=>{
-                        res.children.forEach(child=>{
-                            if(child.childType==='|dir|'){
-                                childrenPromises.push(Folder.findOne({_id:child.childId}));
-                            }
-                            else{
-                                childrenPromises.push(GenericFile.findOne({_id:child.childId}));
-                            }
-                        })
-                        bb.all(childrenPromises).then(res=>{
-                            resolve(res);
-                        })
+                    childrenPromises.push(Folder.find({ parentId: args.parentId }));
+                    childrenPromises.push(GenericFile.find({ parentId: args.parentId }));
+                    bb.all(childrenPromises).then(res => {
+                        resolve(res[0].concat(res[1]));
                     })
                 } catch (e) {
+                    console.log(e)
                     resolve(false);
                 }
             });
@@ -82,95 +78,58 @@ var resolvers = {
                 }
             })
         },
-        getCrumbs: async function (parent, args, {
-            GenericFile
+        resolvePath: async function (parent, args, {
+            Folder
         }) {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    var fileParents = [];
-                    var resultNames = [];
-                    if (args._id == '') {
-                        resolve(null);
-                        return;
-                    } else { }
-                    GenericFile.findOne({
-                        _id: args._id
-                    }).then(res => {
-                        fileParents = res.userRelativePath;
-                        var promises = [];
-                        var parentNames = [];
-                        fileParents.forEach(parentId => {
-                            if (parentId !== '') {
-                                var prom = GenericFile.findOne({
-                                    _id: parentId
-                                }).then(res => resultNames.push({
-                                    name: res.name,
-                                    _id: res._id
-                                }));
-                                promises.push(prom);
-                            }
-                            else {
-                                var prom = GenericFile.find({
-                                    uploader: info.username,
-                                    userRelativePath: ['']
-                                });
-                                promises.push(prom);
-                            }
-
-                        })
-                        bb.all(promises).then(results => {
-
-                        })
+                    let resDir = [];
+                    let promises = [];
+                    args.path.forEach(id=>{
+                        promises.push(Folder.findOne({_id: id}));
                     });
-
+                    /*TODO:
+                            To make the breadcrumb fast we should index the the files in the data base to a lookup tabel so we dont have to wait on the array of promises
+                    */
+                    bb.all(promises).then(res=>{
+                        res.forEach(i=>{
+                            resDir.push(i);
+                        })
+                        resolve(resDir)
+                    })
                 } catch (e) {
-                    resolve(false);
-                }
-
-            })
-        },
-        getStructure: async function (parent, args, {
-            GenericFile
-        }) {
-            return await new Promise((resolve, reject) => {
-                try {
-                    var info = jwt.verify(args.token, secret);
-                    let struc = [];
-                    let user = info.username;
-                    GenericFile.find({ uploader: user }).then(res => {
-                        resolve(res);
-                    });
-                } catch (e) {
-                    throw (e)
+                    throw (e);
                     resolve(null);
                     return;
                 }
             })
-
-        }
+        },
     },
     Mutation: {
         renameFile: async function (parent, args, {
-            GenericFile
+            GenericFile, Folder
         }) {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    GenericFile.update({
-                        userRelativePath: args.path,
-                        _id: args._id,
-                        uploader: info.username
-                    }, {
-                            name: args.newName
-                        }).then(res => {
+                    if (args.type != '|dir|') {
+                        GenericFile.update({ _id: args._id, owner: info.username }, { name: args.newName }).then(res => {
                             resolve(true);
-
                         }).catch((e) => {
                             throw (e);
                             resolve(false);
                             return;
                         });
+                    } else {
+                        Folder.update({ _id: args._id }, { name: args.newName }).then(res => {
+                            resolve(true);
+                        }).catch((e) => {
+                            throw (e);
+                            resolve(false);
+                            return;
+                        });
+                    }
                 } catch (e) {
                     throw (e);
                     resolve(false);
@@ -206,33 +165,31 @@ var resolvers = {
             });
         },
         remove: async function (parent, args, {
-            GenericFile
+            GenericFile, Folder
         }) {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    GenericFile.find({
-                        _id: args._id
-                    }).then((res) => {
-                        res.forEach(element => {
-                            if (element.type == '|dir|') {
-                                //TODO: check if this remove subfolder still works
-                                removeSubitems(element.uploader, element.userRelativePath, element.name).then(() => {
-                                    element.remove();
-                                    resolve(true);
-                                });
-                            } else {
-                                try {
-                                    fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${element.uploader}/${element.name}`));
-                                    element.remove().then(() => resolve(true));
-                                } catch (e) {
-                                    if (e.code == 'ENOENT') {
-                                        element.remove().then(() => resolve(true));
-                                    } else resolve(false);
-                                }
-                            }
+                    if (args.type === '|dir|') {
+                        Folder.findOne({
+                            _id: args._id
+                        }).then((element) => {
+                            Folder.remove({ _id: element._id }).then(() => resolve(true));
+
                         });
-                    })
+                    }
+                    else {
+                        GenericFile.findOne({ _id: args._id }).then(item => {
+                            try {
+                                fs.unlinkSync(item.absolutePath);
+                                item.remove().then(() => resolve(true));
+                            } catch (e) {
+                                if (e.code == 'ENOENT') {
+                                    item.remove().then(() => resolve(true));
+                                } else resolve(false);
+                            }
+                        })
+                    }
                 } catch (e) {
                     throw (e);
                     resolve(false);
@@ -246,7 +203,7 @@ var resolvers = {
                 try {
                     var info = jwt.verify(args.token, secret);
                     GenericFile.findOne({
-                        uploader: info.username,
+                        owner: info.username,
                         userRelativePath: args.path == '' ? '/' : args.path,
                         name: args.name
                     }).then((file) => {

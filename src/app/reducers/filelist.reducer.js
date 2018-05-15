@@ -1,10 +1,6 @@
 import actions from '../actions/filepage.actions';
-import {
-    createApolloFetch
-} from 'apollo-fetch';
-import {
-    URL
-} from '../const';
+import { createApolloFetch } from 'apollo-fetch';
+import { URL } from '../const';
 
 var _fetch = createApolloFetch({
     uri: URL + '/graphql'
@@ -23,13 +19,28 @@ const defaults = {
         _id: null
     },
     uploadState: 'resting',
-    uploadProgress: 0
+    uploadProgress: 0,
+    resolvedPath: [],
+    resolvePathPending: false
 }
 
 
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
+        case actions.RESOLVE_PATH_PENDING:
+            {
+                return Object.assign({}, state, {
+                    resolvePathPending: true
+                });
+            }
+        case actions.RESOLVE_PATH_DONE:
+            {
+                return Object.assign({}, state, {
+                    resolvePathPending: false,
+                    resolvedPath: action.payload
+                });
+            }
         case actions.UPDATE_PROGRESS:
             {
                 return Object.assign({}, state, {

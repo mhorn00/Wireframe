@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { resetList, makeFolder, removeFile, startRename } from '../../../actions/filepage.actions';
+import { refreshFileList, makeFolder, removeFile, startRename } from '../../../actions/filepage.actions';
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
 import { Folder } from '../FileElement/FileElement.jsx';
+import BreadCrumbs from '../BreadCrumbs/BreadCrumbs.jsx';
 
 
 class FileList extends React.Component {
@@ -24,7 +25,8 @@ class FileList extends React.Component {
                 return;
             }
             case "delete": {
-                this.props.dispatch(removeFile(data.dir, data.file._id));
+                console.log(data);
+                this.props.dispatch(removeFile(data.file, data.dir));
                 return;
             }
             case "share": {
@@ -50,7 +52,7 @@ class FileList extends React.Component {
 
     componentDidMount() {
         //FIXME: this.porps.dir is null at this point for some reason. thats why right after you log in, refresh list gets stuck
-        this.props.dispatch(resetList(this.props.dir));
+        this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length-1]))
     }
 
     render() {
@@ -62,6 +64,7 @@ class FileList extends React.Component {
                 <ContextMenuTrigger id="filelist" >
                     <div className={styles.content}>
                         <div className={styles.bread}>
+                            <BreadCrumbs />
                         </div>
                         <div className={styles.files}>
                             <div className={styles.header}>
@@ -72,7 +75,7 @@ class FileList extends React.Component {
                             </div>
                             {this.props.isMakingFolder ? <EmptyFolder /> : <div />}
                             {this.props.files != null ? this.props.files.map((f, key) => {
-                                return (f.childType !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
+                                return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
                             }) : <div></div>}
                         </div>
                     </div>

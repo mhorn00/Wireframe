@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { uploadState, updateProgress } from '../../../actions/filepage.actions';
+import { uploadState, updateProgress, refreshFileList } from '../../../actions/filepage.actions';
 import styles from './Uploader.scss'
 import { URL as IP } from '../../../const';
 
@@ -17,7 +17,7 @@ class Uploader extends React.Component {
             var data = new FormData();
             data.append('file', e.dataTransfer.files[i]);
             data.append('token', localStorage.getItem("token"));
-            data.append('path', this.props.dir);
+            data.append('path', this.props.dir[this.props.dir.length-1]);
             data.append('fromSite', true);
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = (e) => {
@@ -26,6 +26,7 @@ class Uploader extends React.Component {
                 } else if (xhr.readyState == XMLHttpRequest.DONE) {
                     this.props.dispatch(uploadState('resting'));
                     this.props.dispatch(updateProgress(0));
+                    this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length-1]))
                 }
             };
             xhr.open('POST', `${IP}/upload`, true);
@@ -55,7 +56,7 @@ class Uploader extends React.Component {
             <div className={styles.base}>
                 <p className={styles.text}>Drop Files Here</p>
                 <div className={styles[`${this.props.uploadState}`]} onDrop={this.onDrop} onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped}  onDragOver={(e) => { e.preventDefault() }}>
-                    <div className={styles.loading}>
+                    <div className={styles.loading} style={{ height: 100 - this.props.uploadProgress + '%' }}>
                         <p className={styles.text}>{this.props.uploadProgress}</p>
                     </div>
                 </div>

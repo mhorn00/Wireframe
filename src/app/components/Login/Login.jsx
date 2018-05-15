@@ -13,7 +13,7 @@ class Login extends React.Component {
         let username;
         let password;
         let err;
-        if (this.props.jwt && !this.props.auth_pending) {
+        if (this.props.authenticated && this.props.jwt && !this.props.auth_pending) {
             return <Redirect to='/profile' />
         }
         if (this.props.login_error) {

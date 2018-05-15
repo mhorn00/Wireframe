@@ -1,8 +1,7 @@
     type Query {
         files(parentId:String, token:String!): [File]
-        file(_id: String! token:String!): File
-        getCrumbs(_id: String! token: String!): [String]!
-        getStructure(token: String!): [File]
+        file(_id: String! token: String!): File
+        resolvePath(path: [String]!, token: String!): [File]!
     }
 
     type FolderChildren {
@@ -16,7 +15,8 @@
         name: String,
         type: String,
         uploadDate: String,
-        fileSize: Int
+        fileSize: Int,
+        owner: String!
     }
 
     input NewFile {
@@ -26,8 +26,8 @@
     }
 
     type Mutation {
-        renameFile(_id: String!, newName: String!, token: String!): Boolean!
+        renameFile(_id: String!, type: String!, newName: String!, token: String!): Boolean!
         addFolder(parentId: String!, name: String!, token: String!): Boolean!
-        remove(_id: [String!], token: String!): Boolean!
+        remove(_id: [String!], token: String!, type: String!): Boolean!
         generateLink(_id: String!, token: String!): String
     }
