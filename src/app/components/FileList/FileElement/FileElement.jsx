@@ -94,7 +94,7 @@ class FileElement extends React.Component {
                 {this.props.isRenaming.isEditing && this.props.isRenaming._id == file._id
                     ? <form onSubmit={e => {
                         e.preventDefault();
-                        this.props.dispatch(renameFile(this.props.dir, file._id, this.filename.value));
+                        this.props.dispatch(renameFile(this.props.dir, file, this.filename.value));
                     }} className={styles.form}>
                         <input type="text" placeholder={file.name} ref={node => this.filename = node} className={styles.textbox} autoFocus />
                     </form>

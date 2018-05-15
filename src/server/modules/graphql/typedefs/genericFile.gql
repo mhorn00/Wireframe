@@ -27,7 +27,7 @@
     }
 
     type Mutation {
-        renameFile(_id: String!, newName: String!, token: String!): Boolean!
+        renameFile(_id: String!, type: String!, newName: String!, token: String!): Boolean!
         addFolder(parentId: String!, name: String!, token: String!): Boolean!
         remove(_id: [String!], token: String!, type: String!): Boolean!
         generateLink(_id: String!, token: String!): String

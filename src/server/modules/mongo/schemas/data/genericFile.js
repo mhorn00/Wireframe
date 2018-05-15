@@ -21,7 +21,6 @@ let Folder = new Schema({
     name: String,
     parentId: String,
     owner: String,
-    name: String,
     type: {
         type: String,
         default: '|dir|'

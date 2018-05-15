@@ -153,19 +153,23 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    GenericFile.update({
-                        _id: args._id,
-                        owner: info.username
-                    }, {
-                            name: args.newName
-                        }).then(res => {
+                    if (args.type != '|dir|') {
+                        GenericFile.update({ _id: args._id, owner: info.username }, { name: args.newName }).then(res => {
                             resolve(true);
-
                         }).catch((e) => {
                             throw (e);
                             resolve(false);
                             return;
                         });
+                    } else {
+                        Folder.update({ _id: args._id}, { name: args.newName }).then(res=>{
+                            resolve(true);
+                        }).catch((e) => {
+                            throw (e);
+                            resolve(false);
+                            return;
+                        });
+                    }
                 } catch (e) {
                     throw (e);
                     resolve(false);

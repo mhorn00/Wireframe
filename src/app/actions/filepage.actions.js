@@ -58,13 +58,13 @@ export function endRename() {
     }
 }
 
-export function renameFile(path, _id, newName) {
-    var query = `mutation{renameFile(_id: "${_id}", newName: "${newName}", token: "${localStorage.getItem("token")}")}`
+export function renameFile(path, file, newName) {
+    var query = `mutation{renameFile(_id: "${file._id}", type: "${file.type}"newName: "${newName}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({ query }).then(res => {
             if (res.data && res.data.renameFile) {
                 dispatch(endRename());
-                dispatch(refreshFileList(path));
+                dispatch(refreshFileList(path[path.length-1]));
             } else {
                 dispatch(setError(res.errors));
             }
