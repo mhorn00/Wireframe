@@ -1,8 +1,6 @@
     type Query {
         files(parentId:String, token:String!): [File]
         file(_id: String! token: String!): File
-        getCrumbs(_id: String! token: String!): [String]!
-        getStructure(token: String!): [File]
         resolvePath(path: [String]!, token: String!): [File]!
     }
 

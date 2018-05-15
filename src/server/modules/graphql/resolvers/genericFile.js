@@ -78,54 +78,6 @@ var resolvers = {
                 }
             })
         },
-        getCrumbs: async function (parent, args, {
-            GenericFile
-        }) {
-            return await new Promise((resolve, reject) => {
-                try {
-                    var info = jwt.verify(args.token, secret);
-                    var fileParents = [];
-                    var resultNames = [];
-                    if (args._id == '') {
-                        resolve(null);
-                        return;
-                    } else { }
-                    GenericFile.findOne({
-                        _id: args._id
-                    }).then(res => {
-                        fileParents = res.userRelativePath;
-                        var promises = [];
-                        var parentNames = [];
-                        fileParents.forEach(parentId => {
-                            if (parentId !== '') {
-                                var prom = GenericFile.findOne({
-                                    _id: parentId
-                                }).then(res => resultNames.push({
-                                    name: res.name,
-                                    _id: res._id
-                                }));
-                                promises.push(prom);
-                            }
-                            else {
-                                var prom = GenericFile.find({
-                                    owner: info.username,
-                                    userRelativePath: ['']
-                                });
-                                promises.push(prom);
-                            }
-
-                        })
-                        bb.all(promises).then(results => {
-
-                        })
-                    });
-
-                } catch (e) {
-                    resolve(false);
-                }
-
-            })
-        },
         resolvePath: async function (parent, args, {
             Folder
         }) {
@@ -137,6 +89,9 @@ var resolvers = {
                     args.path.forEach(id=>{
                         promises.push(Folder.findOne({_id: id}));
                     });
+                    /*TODO:
+                            To make the breadcrumb fast we should index the the files in the data base to a lookup tabel so we dont have to wait on the array of promises
+                    */
                     bb.all(promises).then(res=>{
                         res.forEach(i=>{
                             resDir.push(i);
