@@ -54,22 +54,27 @@ app.post('/upload', upload.single('file'), function (req, res) {
             var info;
             if (info = jwt.verify(token, secret)) {
                 var file = req.file;
-                var absPath = path.resolve('./users/' + info.username + '/' + file.originalname + req.body.path);
-                var writeFile = fs.writeFile(absPath, file.buffer, (err, result) => {
-                    if (err) throw err;
-                    var mongoFile = new GenericFile({
-                        absolutePath: absPath,
-                        fileSize: file.size,
-                        parentId: req.body.path,
-                        name: file.originalname,
-                        owner: info.username,
-                        type: file.mimetype
+                var mongoFile = new GenericFile({
+                    fileSize: file.size,
+                    parentId: req.body.path,
+                    name: file.originalname,
+                    owner: info.username,
+                    type: file.mimetype,
+                    rawName: file.originalname
+                    //TODO: make type and mimeType different 
+                });
+                mongoFile.save().then((e) => {
+                    var absPath = path.resolve('./users/' + info.username + '/' + file.originalname + e._id);
+                    e.absolutePath = absPath;
+                    e.save();
+                    var writeFile = fs.writeFile(absPath, file.buffer, (err, result) => {
+                        if (err) throw err;
+                        Folder.findOne({ _id: req.body.path }).then((folder) => {
+                            folder.children.push(mongoFile);
+                            folder.save();
+                            res.send('Recived and saved')
+                        })
                     });
-                    mongoFile.save().then((e) => {res.send('Recived and saved')});
-                    Folder.findOne({_id:req.body.path}).then((folder)=>{
-                        folder.children.push(mongoFile);
-                        folder.save();
-                    })
                 });
             }
         }
@@ -88,16 +93,18 @@ app.post('/upload', upload.single('file'), function (req, res) {
 app.get('/filedl', function (req, res) {
     try {
         var info = jwt.verify(req.query.token, secret);
-        var _path = path.resolve(__dirname + `../../../users/${info.username}/${req.query.rawName}`);
-        res.download(_path, function (err) {
+        var _path = path.resolve(__dirname + `../../../users/${info.username}/${req.query.name + req.query._id}`);
+        console.log(_path)
+        res.download(_path, req.query.name, function (err) {
             if (err) {
+                console.log(err);
             }
         });
     }
     catch (e) {
         res.send('Sorry, invalid something.')
     }
-})
+});
 
 app.get('/registerUser/:hash', function (req, res) {
     User.findOne({ registrationHash: req.params.hash }).then((u) => {

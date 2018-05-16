@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { refreshFileList, makeFolder, removeFile, startRename } from '../../../actions/filepage.actions';
+import { refreshFileList, makeFolder, removeFile, startRename, downloadFile } from '../../../actions/filepage.actions';
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
 import { Folder } from '../FileElement/FileElement.jsx';
 import BreadCrumbs from '../BreadCrumbs/BreadCrumbs.jsx';
-
+import { URL as IP } from '../../../const.js';
 
 class FileList extends React.Component {
     constructor(props) {
@@ -35,7 +35,8 @@ class FileList extends React.Component {
                 return;
             }
             case "download": {
-                this.props.dispatch(downloadFile(data.file));
+                //TODO: download should not show up for folders
+                window.open(`${IP}/filedl?token=${localStorage.getItem('token')}&_id=${data.file._id}&name=${data.file.name}`);
                 return;
             }
         }
@@ -51,17 +52,13 @@ class FileList extends React.Component {
     }
 
     componentDidMount() {
-        //FIXME: this.porps.dir is null at this point for some reason. thats why right after you log in, refresh list gets stuck
-        this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length-1]))
+        this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length - 1]))
     }
 
     render() {
         if (!this.props.files && !this.props.error) {
-            return <p className={styles.loading}>Loading</p>
-        }
-        return (
-            <div className={styles.cont}>
-                <ContextMenuTrigger id="filelist" >
+            return (
+                <div className={styles.cont}>
                     <div className={styles.content}>
                         <div className={styles.bread}>
                             <BreadCrumbs />
@@ -73,8 +70,28 @@ class FileList extends React.Component {
                                 <div className={styles.info}>Size</div>
                                 <div className={styles.info}>Type</div>
                             </div>
+                        </div>
+                    </div>
+                </div>)
+        }
+        return (
+            <div className={styles.cont}>
+                <ContextMenuTrigger id="filelist" >
+                    <div className={styles.content}>
+                        <div className={styles.bread}>
+                            <BreadCrumbs />
+                        </div>
+                        <div className={styles.files}>
+                            <div className={styles.header}>
+                                <div className={styles.icon}><i className='far fa-file' /></div>
+                                <div className={styles.info}>Name</div>
+                                <div className={styles.info}>Size</div>
+                                <div className={styles.info}>Type</div>
+                            </div>
                             {this.props.isMakingFolder ? <EmptyFolder /> : <div />}
                             {this.props.files != null ? this.props.files.map((f, key) => {
+                                console.log(this.props.files)
+                                //TODO: can we plz make the FileElement and Folder seprate files. File element is fucking mangled and is un readable, they also need different context menus
                                 return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
                             }) : <div></div>}
                         </div>

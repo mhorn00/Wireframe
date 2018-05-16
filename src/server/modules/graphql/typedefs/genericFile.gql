@@ -12,11 +12,12 @@
 
     type File {
         _id: ID!,
-        name: String,
-        type: String,
+        name: String!,
+        type: String!,
         uploadDate: String,
         fileSize: Int,
-        owner: String!
+        owner: String!,
+        rawName: String!
     }
 
     input NewFile {

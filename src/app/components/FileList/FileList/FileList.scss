@@ -29,9 +29,11 @@
 
 .icon {
     display: table-cell;
-    padding-left: 5px;
+    font-size: 40px;
+    padding: 0px 10px 0px 5px;
     white-space: pre;
     text-align: center;
+    opacity: 0;
 }
 
 .info {

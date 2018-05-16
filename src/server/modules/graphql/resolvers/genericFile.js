@@ -26,7 +26,7 @@ async function removeSubItems(parentId) {
             else {
                 GenericFile.findOne({ _id: child._id }).then(item => {
                     try {
-                        fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${item.owner}/${item.name}`));
+                        fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${item.owner}/${item.name+item._id}`));
                         item.remove().then(() => resolve(true));
                     } catch (e) {
                         if (e.code == 'ENOENT') {
@@ -174,8 +174,11 @@ var resolvers = {
                         Folder.findOne({
                             _id: args._id
                         }).then((element) => {
-                            Folder.remove({ _id: element._id }).then(() => resolve(true));
-
+                            Folder.remove({ _id: element._id }).then(() => {
+                                removeSubItems(element._id).then(()=>{
+                                    resolve(true);
+                                });
+                            });
                         });
                     }
                     else {

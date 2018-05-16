@@ -13,7 +13,7 @@ const ACTIONS = {
     UPLOAD_STATE: 'UPLOAD_STATE',
     UPDATE_PROGRESS: 'UPDATE_PROGRESS',
     RESOLVE_PATH_PENDING: 'RESOLVE_PATH_PENDING',
-    RESOLVE_PATH_DONE: 'RESOLVE_PATH_DONE'
+    RESOLVE_PATH_DONE: 'RESOLVE_PATH_DONE',
 }
 
 export default ACTIONS
@@ -160,9 +160,9 @@ export function setError(error) {
 
 export function refreshFileList(parentId) {
     var query = `query{files(parentId:"${parentId}" token:"${localStorage.getItem("token")}"){
-            name,
-            type,
-            fileSize,
+            name
+            type
+            fileSize
             _id
         }
     }`

@@ -42,7 +42,7 @@ class BreadCrumbs extends React.Component {
         }
         return (
             <div className={styles.cont}>
-                {this.props.resolvePathPending ? <div>Loading</div> : bread}
+                {this.props.resolvePathPending ? <div className={styles.loading}>Loading</div> : bread}
             </div>
         )
     }
