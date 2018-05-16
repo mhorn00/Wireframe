@@ -14,7 +14,7 @@ global.mongo = mongoose.createConnection('mongodb://localhost:27017');
 
 var express = require('express');
 
-var PORT = 3000;
+var PORT = 8000;
 
 var app = express();
 var cors = require('cors');

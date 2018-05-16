@@ -89,9 +89,7 @@ var resolvers = {
                     args.path.forEach(id=>{
                         promises.push(Folder.findOne({_id: id}));
                     });
-                    /*TODO:
-                            To make the breadcrumb fast we should index the the files in the data base to a lookup tabel so we dont have to wait on the array of promises
-                    */
+                    //TODO: To make the breadcrumb fast we should index the the files in the data base to a lookup tabel so we dont have to wait on the array of promises
                     bb.all(promises).then(res=>{
                         res.forEach(i=>{
                             resDir.push(i);
