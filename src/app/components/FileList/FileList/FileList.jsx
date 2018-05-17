@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { refreshFileList, makeFolder, removeFile, startRename, downloadFile, updatePersistance } from '../../../actions/filepage.actions';
+import { refreshFileList, makeFolder, removeFile, startRename, downloadFile } from '../../../actions/filepage.actions';
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -43,8 +43,8 @@ class FileList extends React.Component {
     }
 
 
-    folderElementClick(e,data){
-        switch(data.type){
+    folderElementClick(e, data) {
+        switch (data.type) {
             case "rename": {
                 this.props.dispatch(startRename(data.folder._id));
                 return;
@@ -66,10 +66,10 @@ class FileList extends React.Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length - 1]))        
-        if (this.props.persistanceNeedsUpdate){
-            this.props.dispatch(updatePersistance(<BreadCrumbs />, files));
-        }
+        this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length - 1]))
+        /* if (this.props.persistanceNeedsUpdate) {
+            this.props.dispatch(updatePersistance(<BreadCrumbs />));
+        } */
     }
 
     render() {
@@ -77,20 +77,18 @@ class FileList extends React.Component {
             return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} folder={f} />)
         }) : <div></div>;
         if (!this.props.files && !this.props.error) {
-            console.log(this.props.persistance.filelist)
             return (
                 <div className={styles.cont}>
                     <div className={styles.content}>
                         <div className={styles.bread}>
-                            {this.props.persistance.breadcrumbs}
+                            <BreadCrumbs />
                         </div>
                         <div className={styles.files}>
                             <div className={styles.header}>
-                                <div className={styles.icon}></div>
+                                <div className={styles.icon}><i className='far fa-file' /></div>
                                 <div className={styles.info}>Name</div>
                                 <div className={styles.info}>Size</div>
                                 <div className={styles.info}>Type</div>
-                                {this.props.persistance.filelist}
                             </div>
                         </div>
                     </div>

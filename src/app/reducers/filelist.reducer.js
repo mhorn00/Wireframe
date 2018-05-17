@@ -22,27 +22,12 @@ const defaults = {
     uploadProgress: 0,
     resolvedPath: [],
     resolvePathPending: false,
-    persistance: {
-        filelist: null,
-        breadcrumbs: null,
-    },
-    persistanceNeedsUpdate: false
 }
 
 
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
-        case actions.UPDATE_PERSISTANCE:
-            {
-                return Object.assign({}, state, {
-                    persistance: {
-                        filelist: action.payload.filelist,
-                        breadcrumbs: action.payload.breadcrumb
-                    },
-                    persistanceNeedsUpdate: false
-                });
-            }
         case actions.RESOLVE_PATH_PENDING:
             {
                 return Object.assign({}, state, {
@@ -54,7 +39,6 @@ const filepage = (state = defaults, action) => {
                 return Object.assign({}, state, {
                     resolvePathPending: false,
                     resolvedPath: action.payload,
-                    persistanceNeedsUpdate: true
                 });
             }
         case actions.UPDATE_PROGRESS:
@@ -91,7 +75,6 @@ const filepage = (state = defaults, action) => {
             {
                 return Object.assign({}, state, {
                     isMakingFolder: false,
-                    persistanceNeedsUpdate: true
                 });
             }
         case actions.MAKE_FOLDER:
@@ -118,7 +101,6 @@ const filepage = (state = defaults, action) => {
                 return Object.assign({}, state, {
                     files: action.payload,
                     pending: false,
-                    persistanceNeedsUpdate: true
                 })
             }
         case actions.SET_DIR:
