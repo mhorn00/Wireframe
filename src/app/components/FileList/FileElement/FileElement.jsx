@@ -122,7 +122,7 @@ class FileElement extends React.Component {
                     }()
                 }
             }} collect={() => { return this.props; }} disable={this.props.isDragging} >
-                {contained}
+                {connectDragSource(contained)}
             </ContextMenuTrigger >
         )
     }

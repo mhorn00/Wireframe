@@ -9,7 +9,9 @@ import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend';
 
 function uploaderDropTargetCollector(connect, monitor) {
     return {
-        connectDropTarget: connect.dropTarget()
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop()
     }
 }
 
@@ -98,7 +100,7 @@ class Uploader extends React.Component {
 
     onDragStarted(e) {
         e.preventDefault();
-        this.props.dispatch(uploadState('dropHover'))
+        
     }
 
     onDragStopped(e) {
@@ -107,19 +109,24 @@ class Uploader extends React.Component {
     }
 
     render() {
-        var { connectDropTarget } = this.props;
-        return connectDropTarget(
+        var { connectDropTarget, isOver } = this.props;
+
+        return (
             <div className={styles.base}>
                 <p className={styles.text}>Drop Files Here</p>
                 {/* <form onSubmit={this.onDrop}>
                     <input type='file' />
                     <input type='submit' />
                 </form> */}
-                <div className={styles[`${this.props.uploadState}`]} /* onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped} onDragOver={(e) => { e.preventDefault() }} */>
+                {connectDropTarget(<div className={styles[(()=>{
+                    if(this.props.uploadState=='uploading') return 'uploading';
+                    else if(isOver) return 'dropHover'
+                    else return 'resting'
+                })()]}>
                     <div className={styles.loading} style={{ height: 100 - this.props.uploadProgress + '%' }}>
                         <p className={styles.text}>{this.props.uploadProgress}</p>
                     </div>
-                </div>
+                </div>)}
             </div>
         )
     }
