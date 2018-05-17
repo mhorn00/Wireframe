@@ -7,7 +7,7 @@ import { refreshFileList, makeFolder, removeFile, startRename, downloadFile, upd
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
-import { Folder } from '../FileElement/FileElement.jsx';
+import Folder from '../FolderElement/FolderElement.jsx';
 import BreadCrumbs from '../BreadCrumbs/BreadCrumbs.jsx';
 import { URL as IP } from '../../../const.js';
 

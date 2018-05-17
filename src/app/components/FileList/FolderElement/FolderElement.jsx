@@ -2,13 +2,14 @@ import React from 'react';
 import { setDir, renameFile, refreshFileList } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
-import styles from './FileElement.scss';
+import styles from './FolderElement.scss';
 import { DragSource, DropTarget, DragLayer } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
 import { History } from 'react-router';
 import { IP } from '../../../const'
+import { flow } from 'lodash';
 
-const fileDragSource = {
+const folderDragSource = {
     beginDrag(props) {
         return {
 
@@ -17,12 +18,15 @@ const fileDragSource = {
 };
 
 const fileDrop = {
-    canDrop: function () {
+    canDrop(props, monitor) {
         return true
+    },
+    drop(props, monitor, connect){
+        console.log(props, monitor, connect);
     }
 }
 
-function fileCollect(connect, monitor) {
+function folderDragCollect(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging(),
@@ -30,7 +34,7 @@ function fileCollect(connect, monitor) {
     }
 }
 
-function folderCollect(connect, monitor) {
+function folderDropCollect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget()
     }
@@ -39,67 +43,41 @@ function folderCollect(connect, monitor) {
 class Folder extends React.Component {
     constructor(props) {
         super(props);
-        this.getSize = this.getSize.bind(this);
-    }
-
-    getSize(size) {
-        if (size < 1000) {
-            return size + " B";
-        } else if (size < 100000) {
-            return ((Math.round(size / 1000)) + " KB");
-        } else if (size < 1000000000) {
-            return (Math.round(size / 1000000) + " MB");
-        } else if (size < 1000000000000) {
-            return (Math.round(size / 1000000000) + " GB");
-        } else {
-            return undefined;
-        }
     }
 
     componentDidMount() {
-        if (this.props.isRenaming.isEditing && this.props.isRenaming._id == file._id) {
+        if (this.props.isRenaming.isEditing && this.props.isRenaming._id == this.props.folder._id) {
             this.filename.focus();
         }
     }
 
     render() {
-        var { file, dispatch } = this.props;
-        let { connectDragSource, isDragging, connectDragPreview } = this.props;
+        var { folder, dispatch } = this.props;
+        let { connectDragSource, isDragging, connectDragPreview, connectDropTarget } = this.props;
         let icon = 'far fa-folder';
-        let size = this.getSize(file.fileSize);
+        let size = "n/a"
         var contained = (
             <div onClick={e => {
                 if (this.props.isRenaming.isEditing) {
                     return;
                 }
-                var newPath = [...this.props.dir, file._id]
+                var newPath = [...this.props.dir, folder._id]
                 dispatch(setDir(newPath));
                 dispatch(refreshFileList(newPath));
             }} className={styles.file}>
                 <div className={styles.icon}><i className={icon} /></div>
-                {this.props.isRenaming.isEditing && this.props.isRenaming._id == file._id
+                {this.props.isRenaming.isEditing && this.props.isRenaming._id == folder._id
                     ? <form onSubmit={e => {
                         e.preventDefault();
-                        this.props.dispatch(renameFile(this.props.dir, file, this.filename.value));
+                        this.props.dispatch(renameFile(this.props.dir, folder, this.filename.value));
                     }} className={styles.form}>
-                        <input type="text" placeholder={file.name} ref={node => this.filename = node} className={styles.textbox} autoFocus />
+                        <input type="text" placeholder={folder.name} ref={node => this.filename = node} className={styles.textbox} autoFocus />
                     </form>
-                    : <div className={styles.text}>{file.name}</div>}
+                    : <div className={styles.text}>{folder.name}</div>}
                 <div className={styles.text}></div>
                 <div className={styles.text}></div>
             </div>
         )
-
-        if (!this.props.isDragging && file.type !== '|dir|') {
-            var contained = /* connectDragSource */(contained);
-        }
-        else {
-            // TODO: Make a custom DragLayer so that dragging looks good
-        }
-
-        if (file.type == '|dir|') {
-            //contained = DropTarget(contained);
-        }
 
         const stuff = this;
         return (
@@ -118,8 +96,8 @@ class Folder extends React.Component {
                         }
                     }()
                 }
-            }} collect={() => { return this.props; }} disable={this.props.isDragging} >
-                {contained}
+            }} collect={() => { return stuff.props; }} disable={stuff.props.isDragging} >
+                {connectDragSource(connectDropTarget(contained))}
             </ContextMenuTrigger >
         )
     }
@@ -129,8 +107,6 @@ function mapStateToProps(state) {
     return state.fileListReducer
 }
 
-var connectedThing = connect(mapStateToProps)(Folder);
+var reduxConnectedComponent = connect(mapStateToProps)(Folder);
 
-export default /* DragSource('file', fileDragSource, fileCollect) */(connectedThing);
-
-export const Folder = /* DropTarget('file', fileDrop, folderCollect) */(connectedThing);
+export default flow(connect(mapStateToProps), DropTarget(['folder', 'file'], fileDrop, folderDropCollect), DragSource('folder', folderDragSource, folderDragCollect))(Folder);

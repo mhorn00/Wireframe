@@ -20,12 +20,12 @@ const ACTIONS = {
 export default ACTIONS
 
 import { createApolloFetch } from 'apollo-fetch';
-import { URL as IP } from '../const';
+import { URL } from '../const';
 
 import gql from 'graphql-tag';
 
 const _fetch = createApolloFetch({
-    uri: `${IP}/graphql`
+    uri: `${URL}/graphql`
 });
 
 export function updatePersistance(bread,filelist){
@@ -93,6 +93,7 @@ export function endRename() {
 }
 
 export function renameFile(path, file, newName) {
+    console.log(file);
     var query = `mutation{renameFile(_id: "${file._id}", type: "${file.type}"newName: "${newName}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({ query }).then(res => {
