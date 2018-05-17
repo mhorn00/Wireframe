@@ -23,7 +23,6 @@ class BreadCrumbs extends React.Component {
                 crumbs.push(<div key={key++} className={styles.crumb} onClick={(e) => {
                     e.preventDefault();
                     let newDir = this.props.dir.splice(0,this.props.dir.indexOf(crumb._id)+1);
-                    console.log(this.props.dir,newDir,this.props.dir.indexOf(crumb._id)+1)
                     this.props.dispatch(setDir(newDir));
                     this.props.dispatch(refreshFileList(newDir));
                 }}>{crumb.name}</div>)

@@ -93,7 +93,6 @@ export function endRename() {
 }
 
 export function renameFile(path, file, newName) {
-    console.log(file);
     var query = `mutation{renameFile(_id: "${file._id}", type: "${file.type}"newName: "${newName}", token: "${localStorage.getItem("token")}")}`
     return dispatch => {
         _fetch({ query }).then(res => {
