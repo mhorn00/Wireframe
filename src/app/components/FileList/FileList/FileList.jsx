@@ -58,7 +58,10 @@ class FileList extends React.Component {
         let files = this.props.files != null ? this.props.files.map((f, key) => {
             return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
         }) : <div></div>;
-        this.props.dispatch(updatePersistance(<BreadCrumbs />, files));
+        
+        if (this.props.persistanceNeedsUpdate){
+            this.props.dispatch(updatePersistance(<BreadCrumbs />, files));
+        }
         if (!this.props.files && !this.props.error) {
             return (
                 <div className={styles.cont}>

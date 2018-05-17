@@ -25,7 +25,8 @@ const defaults = {
     persistance: {
         filelist: null,
         breadcrumbs: null,
-    }
+    },
+    persistanceNeedsUpdate: false
 }
 
 
@@ -38,7 +39,8 @@ const filepage = (state = defaults, action) => {
                     persistance: {
                         filelist: action.payload.filelist,
                         breadcrumbs: action.payload.breadcrumb
-                    }
+                    },
+                    persistanceNeedsUpdate: false
                 });
             }
         case actions.RESOLVE_PATH_PENDING:
@@ -51,7 +53,8 @@ const filepage = (state = defaults, action) => {
             {
                 return Object.assign({}, state, {
                     resolvePathPending: false,
-                    resolvedPath: action.payload
+                    resolvedPath: action.payload,
+                    persistanceNeedsUpdate: true
                 });
             }
         case actions.UPDATE_PROGRESS:
@@ -87,7 +90,8 @@ const filepage = (state = defaults, action) => {
         case actions.FINALIZE_FOLDER_COMPLETE:
             {
                 return Object.assign({}, state, {
-                    isMakingFolder: false
+                    isMakingFolder: false,
+                    persistanceNeedsUpdate: true
                 });
             }
         case actions.MAKE_FOLDER:
@@ -106,14 +110,15 @@ const filepage = (state = defaults, action) => {
         case actions.REFRESH_REQUEST:
             {
                 return Object.assign({}, state, {
-                    pending: true
+                    pending: true,
                 });
             }
         case actions.REFRESH_COMPLETE:
             {
                 return Object.assign({}, state, {
                     files: action.payload,
-                    pending: false
+                    pending: false,
+                    persistanceNeedsUpdate: true
                 })
             }
         case actions.SET_DIR:
