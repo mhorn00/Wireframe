@@ -15,10 +15,12 @@ class FileList extends React.Component {
     constructor(props) {
         super(props);
         this.fileElementClick = this.fileElementClick.bind(this);
+        this.folderElementClick = this.folderElementClick.bind(this);
         this.emptyAreaClick = this.emptyAreaClick.bind(this);
     }
 
     fileElementClick(e, data) {
+        console.log(data);
         switch (data.type) {
             case "rename": {
                 this.props.dispatch(startRename(data.file._id));
@@ -37,6 +39,21 @@ class FileList extends React.Component {
             case "download": {
                 //TODO: download should not show up for folders
                 window.open(`${IP}/filedl?token=${localStorage.getItem('token')}&_id=${data.file._id}&name=${data.file.name}`);
+                return;
+            }
+        }
+    }
+
+
+    folderElementClick(e,data){
+        switch(data.type){
+            case "rename": {
+                this.props.dispatch(startRename(data.folder._id));
+                return;
+            }
+            case "delete": {
+                console.log(data);
+                this.props.dispatch(removeFile(data.folder, data.dir));
                 return;
             }
         }
@@ -103,6 +120,7 @@ class FileList extends React.Component {
                         <p className={styles.text}>New Folder</p>
                     </MenuItem>
                 </ContextMenu>
+
                 <ContextMenu id="element" className={styles.menu}>
                     <MenuItem data={{ type: 'rename' }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Rename</p>
@@ -116,6 +134,25 @@ class FileList extends React.Component {
                     <MenuItem data={{ type: 'download' }} onClick={this.fileElementClick} className={styles.item}>
                         <p className={styles.text}>Download</p>
                     </MenuItem>
+                </ContextMenu>
+
+                <ContextMenu id="folderelement" className={styles.menu}>
+                    <MenuItem data={{ type: 'rename' }} onClick={this.folderElementClick} className={styles.item}>
+                        <p className={styles.text}>Rename</p>
+                    </MenuItem>
+                    <MenuItem data={{ type: 'delete' }} onClick={this.folderElementClick} className={styles.item}>
+                        <p className={styles.text}>Delete</p>
+                    </MenuItem>
+                    <MenuItem data={{ type: 'share' }} onClick={this.folderElementClick} className={styles.item}>
+                        <p className={styles.text}>Share</p>
+                    </MenuItem>
+                    {/* <MenuItem data={{ type: 'download' }} onClick={this.fileElementClick} className={styles.item}>
+                        <p className={styles.text}>Download</p>
+                    </MenuItem> 
+                    
+                    Disabled Folder Download Button for now
+
+                    */}
                 </ContextMenu>
             </div>
         )

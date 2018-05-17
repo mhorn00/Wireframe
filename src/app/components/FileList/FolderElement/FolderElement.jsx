@@ -81,7 +81,7 @@ class Folder extends React.Component {
 
         const stuff = this;
         return (
-            <ContextMenuTrigger id="element" attributes={{
+            <ContextMenuTrigger id="folderelement" attributes={{
                 className: styles.trigger,
                 style: {
                     cursor: function () {
