@@ -55,7 +55,6 @@ class Folder extends React.Component {
         var { folder, dispatch } = this.props;
         let { connectDragSource, isDragging, connectDragPreview, connectDropTarget } = this.props;
         let icon = 'far fa-folder';
-        let size = "n/a"
         var contained = (
             <div onClick={e => {
                 if (this.props.isRenaming.isEditing) {

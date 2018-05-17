@@ -73,7 +73,7 @@ class FileList extends React.Component {
 
     render() {
         let files = this.props.files != null ? this.props.files.map((f, key) => {
-            return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
+            return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} folder={f} />)
         }) : <div></div>;
         
         if (this.props.persistanceNeedsUpdate){
