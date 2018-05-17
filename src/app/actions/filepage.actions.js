@@ -14,6 +14,7 @@ const ACTIONS = {
     UPDATE_PROGRESS: 'UPDATE_PROGRESS',
     RESOLVE_PATH_PENDING: 'RESOLVE_PATH_PENDING',
     RESOLVE_PATH_DONE: 'RESOLVE_PATH_DONE',
+    UPDATE_PERSISTANCE: 'UPDATE_PERSISTANCE'
 }
 
 export default ACTIONS
@@ -26,6 +27,16 @@ import gql from 'graphql-tag';
 const _fetch = createApolloFetch({
     uri: `${IP}/graphql`
 });
+
+export function updatePersistance(bread,filelist){
+    return {
+        type: ACTIONS.UPDATE_PERSISTANCE,
+        payload: {
+            breadcrumb: bread,
+            filelist: filelist
+        }
+    }
+}
 
 function resolvePathPending() {
     return {

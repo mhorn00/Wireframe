@@ -21,13 +21,26 @@ const defaults = {
     uploadState: 'resting',
     uploadProgress: 0,
     resolvedPath: [],
-    resolvePathPending: false
+    resolvePathPending: false,
+    persistance: {
+        filelist: null,
+        breadcrumbs: null,
+    }
 }
 
 
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
+        case actions.UPDATE_PERSISTANCE:
+            {
+                return Object.assign({}, state, {
+                    persistance: {
+                        filelist: action.payload.filelist,
+                        breadcrumbs: action.payload.breadcrumb
+                    }
+                });
+            }
         case actions.RESOLVE_PATH_PENDING:
             {
                 return Object.assign({}, state, {
