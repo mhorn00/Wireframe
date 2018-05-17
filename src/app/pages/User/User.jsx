@@ -5,6 +5,9 @@ import MasterLayout from '../../layouts/MasterLayout/MasterLayout.jsx';
 import FileList from '../../components/FileList/FileList/FileList.jsx';
 import Uploader from '../../components/FileList/Uploader/Uploader.jsx';
 import FolderStructure from '../../components/FileList/FolderStructure/FolderStructure.jsx';
+import HTML5Backend from 'react-dnd-html5-backend';
+import {DragDropContext} from 'react-dnd';
+import {flow} from 'lodash'
 
 class User extends React.Component {
     constructor(props) {
@@ -36,4 +39,4 @@ function mapStateToProps(state) {
     return state;
 }
 
-export default connect(mapStateToProps)(User);
+export default flow(DragDropContext(HTML5Backend),connect(mapStateToProps))(User);

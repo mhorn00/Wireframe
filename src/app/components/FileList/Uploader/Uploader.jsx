@@ -1,8 +1,63 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { uploadState, updateProgress, refreshFileList } from '../../../actions/filepage.actions';
+import { DropTarget, DragDropContext } from 'react-dnd';
 import styles from './Uploader.scss'
 import { URL as IP } from '../../../const';
+import { flow } from 'lodash';
+import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend';
+
+function uploaderDropTargetCollector(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget()
+    }
+}
+
+const uploadDropActionHandler = {
+    canDrop(props, monitor) {
+        return true
+    },
+    drop(props_others, monitor, connect) {
+        var fileArray = monitor.getItem().files;
+        var props = connect.selector.props;
+        for (var i = 0; i < fileArray.length; i++) {
+            var data = new FormData();
+            data.append('file', fileArray[i]);
+            data.append('token', localStorage.getItem("token"));
+            data.append('path', props.dir[props.dir.length - 1]);
+            data.append('fromSite', true);
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = (e) => {
+                if (xhr.readyState == XMLHttpRequest.OPENED) {
+                    props.dispatch(uploadState('uploading'));
+                } else if (xhr.readyState == XMLHttpRequest.DONE) {
+                    props.dispatch(uploadState('resting'));
+                    props.dispatch(updateProgress(0));
+                    props.dispatch(refreshFileList(props.dir[props.dir.length - 1]))
+                }
+            };
+            xhr.open('POST', `${IP}/upload`, true);
+            xhr.upload.addEventListener('progress', (e) => {
+                let progress = 0;
+                if (e.total !== 0) {
+                    progress = parseInt((e.loaded / e.total) * 100, 10);
+                }
+                props.dispatch(updateProgress(progress));
+            });
+            xhr.send(data);
+        }
+    },
+    hover(props,monitor,connect){
+        var props = connect.selector.props;
+        if(monitor.isOver()){
+            props.dispatch(uploadState('resting'))
+        }
+        else{
+            props.dispatch(uploadState('dropHover'))
+        }
+    }
+}
+
 
 class Uploader extends React.Component {
     constructor(props) {
@@ -52,14 +107,15 @@ class Uploader extends React.Component {
     }
 
     render() {
-        return (
+        var { connectDropTarget } = this.props;
+        return connectDropTarget(
             <div className={styles.base}>
                 <p className={styles.text}>Drop Files Here</p>
                 {/* <form onSubmit={this.onDrop}>
                     <input type='file' />
                     <input type='submit' />
                 </form> */}
-                <div className={styles[`${this.props.uploadState}`]} onDrop={this.onDrop} onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped} onDragOver={(e) => { e.preventDefault() }}>
+                <div className={styles[`${this.props.uploadState}`]} /* onDragEnter={this.onDragStarted} onDragLeave={this.onDragStopped} onDragOver={(e) => { e.preventDefault() }} */>
                     <div className={styles.loading} style={{ height: 100 - this.props.uploadProgress + '%' }}>
                         <p className={styles.text}>{this.props.uploadProgress}</p>
                     </div>
@@ -73,4 +129,4 @@ function mapStateToProps(state) {
     return state.fileListReducer;
 }
 
-export default connect(mapStateToProps)(Uploader);
+export default flow(connect(mapStateToProps), DropTarget(NativeTypes.FILE, uploadDropActionHandler, uploaderDropTargetCollector))(Uploader);
