@@ -20,7 +20,6 @@ class FileList extends React.Component {
     }
 
     fileElementClick(e, data) {
-        console.log(data);
         switch (data.type) {
             case "rename": {
                 this.props.dispatch(startRename(data.file._id));
@@ -51,7 +50,6 @@ class FileList extends React.Component {
                 return;
             }
             case "delete": {
-                console.log(data);
                 this.props.dispatch(removeFile(data.folder, data.dir));
                 return;
             }
@@ -79,6 +77,7 @@ class FileList extends React.Component {
             return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} folder={f} />)
         }) : <div></div>;
         if (!this.props.files && !this.props.error) {
+            console.log(this.props.persistance.filelist)
             return (
                 <div className={styles.cont}>
                     <div className={styles.content}>
