@@ -61,7 +61,6 @@ class FileElement extends React.Component {
         let { connectDragSource, isDragging, connectDragPreview } = this.props;
         if(!file) return;
         console.log(file);
-        console.log(this.props);
         let icon = file.type == '|dir|' ? 'far fa-folder' : 'far fa-file';
         let size = this.getSize(file.fileSize);
         var contained = (

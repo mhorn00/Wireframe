@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FileElement from '../FileElement/FileElement.jsx';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FileList.scss';
-import { refreshFileList, makeFolder, removeFile, startRename, downloadFile } from '../../../actions/filepage.actions';
+import { refreshFileList, makeFolder, removeFile, startRename, downloadFile, updatePersistance } from '../../../actions/filepage.actions';
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -27,7 +27,6 @@ class FileList extends React.Component {
                 return;
             }
             case "delete": {
-                console.log(data);
                 this.props.dispatch(removeFile(data.file, data.dir));
                 return;
             }
@@ -73,12 +72,19 @@ class FileList extends React.Component {
     }
 
     render() {
+        let files = this.props.files != null ? this.props.files.map((f, key) => {
+            return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
+        }) : <div></div>;
+        
+        if (this.props.persistanceNeedsUpdate){
+            this.props.dispatch(updatePersistance(<BreadCrumbs />, files));
+        }
         if (!this.props.files && !this.props.error) {
             return (
                 <div className={styles.cont}>
                     <div className={styles.content}>
                         <div className={styles.bread}>
-                            <BreadCrumbs />
+                            {this.props.persistance.breadcrumbs}
                         </div>
                         <div className={styles.files}>
                             <div className={styles.header}>
@@ -86,6 +92,7 @@ class FileList extends React.Component {
                                 <div className={styles.info}>Name</div>
                                 <div className={styles.info}>Size</div>
                                 <div className={styles.info}>Type</div>
+                                {this.props.persistance.filelist}
                             </div>
                         </div>
                     </div>
@@ -106,11 +113,7 @@ class FileList extends React.Component {
                                 <div className={styles.info}>Type</div>
                             </div>
                             {this.props.isMakingFolder ? <EmptyFolder /> : <div />}
-                            {this.props.files != null ? this.props.files.map((f, key) => {
-                                console.log(this.props.files)
-                                //TODO: can we plz make the FileElement and Folder seprate files. File element is fucking mangled and is un readable, they also need different context menus
-                                return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} folder={f} />)
-                            }) : <div></div>}
+                            {files}
                         </div>
                     </div>
                 </ContextMenuTrigger>
