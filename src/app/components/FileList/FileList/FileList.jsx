@@ -67,9 +67,6 @@ class FileList extends React.Component {
 
     componentDidMount() {
         this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length - 1]))
-        /* if (this.props.persistanceNeedsUpdate) {
-            this.props.dispatch(updatePersistance(<BreadCrumbs />));
-        } */
     }
 
     render() {

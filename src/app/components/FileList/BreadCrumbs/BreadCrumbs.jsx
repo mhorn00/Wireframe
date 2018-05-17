@@ -39,7 +39,6 @@ class BreadCrumbs extends React.Component {
         if (!this.props.resolvePathPending) {
             bread = this.getCrumbs(this.props.dir);
         }
-        console.log(this.props.persistance.breadcrumbs)
         return (
             <div className={styles.cont}>
                 {this.props.resolvePathPending ? <div className={styles.loading}>Loading</div> : bread}
