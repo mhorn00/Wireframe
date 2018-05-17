@@ -11,7 +11,6 @@ const defaults = {
     error: null,
     files: null,
     pending: false,
-    //FIXME: for some reason, this getItem is failing
     dir: [localStorage.getItem('rootFolder') ? localStorage.getItem('rootFolder') : undefined],
     isMakingFolder: false,
     isRenaming: {

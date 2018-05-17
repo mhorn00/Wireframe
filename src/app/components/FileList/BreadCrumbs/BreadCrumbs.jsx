@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './Breadcrumbs.scss';
-import { resolvePath, refreshFileList, setDir, updatePersistance } from '../../../actions/filepage.actions.js';
+import { resolvePath, refreshFileList, setDir } from '../../../actions/filepage.actions.js';
 
 class BreadCrumbs extends React.Component {
     constructor(props) {
