@@ -1,3 +1,3 @@
 var {PORT, IP} = require('../server/const');
-var URL = `${PUBLIC_IP}:${PORT}`
+var URL = `${IP}:${PORT}`
 export {URL};

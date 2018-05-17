@@ -30,12 +30,6 @@ function fileCollect(connect, monitor) {
     }
 }
 
-function folderCollect(connect, monitor) {
-    return {
-        connectDropTarget: connect.dropTarget()
-    }
-}
-
 class FileElement extends React.Component {
     constructor(props) {
         super(props);
@@ -65,6 +59,8 @@ class FileElement extends React.Component {
     render() {
         var { file, dispatch } = this.props;
         let { connectDragSource, isDragging, connectDragPreview } = this.props;
+        console.log(file);
+        console.log(this.props);
         let icon = file.type == '|dir|' ? 'far fa-folder' : 'far fa-file';
         let size = this.getSize(file.fileSize);
         var contained = (

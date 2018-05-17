@@ -7,7 +7,7 @@ import { refreshFileList, makeFolder, removeFile, startRename, downloadFile } fr
 import EmptyFolder from '../EmptyFolder/EmptyFolder.jsx';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend'
-import { Folder } from '../FileElement/FileElement.jsx';
+import Folder from '../FolderElement/FolderElement.jsx';
 import BreadCrumbs from '../BreadCrumbs/BreadCrumbs.jsx';
 import { URL as IP } from '../../../const.js';
 
@@ -92,7 +92,7 @@ class FileList extends React.Component {
                             {this.props.files != null ? this.props.files.map((f, key) => {
                                 console.log(this.props.files)
                                 //TODO: can we plz make the FileElement and Folder seprate files. File element is fucking mangled and is un readable, they also need different context menus
-                                return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} file={f} />)
+                                return (f.type !== '|dir|' ? <FileElement key={key} file={f} /> : <Folder key={key} folder={f} />)
                             }) : <div></div>}
                         </div>
                     </div>
