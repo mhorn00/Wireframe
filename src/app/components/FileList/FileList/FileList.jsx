@@ -162,4 +162,4 @@ function mapStateToProps(state) {
     return state.fileListReducer;
 }
 
-export default DragDropContext(HTML5Backend)(connect(mapStateToProps)(FileList));
+export default connect(mapStateToProps)(FileList);

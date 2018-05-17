@@ -134,6 +134,4 @@ function mapStateToProps(state) {
 
 var connectedThing = connect(mapStateToProps)(FileElement);
 
-export default /* DragSource('file', fileDragSource, fileCollect) */(connectedThing);
-
-export const Folder = /* DropTarget('file', fileDrop, folderCollect) */(connectedThing);
+export default DragSource('file', fileDragSource, fileCollect)(connectedThing);
