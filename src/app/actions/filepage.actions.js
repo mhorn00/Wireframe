@@ -108,9 +108,9 @@ export function endRename() {
     }
 }
 
-export function moveElement(elementId, oldParentId, newParentId){
+export function moveElement(elementId, oldParentId, newParentId, isFolder){
     return dispatch => {
-        var query = `mutation{move(_id:"${elementId}" oldParentId:"${oldParentId}" newParentId:"${newParentId}" token:"${localStorage.getItem("token")}")}`
+        var query = `mutation{move(_id:"${elementId}" oldParentId:"${oldParentId}" newParentId:"${newParentId}" token:"${localStorage.getItem("token")}" isFolder:${isFolder})}`
         _fetch({query}).then(res=>{
             if(res.data.move===true){
                 dispatch(refreshFileList(oldParentId));

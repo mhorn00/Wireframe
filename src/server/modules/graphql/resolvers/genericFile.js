@@ -290,8 +290,8 @@ var resolvers = {
                         res.children.push(args._id);
                         res.save()
                     });
-                    var updateElementParentId = GenericFile.update({ _id: args._id, owner: info.username }, { parentId: args.newParentId });
-                    bb.all([oldParentChildrenRemovePromise, newParentChildrenAddPromise, updateElementParentId]).then(res => {
+                    var updateElementParentId = args.isFolder?Folder.update({_id:args._id, owner:info.username},{parentId:args.newParentId}):GenericFile.update({_id:args._id, owner:info.username}, {parentId:args.newParentId});
+                    bb.all([oldParentChildrenRemovePromise,newParentChildrenAddPromise, updateElementParentId]).then(res=>{
                         resolve(true);
                     }).catch(e => resolve(false));
 

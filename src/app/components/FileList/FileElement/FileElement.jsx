@@ -90,18 +90,6 @@ class FileElement extends React.Component {
                 <div className={styles.text}>{file.type == '|dir|' ? '' : file.type}</div>
             </div>
         )
-
-        if (!this.props.isDragging && file.type !=='|dir|') {
-            var contained = /* connectDragSource */(contained);
-        }
-        else {
-            // TODO: Make a custom DragLayer so that dragging looks good
-        }
-
-        if (file.type == '|dir|') {
-            //contained = DropTarget(contained);
-        }
-
         const stuff = this;
         return (
             <ContextMenuTrigger id="element" attributes={{

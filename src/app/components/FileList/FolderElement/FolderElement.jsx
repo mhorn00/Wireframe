@@ -11,9 +11,7 @@ import { flow } from 'lodash';
 
 const folderDragSource = {
     beginDrag(props) {
-        return {
-
-        };
+        return props.folder;
     }
 };
 
@@ -24,7 +22,7 @@ const fileDrop = {
     drop(prop, monitor, connect){
         var props = connect.selector.props;
         var element = monitor.getItem();
-        props.dispatch(moveElement(element._id, props.dir[props.dir.length-1], props.folder._id));
+        props.dispatch(moveElement(element._id, props.dir[props.dir.length-1], props.folder._id, element.type==="|dir|"));
     }
 }
 
