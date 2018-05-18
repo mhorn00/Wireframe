@@ -30,7 +30,7 @@ async function removeSubItems(parentId) {
                     _id: child._id
                 }).then(item => {
                     try {
-                        fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${item.owner}/${item.name+item._id}`));
+                        fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${item.owner}/${item.name + item._id}`));
                         item.remove().then(() => resolve(true));
                     } catch (e) {
                         if (e.code == 'ENOENT') {
@@ -114,6 +114,23 @@ var resolvers = {
                 }
             })
         },
+        getStructure: async function (parent, args, {
+            Folder, GenericFile
+        }) {
+            return await new Promise((resolve, reject) => {
+                try {
+                    var info = jwt.verify(args.token, secret);
+                    console.log('HEWWO??')
+                    Folder.findOne({_id: args.rootId, owner: info.username}).then(res=>{
+                        console.log(res);
+                    })
+                }catch (e){
+                    throw (e);
+                    resolve(null);
+                    return;
+                }
+            })
+        }
     },
     Mutation: {
         renameFile: async function (parent, args, {
@@ -128,26 +145,26 @@ var resolvers = {
                             _id: args._id,
                             owner: info.username
                         }, {
-                            name: args.newName
-                        }).then(res => {
-                            resolve(true);
-                        }).catch((e) => {
-                            throw (e);
-                            resolve(false);
-                            return;
-                        });
+                                name: args.newName
+                            }).then(res => {
+                                resolve(true);
+                            }).catch((e) => {
+                                throw (e);
+                                resolve(false);
+                                return;
+                            });
                     } else {
                         Folder.update({
                             _id: args._id
                         }, {
-                            name: args.newName
-                        }).then(res => {
-                            resolve(true);
-                        }).catch((e) => {
-                            throw (e);
-                            resolve(false);
-                            return;
-                        });
+                                name: args.newName
+                            }).then(res => {
+                                resolve(true);
+                            }).catch((e) => {
+                                throw (e);
+                                resolve(false);
+                                return;
+                            });
                     }
                 } catch (e) {
                     throw (e);
@@ -269,14 +286,14 @@ var resolvers = {
                     var newParentChildrenAddPromise = Folder.findOne({
                         _id: args.newParentId,
                         owner: info.username
-                    }).then(res=>{
+                    }).then(res => {
                         res.children.push(args._id);
                         res.save()
                     });
-                    var updateElementParentId = GenericFile.update({_id:args._id, owner:info.username}, {parentId:args.newParentId});
-                    bb.all([oldParentChildrenRemovePromise,newParentChildrenAddPromise, updateElementParentId]).then(res=>{
+                    var updateElementParentId = GenericFile.update({ _id: args._id, owner: info.username }, { parentId: args.newParentId });
+                    bb.all([oldParentChildrenRemovePromise, newParentChildrenAddPromise, updateElementParentId]).then(res => {
                         resolve(true);
-                    }).catch(e=>resolve(false));
+                    }).catch(e => resolve(false));
 
                 } catch (e) {
                     resolve(false);

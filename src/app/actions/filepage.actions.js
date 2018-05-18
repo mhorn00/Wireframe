@@ -14,8 +14,9 @@ const ACTIONS = {
     UPDATE_PROGRESS: 'UPDATE_PROGRESS',
     RESOLVE_PATH_PENDING: 'RESOLVE_PATH_PENDING',
     RESOLVE_PATH_DONE: 'RESOLVE_PATH_DONE',
-    UPDATE_PERSISTANCE: 'UPDATE_PERSISTANCE',
-    MOVE_ELEMENT: 'MOVE_ELEMENT'
+    MOVE_ELEMENT: 'MOVE_ELEMENT',
+    GET_STRUCTURE_PENDING: 'GET_STRUCTURE_PENDING',
+    GET_STRUCTURE_COMPLETE: 'GET_STRUCTURE_COMPLETE'
 }
 
 export default ACTIONS
@@ -29,13 +30,27 @@ const _fetch = createApolloFetch({
     uri: `${URL}/graphql`
 });
 
-export function updatePersistance(bread,filelist){
-    return {
-        type: ACTIONS.UPDATE_PERSISTANCE,
-        payload: {
-            breadcrumb: bread,
-            filelist: filelist
-        }
+function getStructurePending(){
+    return{
+        type: ACTIONS.GET_STRUCTURE_PENDING
+    }
+}
+
+function getStructureComplete(){
+    return{
+        type: ACTIONS.GET_STRUCTURE_COMPLETE
+    }
+}
+export function getStructure(rootId){
+    var query = `query{getStructure(rootId: "${rootId}"){
+        name
+    }`
+    return dispatch=>{
+        _fetch({query}).then(res=>{
+            dispatch(getStructurePending())
+            console.log(res)
+            dispatch(getStructureComplete())
+        })
     }
 }
 

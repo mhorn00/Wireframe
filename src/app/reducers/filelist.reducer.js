@@ -21,12 +21,28 @@ const defaults = {
     uploadProgress: 0,
     resolvedPath: [],
     resolvePathPending: false,
+    getStructurePending: false,
+    needsStructure: true,
 }
 
 
 
 const filepage = (state = defaults, action) => {
     switch (action.type) {
+        case actions.GET_STRUCTURE_PENDING:
+            {
+                return Object.assign({}, state, {
+                    getStructurePending: true,
+                    needsStructure: false
+                });
+            }
+            case actions.GET_STRUCTURE_COMPLETE:
+            {
+                return Object.assign({}, state, {
+                    getStructurePending: false,
+                    needsStructure: false
+                });
+            }
         case actions.RESOLVE_PATH_PENDING:
             {
                 return Object.assign({}, state, {

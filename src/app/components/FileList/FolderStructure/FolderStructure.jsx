@@ -10,9 +10,9 @@ class FolderStructure extends React.Component {
     }
 
     componentWillMount(){
-        if (this.props.needsStruture){
+        //if (this.props.needsStruture){
             this.props.dispatch(getStructure(localStorage.getItem('rootFolder')));
-        }
+        //}
     }
 
     getStructure(){
