@@ -18,24 +18,26 @@ const fileDrop = {
 
 function folderDropCollect(connect, monitor) {
     return {
-        connectDropTarget: connect.dropTarget()
+        connectDropTarget: connect.dropTarget(),
+        canDrop: monitor.canDrop(),
+        isOver: monitor.isOver()
     }
 }
 
 class Crumb extends React.Component {
+    
     constructor(props) {
         super(props);
     }
+
     render() {
         var {connectDropTarget} = this.props;
-
         return connectDropTarget(
-            <div className={styles.crumb} onClick={(e) => {
+            <div className={this.props.isOver && this.props.canDrop?styles.crumbDropHighlight:styles.crumb} onClick={(e) => {
                 e.preventDefault();
                 console.log(this.props.dir);
                 let newDir = this.props.dir.splice(0, this.props.dir.indexOf(this.props._id) + 1);
                 this.props.dispatch(setDir(newDir));
-                //this.props.dispatch(refreshFileList(newDir));
             }}>
                 {this.props.name}
             </div>

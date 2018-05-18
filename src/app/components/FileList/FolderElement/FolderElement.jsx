@@ -11,7 +11,9 @@ import { flow } from 'lodash';
 
 const folderDragSource = {
     beginDrag(props) {
-        return props.folder;
+        return {
+
+        };
     }
 };
 
@@ -30,13 +32,16 @@ function folderDragCollect(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging(),
-        connectDragPreview: connect.dragPreview()
+        connectDragPreview: connect.dragPreview(),
+
     }
 }
 
 function folderDropCollect(connect, monitor) {
     return {
-        connectDropTarget: connect.dropTarget()
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
     }
 }
 
@@ -63,7 +68,7 @@ class Folder extends React.Component {
                 var newPath = [...this.props.dir, folder._id]
                 dispatch(setDir(newPath));
                 dispatch(refreshFileList(newPath));
-            }} className={styles.file}>
+            }} className={this.props.isOver?styles.fileHighlighted:styles.file}>
                 <div className={styles.icon}><i className={icon} /></div>
                 {this.props.isRenaming.isEditing && this.props.isRenaming._id == folder._id
                     ? <form onSubmit={e => {

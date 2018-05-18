@@ -6,6 +6,13 @@
      border-bottom-color: $lightRed;
      display: table-row;
 }
+.fileHighlighted{
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-color: $lightRed;
+    background-color: $black3;
+    display: table-row;
+}
 .icon{
     font-size: 40px;
     padding: 0px 10px 0px 5px;

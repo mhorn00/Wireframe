@@ -103,7 +103,7 @@ class FileElement extends React.Component {
                             return 'move'
                         }
                         else {
-                            return 'pointer'
+                            return 'context-menu'
                         }
                     }()
                 }

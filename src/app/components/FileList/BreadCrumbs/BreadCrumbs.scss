@@ -12,6 +12,7 @@
 }
 .crumb{
     font-family: 'Ropa Sans';
+    cursor: pointer;
     color: $lightRed;
     margin:0;
     font-size: 40px;
@@ -19,6 +20,18 @@
     border-style: solid;
     border-color: transparent;
 }
+.crumbDropHighlight{
+    font-family: 'Ropa Sans';
+    color: $lightRed;
+    margin:0;
+    font-size: 40px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: $darkRed;
+    border-collapse: collapse;
+    background-color: $black3;
+}
+
 .crumb:hover{
     border-width: 2px;
     border-style: solid;
