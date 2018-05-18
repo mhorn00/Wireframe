@@ -14,7 +14,8 @@ const ACTIONS = {
     UPDATE_PROGRESS: 'UPDATE_PROGRESS',
     RESOLVE_PATH_PENDING: 'RESOLVE_PATH_PENDING',
     RESOLVE_PATH_DONE: 'RESOLVE_PATH_DONE',
-    UPDATE_PERSISTANCE: 'UPDATE_PERSISTANCE'
+    UPDATE_PERSISTANCE: 'UPDATE_PERSISTANCE',
+    MOVE_ELEMENT: 'MOVE_ELEMENT'
 }
 
 export default ACTIONS
@@ -89,6 +90,17 @@ export function startRename(_id) {
 export function endRename() {
     return {
         type: ACTIONS.END_RENAME,
+    }
+}
+
+export function moveElement(elementId, oldParentId, newParentId){
+    return dispatch => {
+        var query = `mutation{move(_id:"${elementId}" oldParentId:"${oldParentId}" newParentId:"${newParentId}" token:"${localStorage.getItem("token")}")}`
+        _fetch({query}).then(res=>{
+            if(res.data.move===true){
+                dispatch(refreshFileList(oldParentId));
+            }
+        })
     }
 }
 

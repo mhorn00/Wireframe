@@ -94,7 +94,6 @@ app.get('/filedl', function (req, res) {
     try {
         var info = jwt.verify(req.query.token, secret);
         var _path = path.resolve(__dirname + `../../../users/${info.username}/${req.query.name + req.query._id}`);
-        console.log(_path)
         res.download(_path, req.query.name, function (err) {
             if (err) {
                 console.log(err);

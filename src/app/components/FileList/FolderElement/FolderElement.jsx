@@ -1,5 +1,5 @@
 import React from 'react';
-import { setDir, renameFile, refreshFileList } from '../../../actions/filepage.actions';
+import { setDir, renameFile, refreshFileList, moveElement } from '../../../actions/filepage.actions';
 import { connect } from 'react-redux';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import styles from './FolderElement.scss';
@@ -21,8 +21,10 @@ const fileDrop = {
     canDrop(props, monitor) {
         return true
     },
-    drop(props, monitor, connect){
-        console.log(props, monitor, connect);
+    drop(prop, monitor, connect){
+        var props = connect.selector.props;
+        var element = monitor.getItem();
+        props.dispatch(moveElement(element._id, props.dir[props.dir.length-1], props.folder._id));
     }
 }
 

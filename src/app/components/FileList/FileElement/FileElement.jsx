@@ -10,9 +10,7 @@ import {IP} from '../../../const'
 
 const fileDragSource = {
     beginDrag(props) {
-        return {
-
-        };
+        return props.file;
     }
 };
 

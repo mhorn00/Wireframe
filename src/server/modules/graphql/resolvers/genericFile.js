@@ -20,11 +20,15 @@ async function checkFolderName(name, username, path) {
 }
 
 async function removeSubItems(parentId) {
-    Folder.findOne({ _id: parentId }).then(folder => {
+    Folder.findOne({
+        _id: parentId
+    }).then(folder => {
         folder.children.forEach(child => {
             if (child.type === '|dir|') removeSubItems(child._id);
             else {
-                GenericFile.findOne({ _id: child._id }).then(item => {
+                GenericFile.findOne({
+                    _id: child._id
+                }).then(item => {
                     try {
                         fs.unlinkSync(_path.resolve(__dirname + `../../../../../../users/${item.owner}/${item.name+item._id}`));
                         item.remove().then(() => resolve(true));
@@ -42,7 +46,8 @@ async function removeSubItems(parentId) {
 var resolvers = {
     Query: {
         files: async function (parent, args, {
-            GenericFile, Folder
+            GenericFile,
+            Folder
         }) {
             return await new Promise((resolve, reject) => {
                 var info;
@@ -50,8 +55,12 @@ var resolvers = {
                     info = jwt.verify(args.token, secret);
                     var childrenPromises = [];
                     var children = [];
-                    childrenPromises.push(Folder.find({ parentId: args.parentId }));
-                    childrenPromises.push(GenericFile.find({ parentId: args.parentId }));
+                    childrenPromises.push(Folder.find({
+                        parentId: args.parentId
+                    }));
+                    childrenPromises.push(GenericFile.find({
+                        parentId: args.parentId
+                    }));
                     bb.all(childrenPromises).then(res => {
                         resolve(res[0].concat(res[1]));
                     })
@@ -86,12 +95,14 @@ var resolvers = {
                     var info = jwt.verify(args.token, secret);
                     let resDir = [];
                     let promises = [];
-                    args.path.forEach(id=>{
-                        promises.push(Folder.findOne({_id: id}));
+                    args.path.forEach(id => {
+                        promises.push(Folder.findOne({
+                            _id: id
+                        }));
                     });
                     //TODO: To make the breadcrumb fast we should index the the files in the data base to a lookup tabel so we dont have to wait on the array of promises
-                    bb.all(promises).then(res=>{
-                        res.forEach(i=>{
+                    bb.all(promises).then(res => {
+                        res.forEach(i => {
                             resDir.push(i);
                         })
                         resolve(resDir)
@@ -106,13 +117,19 @@ var resolvers = {
     },
     Mutation: {
         renameFile: async function (parent, args, {
-            GenericFile, Folder
+            GenericFile,
+            Folder
         }) {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
                     if (args.type != '|dir|') {
-                        GenericFile.update({ _id: args._id, owner: info.username }, { name: args.newName }).then(res => {
+                        GenericFile.update({
+                            _id: args._id,
+                            owner: info.username
+                        }, {
+                            name: args.newName
+                        }).then(res => {
                             resolve(true);
                         }).catch((e) => {
                             throw (e);
@@ -120,7 +137,11 @@ var resolvers = {
                             return;
                         });
                     } else {
-                        Folder.update({ _id: args._id }, { name: args.newName }).then(res => {
+                        Folder.update({
+                            _id: args._id
+                        }, {
+                            name: args.newName
+                        }).then(res => {
                             resolve(true);
                         }).catch((e) => {
                             throw (e);
@@ -136,7 +157,8 @@ var resolvers = {
             })
         },
         addFolder: async function (parent, args, {
-            GenericFile, Folder
+            GenericFile,
+            Folder
         }) {
             // path is in terms from user root directory
             return await new Promise((resolve, reject) => {
@@ -148,8 +170,14 @@ var resolvers = {
                         owner: info.username
                     })
                     folder.save().then(() => {
-                        Folder.findOne({ _id: args.parentId }).then(res => {
-                            res.children.push({ childType: "|dir|", childId: folder._id, childName: args.name });
+                        Folder.findOne({
+                            _id: args.parentId
+                        }).then(res => {
+                            res.children.push({
+                                childType: "|dir|",
+                                childId: folder._id,
+                                childName: args.name
+                            });
                             res.save().then(() => {
                                 resolve(true);
                             })
@@ -163,7 +191,8 @@ var resolvers = {
             });
         },
         remove: async function (parent, args, {
-            GenericFile, Folder
+            GenericFile,
+            Folder
         }) {
             return await new Promise((resolve, reject) => {
                 try {
@@ -172,15 +201,18 @@ var resolvers = {
                         Folder.findOne({
                             _id: args._id
                         }).then((element) => {
-                            Folder.remove({ _id: element._id }).then(() => {
-                                removeSubItems(element._id).then(()=>{
+                            Folder.remove({
+                                _id: element._id
+                            }).then(() => {
+                                removeSubItems(element._id).then(() => {
                                     resolve(true);
                                 });
                             });
                         });
-                    }
-                    else {
-                        GenericFile.findOne({ _id: args._id }).then(item => {
+                    } else {
+                        GenericFile.findOne({
+                            _id: args._id
+                        }).then(item => {
                             try {
                                 fs.unlinkSync(item.absolutePath);
                                 item.remove().then(() => resolve(true));
@@ -216,8 +248,43 @@ var resolvers = {
                     resolve(false);
                 }
             });
+        },
+        move: async function (parent, args, {
+            GenericFile, Folder
+        }) {
+            return await new Promise((resolve, reject) => {
+                try {
+                    var info = jwt.verify(args.token, secret);
+                    var oldParentChildrenRemovePromise = Folder.findOne({
+                        _id: args.oldParentId,
+                        owner: info.username
+                    }).then(res => {
+                        if (res) {
+                            res.children.filter(child => {
+                                return !child._id === args._id
+                            })
+                            res.save();
+                        }
+                    })
+                    var newParentChildrenAddPromise = Folder.findOne({
+                        _id: args.newParentId,
+                        owner: info.username
+                    }).then(res=>{
+                        res.children.push(args._id);
+                        res.save()
+                    });
+                    var updateElementParentId = GenericFile.update({_id:args._id, owner:info.username}, {parentId:args.newParentId});
+                    bb.all([oldParentChildrenRemovePromise,newParentChildrenAddPromise, updateElementParentId]).then(res=>{
+                        resolve(true);
+                    }).catch(e=>resolve(false));
+
+                } catch (e) {
+                    resolve(false);
+                }
+            })
         }
     }
 }
+
 
 module.exports = resolvers;
