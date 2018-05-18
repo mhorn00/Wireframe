@@ -50,7 +50,7 @@ export function getStructure(rootId) {
     return dispatch => {
         _fetch({ query }).then(res => {
             dispatch(getStructurePending())
-            //console.log(res)
+            //console.log(res.data)
             dispatch(getStructureComplete())
         })
     }
