@@ -7,7 +7,7 @@ var secret = require('../../../secret');
 var hasher = require('../../hasher')
 var _path = require('path')
 var usersPath = __dirname + "../../../../../../users/";
-var GenericFile = require('../../mongo/schemas/data/genericFile');
+var {GenericFile, Folder} = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
 var bb = require('bluebird');
 
@@ -40,6 +40,20 @@ async function removeSubItems(parentId) {
                 })
             }
         })
+    })
+}
+
+async function getChildren(parentId) {
+    Folder.find({ parentId: parentId }).then(children => {
+        let _children = [];
+        children.forEach(child => {
+            if (child.type === '|dir|') {
+                _children.push(getChildren(child._id));
+            } else {
+                _children.push(child);
+            }
+        })
+        return _children;
     })
 }
 
@@ -119,12 +133,12 @@ var resolvers = {
         }) {
             return await new Promise((resolve, reject) => {
                 try {
+                    let struc;
                     var info = jwt.verify(args.token, secret);
-                    console.log('HEWWO??')
-                    Folder.findOne({_id: args.rootId, owner: info.username}).then(res=>{
-                        console.log(res);
-                    })
-                }catch (e){
+                    struc = getChildren(args.rootId)
+                    resolve(bb.all(struc));
+                    
+                } catch (e) {
                     throw (e);
                     resolve(null);
                     return;
@@ -290,8 +304,8 @@ var resolvers = {
                         res.children.push(args._id);
                         res.save()
                     });
-                    var updateElementParentId = args.isFolder?Folder.update({_id:args._id, owner:info.username},{parentId:args.newParentId}):GenericFile.update({_id:args._id, owner:info.username}, {parentId:args.newParentId});
-                    bb.all([oldParentChildrenRemovePromise,newParentChildrenAddPromise, updateElementParentId]).then(res=>{
+                    var updateElementParentId = args.isFolder ? Folder.update({ _id: args._id, owner: info.username }, { parentId: args.newParentId }) : GenericFile.update({ _id: args._id, owner: info.username }, { parentId: args.newParentId });
+                    bb.all([oldParentChildrenRemovePromise, newParentChildrenAddPromise, updateElementParentId]).then(res => {
                         resolve(true);
                     }).catch(e => resolve(false));
 
