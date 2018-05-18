@@ -30,25 +30,27 @@ const _fetch = createApolloFetch({
     uri: `${URL}/graphql`
 });
 
-function getStructurePending(){
-    return{
+function getStructurePending() {
+    return {
         type: ACTIONS.GET_STRUCTURE_PENDING
     }
 }
 
-function getStructureComplete(){
-    return{
+function getStructureComplete() {
+    return {
         type: ACTIONS.GET_STRUCTURE_COMPLETE
     }
 }
-export function getStructure(rootId){
-    var query = `query{getStructure(rootId: "${rootId}"){
+export function getStructure(rootId) {
+    var query = `query{getStructure(rootId: "${rootId}", token: "${localStorage.getItem('token')}"){
         name
+        _id
+        }
     }`
-    return dispatch=>{
-        _fetch({query}).then(res=>{
+    return dispatch => {
+        _fetch({ query }).then(res => {
             dispatch(getStructurePending())
-            console.log(res)
+            //console.log(res)
             dispatch(getStructureComplete())
         })
     }
@@ -108,11 +110,11 @@ export function endRename() {
     }
 }
 
-export function moveElement(elementId, oldParentId, newParentId, isFolder){
+export function moveElement(elementId, oldParentId, newParentId, isFolder) {
     return dispatch => {
         var query = `mutation{move(_id:"${elementId}" oldParentId:"${oldParentId}" newParentId:"${newParentId}" token:"${localStorage.getItem("token")}" isFolder:${isFolder})}`
-        _fetch({query}).then(res=>{
-            if(res.data.move===true){
+        _fetch({ query }).then(res => {
+            if (res.data.move === true) {
                 dispatch(refreshFileList(oldParentId));
             }
         })
