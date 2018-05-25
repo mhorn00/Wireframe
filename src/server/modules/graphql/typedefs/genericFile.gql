@@ -2,7 +2,7 @@
         files(parentId:String, token:String!): [File]
         file(_id: String! token: String!): File
         resolvePath(path: [String]!, token: String!): [File]
-        getStructure(rootId: String!, token: String!): [File]
+        getStructure(rootId: String!, token: String!): [[File]]
     }
 
     type FolderChildren {

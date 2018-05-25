@@ -7,7 +7,10 @@ var secret = require('../../../secret');
 var hasher = require('../../hasher')
 var _path = require('path')
 var usersPath = __dirname + "../../../../../../users/";
-var {GenericFile, Folder} = require('../../mongo/schemas/data/genericFile');
+var {
+    GenericFile,
+    Folder
+} = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
 var bb = require('bluebird');
 
@@ -16,6 +19,18 @@ async function checkFolderName(name, username, path) {
         owner: username,
         type: "|dir|",
         path: path,
+    })
+}
+
+async function getSubFolders(parentId) {
+    return await new Promise((resolve, reject) => {
+        var promises = Folder.find({parentId: parentId}).then(res=>{
+            return res.map(kid=>getSubFolders(kid._id))
+        })
+        bb.all(promises).then(res=>{
+            console.log(res);
+            resolve(res);
+        })
     })
 }
 
@@ -40,20 +55,6 @@ async function removeSubItems(parentId) {
                 })
             }
         })
-    })
-}
-
-async function getChildren(parentId) {
-    Folder.find({ parentId: parentId }).then(children => {
-        let _children = [];
-        children.forEach(child => {
-            if (child.type === '|dir|') {
-                _children.push(getChildren(child._id));
-            } else {
-                _children.push(child);
-            }
-        })
-        return _children;
     })
 }
 
@@ -129,19 +130,16 @@ var resolvers = {
             })
         },
         getStructure: async function (parent, args, {
-            Folder, GenericFile
+            Folder,
+            GenericFile
         }) {
             return await new Promise((resolve, reject) => {
                 try {
-                    let struc;
                     var info = jwt.verify(args.token, secret);
-                    struc = getChildren(args.rootId)
-                    resolve(bb.all(struc));
-                    
+                    var id = args.rootId;
+                    getSubFolders(id).then(res => resolve(res));
                 } catch (e) {
-                    throw (e);
                     resolve(null);
-                    return;
                 }
             })
         }
@@ -159,26 +157,26 @@ var resolvers = {
                             _id: args._id,
                             owner: info.username
                         }, {
-                                name: args.newName
-                            }).then(res => {
-                                resolve(true);
-                            }).catch((e) => {
-                                throw (e);
-                                resolve(false);
-                                return;
-                            });
+                            name: args.newName
+                        }).then(res => {
+                            resolve(true);
+                        }).catch((e) => {
+                            throw (e);
+                            resolve(false);
+                            return;
+                        });
                     } else {
                         Folder.update({
                             _id: args._id
                         }, {
-                                name: args.newName
-                            }).then(res => {
-                                resolve(true);
-                            }).catch((e) => {
-                                throw (e);
-                                resolve(false);
-                                return;
-                            });
+                            name: args.newName
+                        }).then(res => {
+                            resolve(true);
+                        }).catch((e) => {
+                            throw (e);
+                            resolve(false);
+                            return;
+                        });
                     }
                 } catch (e) {
                     throw (e);
@@ -281,7 +279,8 @@ var resolvers = {
             });
         },
         move: async function (parent, args, {
-            GenericFile, Folder
+            GenericFile,
+            Folder
         }) {
             return await new Promise((resolve, reject) => {
                 try {
@@ -304,7 +303,17 @@ var resolvers = {
                         res.children.push(args._id);
                         res.save()
                     });
-                    var updateElementParentId = args.isFolder ? Folder.update({ _id: args._id, owner: info.username }, { parentId: args.newParentId }) : GenericFile.update({ _id: args._id, owner: info.username }, { parentId: args.newParentId });
+                    var updateElementParentId = args.isFolder ? Folder.update({
+                        _id: args._id,
+                        owner: info.username
+                    }, {
+                        parentId: args.newParentId
+                    }) : GenericFile.update({
+                        _id: args._id,
+                        owner: info.username
+                    }, {
+                        parentId: args.newParentId
+                    });
                     bb.all([oldParentChildrenRemovePromise, newParentChildrenAddPromise, updateElementParentId]).then(res => {
                         resolve(true);
                     }).catch(e => resolve(false));

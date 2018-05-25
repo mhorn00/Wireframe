@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { DragSource, DragLayer } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend';
+import { flow } from 'lodash';
 
 function collect(monitor) {
     return {
@@ -31,4 +32,4 @@ function mapStateToProps(state) {
     return state;
 }
 
-export default DragLayer(collect)(connect(mapStateToProps)(DraggingFile));
+export default flow(DragLayer(collect),connect(mapStateToProps))(DraggingFile);
