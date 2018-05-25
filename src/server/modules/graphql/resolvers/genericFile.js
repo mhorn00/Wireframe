@@ -44,17 +44,7 @@ async function removeSubItems(parentId) {
 }
 
 async function getChildren(parentId) {
-    Folder.find({ parentId: parentId }).then(children => {
-        let _children = [];
-        children.forEach(child => {
-            if (child.type === '|dir|') {
-                _children.push(getChildren(child._id));
-            } else {
-                _children.push(child);
-            }
-        })
-        return _children;
-    })
+
 }
 
 var resolvers = {
@@ -136,7 +126,7 @@ var resolvers = {
                     let struc;
                     var info = jwt.verify(args.token, secret);
                     struc = getChildren(args.rootId)
-                    resolve(bb.all(struc));
+                    resolve(struc);
                     
                 } catch (e) {
                     throw (e);

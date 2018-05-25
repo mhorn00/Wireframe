@@ -49,12 +49,12 @@ const uploadDropActionHandler = {
             xhr.send(data);
         }
     },
-    hover(props,monitor,connect){
+    hover(props, monitor, connect) {
         var props = connect.selector.props;
-        if(monitor.isOver()){
+        if (monitor.isOver()) {
             props.dispatch(uploadState('resting'))
         }
-        else{
+        else {
             props.dispatch(uploadState('dropHover'))
         }
     }
@@ -67,6 +67,7 @@ class Uploader extends React.Component {
         this.onDrop = this.onDrop.bind(this);
         this.onDragStarted = this.onDragStarted.bind(this);
         this.onDragStopped = this.onDragStopped.bind(this);
+        this.buttonUpload = this.buttonUpload.bind(this);
     }
     onDrop(e) {
         e.preventDefault();
@@ -98,9 +99,40 @@ class Uploader extends React.Component {
         }
     }
 
+    buttonUpload(e) {
+        e.preventDefault()
+        var files = document.getElementById('file').files
+        for (var i = 0; i < files.length; i++) {
+            var data = new FormData();
+            data.append('file', files[i]);
+            data.append('token', localStorage.getItem("token"));
+            data.append('path', this.props.dir[this.props.dir.length - 1]);
+            data.append('fromSite', true);
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = (e) => {
+                if (xhr.readyState == XMLHttpRequest.OPENED) {
+                    this.props.dispatch(uploadState('uploading'));
+                } else if (xhr.readyState == XMLHttpRequest.DONE) {
+                    this.props.dispatch(uploadState('resting'));
+                    this.props.dispatch(updateProgress(0));
+                    this.props.dispatch(refreshFileList(this.props.dir[this.props.dir.length - 1]))
+                }
+            };
+            xhr.open('POST', `${IP}/upload`, true);
+            xhr.upload.addEventListener('progress', (e) => {
+                let progress = 0;
+                if (e.total !== 0) {
+                    progress = parseInt((e.loaded / e.total) * 100, 10);
+                }
+                this.props.dispatch(updateProgress(progress));
+            });
+            xhr.send(data);
+        }
+    }
+
     onDragStarted(e) {
         e.preventDefault();
-        
+
     }
 
     onDragStopped(e) {
@@ -114,13 +146,13 @@ class Uploader extends React.Component {
         return (
             <div className={styles.base}>
                 <p className={styles.text}>Drop Files Here</p>
-                {/* <form onSubmit={this.onDrop}>
-                    <input type='file' />
-                    <input type='submit' />
-                </form> */}
-                {connectDropTarget(<div className={styles[(()=>{
-                    if(this.props.uploadState=='uploading') return 'uploading';
-                    else if(isOver) return 'dropHover'
+                <form>
+                    <input className={styles.inputfile} name="file" id="file" type='file' onChange={this.buttonUpload} multiple />
+                    <label className={styles.uploadButton} htmlFor="file">Choose a file</label>
+                </form>
+                {connectDropTarget(<div className={styles[(() => {
+                    if (this.props.uploadState == 'uploading') return 'uploading';
+                    else if (isOver) return 'dropHover'
                     else return 'resting'
                 })()]}>
                     <div className={styles.loading} style={{ height: 100 - this.props.uploadProgress + '%' }}>
