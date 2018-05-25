@@ -53,3 +53,32 @@
         }
     }
 }
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.inputfile:focus + label {
+    outline: 1px dotted $lightRed;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+    pointer-events: none;
+}
+.uploadButton{
+    font-family: 'Ropa Sans';
+    font-size: 20px;
+    border-width: 2px;
+    border-color: $black2;
+    border-style: solid;
+    color: $black2;
+    padding: 2px 2px 2px 2px;
+    transition: color .25s;
+    -moz-transition: color .25;
+}
+.uploadButton:hover{
+    color: $lightRed
+}
