@@ -27,12 +27,19 @@ class MasterLayout extends React.Component {
         if (this.props.location && this.props.location.pathname != '/' && this.props.logged_out && (this.props.auth_failed || !this.props.authenticated)) {
             return <Redirect to='/' />
         }
+        if (this.props.location && this.props.location.pathname == '/') {
+            return (
+                <div className={styles.contentNoNav}>
+                    {this.props.children}
+                </div>
+            )
+        }
         return (
             <div>
                 <header>
                     <nav className={styles.header}>
                         <div className={styles.logo}>
-                            <img src='/Logo\Wireframe-Letter.svg' className={styles.logoimg}/>
+                            <img src='/Logo\Wireframe-Letter.svg' className={styles.logoimg} />
                         </div>
                         <div className={styles.links}>
 
