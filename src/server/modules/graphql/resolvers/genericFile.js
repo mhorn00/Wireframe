@@ -162,7 +162,7 @@ var resolvers = {
                         var structure = []
                         var parentIdSet = new Set(files.map(file=>file.parentId));
                         parentIdSet = Object.assign(new Set(),parentIdSet,folders.map(folder=>folder.parentId));
-                        console.log(parentIdSet);
+                        // parentIdSet now has all parentId's, of both folders and files. we can use this to do something probably, but i dont know what yet.
                         var unstructuredFolders = {};
 
                         console.log(parentIdArray);
