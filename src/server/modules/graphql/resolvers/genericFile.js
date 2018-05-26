@@ -24,12 +24,30 @@ async function checkFolderName(name, username, path) {
 
 async function getSubFolders(parentId) {
     return await new Promise((resolve, reject) => {
-        var promises = Folder.find({parentId: parentId}).then(res=>{
-            return res.map(kid=>getSubFolders(kid._id))
-        })
-        bb.all(promises).then(res=>{
-            console.log(res);
-            resolve(res);
+        var promises = Folder.find({
+            parentId: parentId
+        }).then(res => {
+            var promises = [];
+            res.forEach(kid => promises.push(getSubFolders(kid._id)));
+            return promises;
+        });
+        bb.all(promises).then(children => {
+            Folder.findOne({
+                _id: parentId
+            }).then(res => {
+                var assigned = Object.assign({}, res, {
+                    childrenFiles: children.map(c => c._doc)
+                });
+                GenericFile.find({
+                    parentId: res._id
+                }).then(genericFileKids => {
+                    console.log(genericFileKids);
+                    var genericChildrenAssigned = Object.assign({}, assigned, {
+                        childrenFiles: genericFileKids.map(c => c._doc)
+                    });
+                    resolve(assigned);
+                })
+            })
         })
     })
 }
@@ -136,8 +154,21 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    var id = args.rootId;
-                    getSubFolders(id).then(res => resolve(res));
+                    var folderPromise = Folder.find({owner:info.username});
+                    var filePromise = GenericFile.find({owner: info.username});
+                    bb.all([folderPromise,filePromise]).then(fulfilled=>{
+                        var folders = fulfilled[0];
+                        var files = fulfilled[1];
+                        var structure = []
+                        var parentIdSet = new Set(files.map(file=>file.parentId));
+                        parentIdSet = Object.assign(new Set(),parentIdSet,folders.map(folder=>folder.parentId));
+                        console.log(parentIdSet);
+                        var unstructuredFolders = {};
+
+                        console.log(parentIdArray);
+                        console.log(parentIdArray.pop());
+                        resolve(structure);
+                    })
                 } catch (e) {
                     resolve(null);
                 }
