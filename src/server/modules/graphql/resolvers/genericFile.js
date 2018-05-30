@@ -13,6 +13,9 @@ var {
 } = require('../../mongo/schemas/data/genericFile');
 var uuid = require('uuid');
 var bb = require('bluebird');
+var _ = require('lodash');
+
+var times = 0;
 
 async function checkFolderName(name, username, path) {
     GenericFile.find({
@@ -20,6 +23,25 @@ async function checkFolderName(name, username, path) {
         type: "|dir|",
         path: path,
     })
+}
+
+var isEmpty = _.isEmpty;
+
+function unflattenEntities(entities, parent = {
+    _id: "5b0de8e0ccc4deacd6289d1b",
+    parentId: ""
+}, tree = []) {
+    let children = entities.filter(entity => entity.parentId == parent._id)
+    //console.log(children);
+    if (!isEmpty(children)) {
+        if (parent.parentId == "") {
+            tree = children
+        } else {
+            parent['children'] = children
+        }
+        children.map(child => unflattenEntities(entities, child))
+    }
+    return tree
 }
 
 async function getSubFolders(parentId) {
@@ -154,20 +176,34 @@ var resolvers = {
             return await new Promise((resolve, reject) => {
                 try {
                     var info = jwt.verify(args.token, secret);
-                    var folderPromise = Folder.find({owner:info.username});
-                    var filePromise = GenericFile.find({owner: info.username});
-                    bb.all([folderPromise,filePromise]).then(fulfilled=>{
-                        var folders = fulfilled[0];
-                        var files = fulfilled[1];
-                        var structure = []
+                    var folderPromise = Folder.find({
+                        owner: info.username
+                    });
+                    var filePromise = GenericFile.find({
+                        owner: info.username
+                    });
+                    bb.all([folderPromise, filePromise]).then(fulfilled => {
+                        var flatResults = [];
+                        fulfilled[0].forEach(p => flatResults.push(p));
+                        fulfilled[1].forEach(p => flatResults.push(p));
+                        var unflat = unflattenEntities(flatResults);
+                        var edited = unflat.map(obj => {
+                            return Object.assign(obj, obj.children ? {
+                                children: JSON.stringify(obj.children)
+                            } : {})
+                        });
+                        console.log(edited);
+                        resolve(edited);
+                        //resolve(tree);
+                        /* var structure = []
                         var parentIdSet = new Set(files.map(file=>file.parentId));
                         parentIdSet = Object.assign(new Set(),parentIdSet,folders.map(folder=>folder.parentId));
                         // parentIdSet now has all parentId's, of both folders and files. we can use this to do something probably, but i dont know what yet.
                         var unstructuredFolders = {};
 
                         console.log(parentIdArray);
-                        console.log(parentIdArray.pop());
-                        resolve(structure);
+                        console.log(parentIdArray.pop()); */
+                        //resolve(structure);
                     })
                 } catch (e) {
                     resolve(null);
@@ -233,11 +269,11 @@ var resolvers = {
                         Folder.findOne({
                             _id: args.parentId
                         }).then(res => {
-                            res.children.push({
-                                childType: "|dir|",
-                                childId: folder._id,
-                                childName: args.name
-                            });
+                            /*                             res.children.push({
+                                                            childType: "|dir|",
+                                                            childId: folder._id,
+                                                            childName: args.name
+                                                        }); */
                             res.save().then(() => {
                                 resolve(true);
                             })

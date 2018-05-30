@@ -70,7 +70,7 @@ app.post('/upload', upload.single('file'), function (req, res) {
                     var writeFile = fs.writeFile(absPath, file.buffer, (err, result) => {
                         if (err) throw err;
                         Folder.findOne({ _id: req.body.path }).then((folder) => {
-                            folder.children.push(mongoFile);
+                            //folder.children.push(mongoFile);
                             folder.save();
                             res.send('Recived and saved')
                         })

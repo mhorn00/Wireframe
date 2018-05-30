@@ -28,13 +28,7 @@ let Folder = new Schema({
     makeDate: {
         type: Date,
         default: Date.now()
-    },
-    children: [{
-        childName: String,
-        childType: String,
-        childId: String
-    }] // Mixed array so that both files and folders may be children 
-
+    } // Mixed array so that both files and folders may be children
     /*
         children: [{
 
